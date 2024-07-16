@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="java.io.FileWriter" %>
-<%@ page import="java.io.PrintWriter" %>
+<%@ page import="java.sql.*" %>
 <%
     String impUid = request.getParameter("imp_uid");
     String merchantUid = request.getParameter("merchant_uid");
@@ -13,26 +12,50 @@
     String buyerTel = request.getParameter("buyer_tel");
     String buyerAddr = request.getParameter("buyer_addr");
 
-    // 세션에서 장바구니와 구매 목록 가져오기
     ArrayList<HashMap<String, String>> purchaseList = (ArrayList<HashMap<String, String>>) session.getAttribute("purchaseList");
 
-    // 파일에 결제 정보를 저장
-    String filePath = application.getRealPath("/") + "WEB-INF/purchase_data.txt";
-    try (FileWriter fw = new FileWriter(filePath, true);
-         PrintWriter pw = new PrintWriter(fw)) {
+    String url = "jdbc:mysql://localhost:3306/test";
+    String user = "root";
+    String password = "1234";
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
+    int orderId = 0;
+
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(url, user, password);
+
+        // 새로운 order_id 생성
+        String orderQuery = "SELECT IFNULL(MAX(order_id), 0) + 1 AS new_order_id FROM purchase";
+        pstmt = conn.prepareStatement(orderQuery);
+        rs = pstmt.executeQuery();
+        if (rs.next()) {
+            orderId = rs.getInt("new_order_id");
+        }
+
+        // 구매 내역 저장
+        String insertQuery = "INSERT INTO purchase (order_id, buyer_name, buyer_tel, buyer_addr, product, price) VALUES (?, ?, ?, ?, ?, ?)";
+        pstmt = conn.prepareStatement(insertQuery);
+
         for (HashMap<String, String> item : purchaseList) {
-            pw.println("이름: " + buyerName);
-            pw.println("주소: " + buyerAddr);
-            pw.println("전화번호: " + buyerTel);
-            pw.println("결제상품: " + item.get("product"));
-            pw.println("가격: " + item.get("price"));
-            pw.println("----------");
+            pstmt.setInt(1, orderId);
+            pstmt.setString(2, buyerName);
+            pstmt.setString(3, buyerTel);
+            pstmt.setString(4, buyerAddr);
+            pstmt.setString(5, item.get("product"));
+            pstmt.setInt(6, Integer.parseInt(item.get("price")));
+            pstmt.executeUpdate();
         }
     } catch (Exception e) {
         e.printStackTrace();
+    } finally {
+        if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+        if (pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
     }
 
-    // 세션에서 장바구니와 구매 목록 정보 삭제
     session.removeAttribute("cart");
     session.removeAttribute("purchaseList");
 %>

@@ -17,6 +17,5 @@
     cart.add(item);
     session.setAttribute("cart", cart);
 
-    // 추가된 상품 이름과 가격을 클라이언트로 전송합니다.
     out.println(product + "이(가) " + price + "원에 장바구니에 추가되었습니다!");
 %>
