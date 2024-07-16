@@ -27,7 +27,7 @@ public class MemberBean {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/baskin", "root", "1234");
-			String sql = "SELECT COUNT(*) FROM member WHERE memberId = ?";
+			String sql = "SELECT * FROM member WHERE memberId = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mId);
 			rs  = pstmt.executeQuery();

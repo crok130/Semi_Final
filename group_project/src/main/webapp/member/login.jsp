@@ -27,6 +27,7 @@
             <!-- 아이디 저장 -->
             <div class="remember">
                 <label><input type="checkbox"> 아이디 저장</label>
+                <!-- 쿠키 사용 -->
             </div>
 
             <!-- 로그인 버튼 -->

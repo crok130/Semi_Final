@@ -9,14 +9,17 @@
 </head>
 <body>
 	<div class="wrapper">
-        <form id="joinForm" action="join.jsp" method="POST">
+		<!-- 아이디 중복 체크로 action 뻘한 곳으로 빠짐 -->
+        <form id="joinForm" action="success.jsp" method="POST">
             <table>
                 <!-- 이름 -->
                 <tr>
                     <td rowspan="9" style="width: 150px;" class="first">기본 정보 입력<p><span class="star">* </span>필수 입력 항목</p></td>
                     <td style="width: 150px;">이름<span class="star"> *</span></td>
                     <td style="width: 200px;">
-                        <input type="text" class="input-box" name="name" required autofocus>
+                    	<!-- 입력값 제한 (한글만) -->
+                        <input type="text" class="input-box" name="name"
+                        pattern="[ㄱ-ㅎ가-힣]" required autofocus>
                     </td>
                     <td></td>
                 </tr>
@@ -25,7 +28,9 @@
                 <tr>
                     <td>아이디<span class="star"> *</span></td>
                     <td>
-                        <input type="text" id="input_box_id" name="mId" required  minlength="4" maxlength="12">
+                        <!-- 입력값 제한 (영문자, 숫자만) -->
+                        <input type="text" id="input_box_id" name="mId" 
+                        pattern="^[a-zA-Z0-9]{4, 12}" required >
                         <input type="button" id="idBtn" value="중복 확인" onclick="checkId()">
                         <span>4~12자리의 영문자, 숫자 (/,!@#$ 등 특수문자는 제외) </span>
                     </td>
@@ -36,7 +41,9 @@
                 <tr>
                     <td>이메일<span class="star"> *</span></td>
                     <td>
-                        <input type="email" id="input_email" name="email" required>
+                    	<!-- 입력값 제한 (영문자, 숫자만) -->
+                        <input type="email" id="input_email" name="email"
+                        pattern="^[a-zA-Z0-9]" required>
                         <span>아이디, 패스워드 찾기</span>
                     </td>
                     <td>
@@ -47,7 +54,10 @@
                 <tr>
                     <td>비밀번호<span class="star"> *</span></td>
                     <td>
-                        <input type="password" class="input-box" required minlength="10" maxlength="20">
+                    	<!-- 입력값 제한 (영문자, 숫자, 특수 문자) -->
+                    	<!-- 문자열 중 2가지 이상의 문자(영문, 숫자, 특문)을 포함하는지 확인 -->
+                        <input type="password" class="input-box" 
+                        pattern="^[a-zA-Z0-9]{10, 20}" required>
                         <span>영문, 숫자, 특수 문자 중 2가지 이상을 조합하여 10~20자</span>
                     </td>
                     <td></td>
@@ -57,17 +67,22 @@
                 <tr>
                     <td>비밀번호 재입력<span class="star"> *</span></td>
                     <td>
-                        <input type="password" class="input-box" name="mPw" required minlength="10" maxlength="20">
+                    	<!-- 입력값 제한 (영문자, 숫자, 특수 문자) -->
+                    	<!-- 문자열 중 2가지 이상의 문자(영문, 숫자, 특문)을 포함하는지 확인 -->
+                        <input type="password" class="input-box" name="mPw" 
+                        pattern="^[a-zA-Z0-9]{10,20}" required>
                         <span>비밀번호를 다시 한 번 입력해주세요.</span>
                     </td>
-                    <td></td>
+                    <!-- 중복 확인 -->
+                    <td id="pwCheckMessage"></td>
                 </tr>
                 
                 <!-- 휴대폰 -->
                 <tr>
                     <td>휴대전화<span class="star"> *</span></td>
                     <td>
-                        <input type="text" class="input_phoneNumber" name="phone" placeholder="('-'을 빼고 입력하세요.)" required maxlength="11" required> <br />
+                        <input type="text" class="input_phoneNumber" name="phone" 
+                        placeholder="('-'을 빼고 입력하세요.)" pattern="[0-9]{10, 11}" required> <br />
                         <span>주문 배송 및 ARS 중고 매장 이용 시 본인 확인용</span>
                     </td>
                     <td></td>
@@ -78,7 +93,7 @@
                     <td>주소<span class="star"> *</span></td>
                     <td class="td_relative">
                     	<!-- 우편 번호 -->
-                        <input type="text" id="zipcode" name="addr1" maxlength="5" readonly>
+                        <input type="text" id="zipcode" name="addr1" readonly>
                         <span class="innerZip">우편 번호</span>
                         <!-- 검색 버튼 -->
                         <input type="button" value="우편 번호 검색" id="addrBtn">
@@ -120,6 +135,8 @@
                         <label>
                         	<input type="radio" name="seller" value="2" checked="checked">
                         	<span class="radio_span">아니오</span>
+                        	<!-- 관리자 식별 번호 : 3 -->
+                        	<input type="hidden" name="seller" value="3">
                         </label>
                         <span class="seller_chk">중고샵 판매자 이용 여부 확인</span>
                     </td>
@@ -135,7 +152,7 @@
     </div>
     
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="js/addr.js"></script>
+    <script src="../js/addr.js"></script>
     <script>
     	function checkId() {
     		document.getElementById('joinForm').action = 'join.jsp';

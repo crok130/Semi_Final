@@ -27,6 +27,7 @@ public class Member {
 		this.addr1 = addr1;
 		this.addr2 = addr2;
 		this.addr3 = addr3;
+		// this.addr = addr1 + addr2 + addr3;   (매개 변수 수정?)
 		this.gender = gender;
 		this.seller = seller;
 	}
