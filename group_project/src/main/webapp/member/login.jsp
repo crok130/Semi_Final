@@ -10,28 +10,28 @@
 <body>
 <!-- 로그인 페이지 -->
     <div class="wrapper">
-        <form action="">
+        <form action="LoginServlet" method="POST">
             <h1>BASKINROBBINS 31.2</h1>
             <!-- 아이디 -->
             <div class="input-box">
-                <input type="text" placeholder="아이디" required>
+                <input type="text" name="uId" placeholder="아이디" required>
                 <i class='bx bxs-user'></i>
             </div>
 
             <!-- 비밀번호 -->
             <div class="input-box">
-                <input type="password" placeholder="비밀번호" required>
+                <input type="password" name="uPw" placeholder="비밀번호" required>
                 <i class='bx bxs-lock-alt' ></i>
             </div>
 
             <!-- 아이디 저장 -->
             <div class="remember">
-                <label><input type="checkbox"> 아이디 저장</label>
                 <!-- 쿠키 사용 -->
+                <label><input type="checkbox"> 아이디 저장</label>
             </div>
 
             <!-- 로그인 버튼 -->
-            <button type="submit" id="btn">로그인</button>
+            <button type="submit" id="btn" onclick="login()">로그인</button>
 
             <!-- 가입, 계정 찾기 -->
             <div class="find">
@@ -44,13 +44,13 @@
             <div class="social">
                 <ul>
                     <li>
-                        <a href="#"><img src="../images/btnG.png" alt="네이버" class="naver"></a>
+                        <a href="#"><img src="images/btnG.png" alt="네이버" class="naver"></a>
                     </li>
                     <li>
-                        <a href="#" class="kakao"></a>
+                        <a href="#" id="kakao"></a>
                     </li>
                     <li>
-                        <a href="#" class="google"></a>
+                        <a href="#" id="google"></a>
                     </li>
                 </ul>
             </div>

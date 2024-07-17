@@ -31,7 +31,7 @@ body {
     align-items: center;
 }
 
-.wrapper .input-box {
+.wrapper .input_box {
     width: 300px;
 }
 
@@ -172,4 +172,26 @@ label {
 
 label > span:hover, [type="radio"]:hover {
   cursor: pointer;
+}
+
+.green_text {
+	color: #33CC00;
+	font-size: 12px;
+	vertical-align: center;
+}
+
+.red_text {
+	color: red;
+	font-size: 12px;
+	vertical-align: center;
+}
+
+.pw_chk {
+	color: #33CC00;
+	font-size: 12px
+}
+
+.pw_err {
+	color: red;
+	font-size: 12px
 }

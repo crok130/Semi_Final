@@ -1,33 +1,26 @@
 package servlet;
 
-public class Member {
+public class MemberVO {
 	private String name;
 	private String id;
 	private String email;
 	private String password;
 	private String phone;
-	private String addr1;
-	private String addr2;
-	private String addr3;
+	private String addr;
 	private String gender;
-	private String seller;
+	private int seller;
 	
 	// alt + s + a
-	public Member() {
+	public MemberVO() {
 	}
 	
-	public Member(String name, String id, String email, String password, String phone, String addr1, String addr2,
-			String addr3, String gender, String seller) {
-		super();
+	public MemberVO(String name, String id, String email, String password, String phone, String addr, String gender, int seller) {
 		this.name = name;
 		this.id = id;
 		this.email = email;
 		this.password = password;
 		this.phone = phone;
-		this.addr1 = addr1;
-		this.addr2 = addr2;
-		this.addr3 = addr3;
-		// this.addr = addr1 + addr2 + addr3;   (매개 변수 수정?)
+		this.addr = addr;
 		this.gender = gender;
 		this.seller = seller;
 	}
@@ -73,28 +66,12 @@ public class Member {
 		this.phone = phone;
 	}
 
-	public String getAddr1() {
-		return addr1;
+	public String getAddr() {
+		return addr;
 	}
 
-	public void setAddr1(String addr1) {
-		this.addr1 = addr1;
-	}
-
-	public String getAddr2() {
-		return addr2;
-	}
-
-	public void setAddr2(String addr2) {
-		this.addr2 = addr2;
-	}
-
-	public String getAddr3() {
-		return addr3;
-	}
-
-	public void setAddr3(String addr3) {
-		this.addr3 = addr3;
+	public void setAddr(String addr) {
+		this.addr = addr;
 	}
 
 	public String getGender() {
@@ -105,11 +82,11 @@ public class Member {
 		this.gender = gender;
 	}
 
-	public String getSeller() {
+	public int getSeller() {
 		return seller;
 	}
 
-	public void setSeller(String seller) {
+	public void setSeller(int seller) {
 		this.seller = seller;
 	}
 	
