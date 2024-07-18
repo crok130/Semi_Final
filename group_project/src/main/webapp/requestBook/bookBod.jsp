@@ -1,10 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>도서 신청 목록</title>
-   	<link rel="stylesheet" href="requestBook/bookBoard.css">
+<meta charset="UTF-8">
+<title>도서 신청 목록</title>
+   	<link rel="stylesheet" href="${pageContext.request.contextPath}/requestBook/bookBoard.css">
 </head>
 <body>
     <header>
@@ -26,7 +26,7 @@
         </nav>
         
         <main class="content">
-            <a href="requestBook/BookRequest.html"><button class="request-button top">도서 신청</button></a>
+            <a href="requestBook/reBook.jsp"><button class="request-button top">도서 신청</button></a>
             <table class="board-table">
                 <thead>
                     <tr>
