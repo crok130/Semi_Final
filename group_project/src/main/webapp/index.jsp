@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, java.io.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -379,114 +381,48 @@
             </nav>
         </aside>        
         <section id="section">
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="D:\JsBackUp\workspace\public\web\img\java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div>  
+            <%
+                // 데이터베이스 연결 설정
+                String url = "jdbc:mysql://localhost:3306/baskin";
+                String user = "root";
+                String password = "1234";
+
+                Connection conn = null;
+                Statement stmt = null;
+                ResultSet rs = null;
+
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    conn = DriverManager.getConnection(url, user, password);
+                    stmt = conn.createStatement();
+                    String sql = "SELECT * FROM Books WHERE status = '신책'";
+                    rs = stmt.executeQuery(sql);
+
+                    while (rs.next()) {
+                        String title = rs.getString("title");
+                        String author = rs.getString("author");
+                        String publisher = rs.getString("publisher");
+                        int price = rs.getInt("price");
+                        String imagePath = rs.getString("image_path");
+            %>
+                        <div class="book">
+                            <img src="<%= imagePath %>" alt="Book Image" class="bimg">
+                            <div class="btitle"><%= title %></div>
+                            <div class="bauthor"><%= author %></div>
+                            <div class="bpublisher"><%= publisher %></div>
+                            <div class="bprice"><%= price %> 원</div>
+                            <div class="bstarscore"></div>
+                        </div>
+            <%
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    try { if (stmt != null) stmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    try { if (conn != null) conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                }
+            %>
         </section>
         <footer>
             <p>Copyright © 베스킨라빈스31.2 Corp. All Rights Reserved.</p>
