@@ -1,16 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>BASKINROBBINS 31.2 로그인</title>
+	<meta charset="UTF-8">
 	<link href="../css/login.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
 </head>
 <body>
 <!-- 로그인 페이지 -->
     <div class="wrapper">
-        <form action="LoginServlet" method="POST">
+        <form action="${pageContext.request.contextPath}/LoginServlet" method="POST">
             <h1>BASKINROBBINS 31.2</h1>
             <!-- 아이디 -->
             <div class="input-box">
@@ -44,7 +45,7 @@
             <div class="social">
                 <ul>
                     <li>
-                        <a href="#"><img src="images/btnG.png" alt="네이버" class="naver"></a>
+                        <a href="#"><img src="../images/btnG.png" alt="네이버" class="naver"></a>
                     </li>
                     <li>
                         <a href="#" id="kakao"></a>

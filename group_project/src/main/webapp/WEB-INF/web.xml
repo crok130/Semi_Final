@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" version="6.0">
   <display-name>main</display-name>
   <welcome-file-list>
-    <welcome-file>used/used_books.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   
   <servlet>
@@ -32,4 +32,30 @@
     <url-pattern>/LogoutServlet</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>CheckPwServlet</servlet-name>
+    <servlet-class>servlet.CheckPwServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckPwServlet</servlet-name>
+    <url-pattern>/CheckPwServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ChangePwServlet</servlet-name>
+    <servlet-class>servlet.ChangePwServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChangePwServlet</servlet-name>
+    <url-pattern>/ChangePwServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>SecedeServlet</servlet-name>
+    <servlet-class>servlet.SecedeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SecedeServlet</servlet-name>
+    <url-pattern>/SecedeServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
