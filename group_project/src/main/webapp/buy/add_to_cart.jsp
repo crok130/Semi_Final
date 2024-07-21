@@ -1,21 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.HashMap" %>
+<%@ page import="java.sql.*, utils.JDBCUtil" %>
 <%
-    String product = request.getParameter("product");
-    String price = request.getParameter("price");
+    int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+    int book_id = Integer.parseInt(request.getParameter("book_id"));
+    int quantity = Integer.parseInt(request.getParameter("quantity"));
+    Connection conn = null;
+    PreparedStatement pstmt = null;
 
-    ArrayList<HashMap<String, String>> cart = (ArrayList<HashMap<String, String>>) session.getAttribute("cart");
-    if (cart == null) {
-        cart = new ArrayList<>();
+    try {
+        // 데이터베이스 연결
+        conn = JDBCUtil.getConnection();
+        
+        // SQL 쿼리 준비
+        String sql = "INSERT INTO Cart (memberNum, book_id, quantity) VALUES (?, ?, ?)";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, memberNum);
+        pstmt.setInt(2, book_id);
+        pstmt.setInt(3, quantity);
+        pstmt.executeUpdate();
+        
+        // 성공 메시지 반환
+        response.getWriter().write("success");
+    } catch (Exception e) {
+        // 예외 처리 및 오류 메시지 반환
+        e.printStackTrace();
+        response.getWriter().write("error");
+    } finally {
+        // 자원 해제
+        if (pstmt != null) pstmt.close();
+        if (conn != null) conn.close();
     }
-
-    HashMap<String, String> item = new HashMap<>();
-    item.put("product", product);
-    item.put("price", price);
-
-    cart.add(item);
-    session.setAttribute("cart", cart);
-
-    out.println(product + "이(가) " + price + "원에 장바구니에 추가되었습니다!");
 %>

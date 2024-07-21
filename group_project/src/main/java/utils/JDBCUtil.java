@@ -28,8 +28,8 @@ public class JDBCUtil {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			conn = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/digital_jsp",	
-				"digital",									
+				"jdbc:mysql://localhost:3306/baskin",	
+				"root",									
 				"1234"			
 			);
 		} catch (ClassNotFoundException e) {

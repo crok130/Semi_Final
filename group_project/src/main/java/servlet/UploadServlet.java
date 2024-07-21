@@ -71,7 +71,7 @@ public class UploadServlet extends HttpServlet {
             int result = pstmt.executeUpdate();
             if (result > 0) {
                 out.println("상품이 성공적으로 등록되었습니다.");
-                response.sendRedirect("insertForm.jsp");
+                response.sendRedirect("insert_form.jsp");
             } else {
                 out.println("상품 등록에 실패했습니다.");
             }

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.HashMap" %>
+<%@ page import="java.sql.*, utils.JDBCUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -22,27 +21,30 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    ArrayList<HashMap<String, String>> purchaseList = (ArrayList<HashMap<String, String>>) session.getAttribute("purchaseList");
-                    int totalPrice = 0;
-                    if (purchaseList != null && !purchaseList.isEmpty()) {
-                        for (HashMap<String, String> item : purchaseList) {
-                            totalPrice += Integer.parseInt(item.get("price"));
-                %>
+<%	
+	
+	int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+	Connection conn = JDBCUtil.getConnection();
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
+    try {
+        stmt = conn.createStatement();
+        String sql = "SELECT * FROM Cart WHERE memberNum = ?";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, memberNum);
+        rs = pstmt.executeQuery(sql);
+        while (rs.next()){
+        	
+%>
                 <tr>
-                    <td><%= item.get("product") %></td>
-                    <td><%= item.get("price") %> 원</td>
+                    <td><%= title %></td>
+                    <td><%= price %> 원</td>
                 </tr>
-                <%
-                        }
-                    } else {
-                %>
+
                 <tr>
                     <td colspan="2" class="text-center">구매할 상품이 없습니다.</td>
                 </tr>
-                <%
-                    }
-                %>
+  
                 <tr>
                     <td><strong>총 가격</strong></td>
                     <td><%= totalPrice %> 원</td>
@@ -144,5 +146,8 @@
     });
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<%
+		ca
+	%>
 </body>
 </html>

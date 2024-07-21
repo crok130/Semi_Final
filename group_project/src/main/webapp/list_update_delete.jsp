@@ -74,17 +74,16 @@
         header {
         	width: 1200px;
         	border-top: 1px solid gainsboro;
-        	color: black;
         }
         .headermenu {
-        	padding-left: 10px;
+        	padding-left: 100px;
         	margin-top: 20px;
         	font-size: 1.2rem;
         	line-height: 170%;
         }
         a {
         	text-decoration-line: none;
-        	color: #blue;
+        	color: blue;
         }
         ul {
         	list-style:none;
@@ -101,7 +100,7 @@
         }
         /* 가운데 정렬 */
         .con {
-            margin-left: 360px;
+            margin-left: 170px;
         }
         /* 실질적으로 메뉴에 사용할 너비 설정 */
         .top-bar > .con {
@@ -164,46 +163,22 @@
 			padding-right: 10px;
 		}
 		.inform {
-			margin-left: 270px;
-			margin-top: 10px;
+			margin-left: 35px;
+			margin-top: 25px;
 			margin-bottom: 10px;
-			width: 100px;
+			width: 80px;
 			height: 40px;
-			font-size:1.0rem;
-		}
-		.inform1 {
-			width: 100px;
-			height: 40px;
-			margin-left: 100px;
-			font-size:1.0rem;
+			
 		}
 		.m_menu {
 			padding-left: 10px;
 			width: 270px;
 			height: 35px;
-			background-color: #C0C0C0;
 		}
 		.r_menu {
 			padding-left: 10px;
 			width: 400px;
 			height: 35px;
-			background-color: #C0C0C0;
-		}
-		.update_menu {
-			padding-left: 10px;
-			margin-left: 10px;
-			width: 330px;
-			height: 35px;
-			font-size: 1.0rem;
-			color: blue;
-		}
-		.update_menu_not {
-			padding-left: 10px;
-			margin-left: 0px;
-			width: 230px;
-			height: 35px;
-			font-size: 1.0rem;
-			color: blue;
 		}
         /* footer  */
         /* footer  */
@@ -297,122 +272,65 @@
 	    			while (rs.next()) {
 	    		%>
 	    	<div class="book_update">
-	    		<form action="book_update_sql.jsp" method="POST">
 			    <table border="1">
 			        <tr>
-			            <td rowspan="13" style="width:210px;">
-			            	<img src="img/<%=rs.getString("book_fileName")%>" class="bimg" onerror="this.onerror=null; this.src='img/noimages.png';" />
+			            <td rowspan="12" style="width:210px;">
+			            	<img src="img/<%= rs.getString("book_fileName") %>" class="bimg" onerror="this.onerror=null; this.src='img/noimages.png';" />
+							<!-- 수정 -->
+			            	<a href="book_update_form.jsp"><input class="inform" type="button" value="수정하기" /></a>
+		                	<!-- 삭제 -->
+		                	<a href="book_delete.jsp?book_no=<%= rs.getString("book_no") %>">
+		                		<input class="inform" type="button" value="삭제하기" />
+		                	</a>
 			            </td>
 			            <td class="m_menu">제목(title)</td>
-			            <td class="r_menu"><%=rs.getString("title")%></td>
-			           	<td>
-				    		<input type="text" class="update_menu" name="title" value="<%=rs.getString("title")%>" />
-			            </td>
+			            <td class="r_menu"><%= rs.getString("title") %></td>
 			        </tr>
 			        <tr>
-			            <td class="m_menu">책번호(book_no)</td>
-			            <td class="r_menu"><%=rs.getString("book_no")%></td>
-			           	<td class="update_menu">
-			           		<input type="text" class="update_menu_not" name="book_no" value="<%=rs.getString("book_no")%>" readonly />
-			           		<del style="color: red;"><small> 수정불가항목</small></del>
-			            </td>			            
+			            <td class="m_menu">책번호(book_id)</td>
+			            <td class="r_menu"><%= rs.getString("book_id") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">책 고유ID(book_id)</td>
-			            <td class="r_menu"><%=rs.getString("book_id")%></td>
-			           	<td>
-				    		<input type="text" class="update_menu" name="book_id" value="<%=rs.getString("book_id")%>" />
-			            </td>
+			            <td class="r_menu"><%= rs.getString("book_id") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">저자(author)</td>
-			            <td class="r_menu"><%=rs.getString("author")%></td>
-			           	<td>
-				    		<input type="text" class="update_menu" name="author" value="<%=rs.getString("author")%>" />
-			            </td>			        
+			            <td class="r_menu"><%= rs.getString("author") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">출판사(publisher)</td>
-			            <td class="r_menu"><%=rs.getString("publisher")%></td>
-			           	<td>
-				    		<input type="text" class="update_menu" name="publisher" value="<%=rs.getString("publisher")%>" />
-			            </td>			        
+			            <td class="r_menu"><%= rs.getString("publisher") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">가격(price)</td>
-			            <td class="r_menu"><%=rs.getString("price")%> 원</td>
-			        	<td>
-				    		<input type="text" class="update_menu" name="price" value="<%=rs.getString("price")%>" />
-			            </td>
+			            <td class="r_menu"><%= rs.getString("price") %> 원</td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">재고수량(stock)</td>
-			            <td class="r_menu"><%=rs.getString("stock")%> 개</td>
-			           	<td>
-				    		<input type="text" class="update_menu" name="stock" value="<%=rs.getString("stock")%>" />
-			            </td>			        
+			            <td class="r_menu"><%= rs.getString("stock") %> 개</td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">최초 등록한 날짜(insert_day)</td>
-			            <td class="r_menu"><%=rs.getString("insert_day")%></td>
-			           	<td class="update_menu">
-			           		<input type="text" class="update_menu_not" name="insert_day" value="<%=rs.getString("insert_day")%>" readonly />
-			           		<del style="color: red;"><small> 수정불가항목</small></del>
-			            </td>			        
+			            <td class="r_menu"><%= rs.getString("insert_day") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">간략 소개(book_memo)</td>
-			            <td class="r_menu"><%=rs.getString("book_memo")%></td>
-			           	<td>
-				    		<input type="text" class="update_menu" name="book_memo" value="<%=rs.getString("book_memo")%>" />
-			            </td>			        
+			            <td class="r_menu"><%= rs.getString("book_memo") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">연령(category_age)</td>
-			            <td class="r_menu"><%=rs.getString("category_age")%></td>
-			           	<td>
-				           	<datalist id="age_list" >
-	                            <option value="10대"></option>
-	                            <option value="20대"></option>
-	                            <option value="30대"></option>
-	                            <option value="40대"></option>
-	                            <option value="50대"></option>
-	                            <option value="60대 이상"></option>
-	                        </datalist>
-	                        <input class="update_menu" list="age_list" name="category_age" autocomplete="off" placeholder="<%= rs.getString("category_age")%>" />
-			            </td>			        
+			            <td class="r_menu"><%= rs.getString("category_age") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">국내/해외(category_overseas)</td>
-			            <td class="r_menu"><%=rs.getString("category_overseas")%></td>
-			           	<td>
-	                        <datalist id="overseas_list" >
-	                            <option value="국내"></option>
-	                            <option value="해외"></option>
-	                        </datalist>
-	                        <input class="update_menu" list="overseas_list" name="category_overseas" autocomplete="off" placeholder="<%=rs.getString("category_overseas")%>" />			           	
-			            </td>			        
+			            <td class="r_menu"><%= rs.getString("category_overseas") %></td>
 			        </tr>
 			        <tr>
 			            <td class="m_menu">책이미지파일이름(book_fileName)</td>
-			            <td class="r_menu"><%=rs.getString("book_fileName") %></td>
-			           	<td>
-				    		<input type="text" class="update_menu" name="book_fileName" value="<%=rs.getString("book_fileName")%>" />
-			            </td>			        
-			        </tr>
-			        <tr>
-			        	<td colspan="3">
-			        		<!-- 수정 -->
-			            	<!-- <a href="book_update_sql.jsp"> -->
-			            	<input class="inform" type="submit" value="수정하기" />
-			            	<!-- </a> -->
-		                	<!-- 삭제 -->
-		                	<a href="book_delete.jsp?book_no=<%=rs.getString("book_no")%>">
-		                	<input class="inform1" type="button" value="삭제하기" /></a>
-			        	</td>
+			            <td class="r_menu"><%= rs.getString("book_fileName") %></td>
 			        </tr>
 			    </table>
-			    </form>
 		    </div>
 	    		<%
 	    			}
@@ -426,6 +344,8 @@
 	</div>
 </body>
 </html>
+
+
 
 
 

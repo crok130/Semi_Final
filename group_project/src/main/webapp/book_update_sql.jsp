@@ -1,24 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, utils.JDBCUtil" %>
-<%@ include file="dbconn.jsp" %>
 <% 
-	// SQL 사용해 DB에 상품 등록하기 
-	// inserForm.jsp 에서 전달된 파라미터 값들	
-	String book_id = request.getParameter("book_id");
+	// book_update_form.jsp 에서 전달된 파라미터 값들	
+	int book_id = Integer.parseInt(request.getParameter("book_id"));
 	String title = request.getParameter("title");
 	String author = request.getParameter("author");
 	String publisher = request.getParameter("publisher");
-	String price = request.getParameter("price");
-	String stock = request.getParameter("stock");
-	String book_memo = request.getParameter("book_memo");
-	String category_age = request.getParameter("category_age");
-	String category_overseas = request.getParameter("category_overseas");
-	String book_fileName = request.getParameter("book_fileName");
-	
+	int price = Integer.parseInt(request.getParameter("price"));
+	int stock = Integer.parseInt(request.getParameter("stock"));	
+	String description = request.getParameter("description");
+	String category = request.getParameter("category");
+	String image_path = request.getParameter("image_path");
+
 	// String >>> int 변환
-	int price_int = Integer.parseInt(price);
-	int stock_int = Integer.parseInt(stock);
 	
 	// 전달된 파라미터 일치확인위해 전달된 데이터베이스의 정보를 가져온다.
 	Connection conn = JDBCUtil.getConnection();
@@ -32,31 +27,33 @@
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		conn = DriverManager.getConnection(
 			"jdbc:mysql://localhost:3306/baskin",	// 연결할 db server schema
-			"digital",									// 권한있는 계정 id
+			"root",									// 권한있는 계정 id
 			"1234"										// 비밀번호				
 		);
 		// 쿼리 실행 시 쿼리 실행에 필요한 데이터를 삽입
-		String sql = "INSERT INTO books (book_id,title,author,publisher,price,stock,book_memo,category_age,category_overseas,book_fileName) VALUES (?,?,?,?,?,?,?,?,?,?)";
+		String sql = "UPDATE books SET title = ?, author = ?, publisher = ?, price = ?, stock = ?, description = ?, category = ?, image_path = ? WHERE book_id = ? ";   
 
 		// 쿼리문 등록시켜주고 pstmt로 가지고와서..
 		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, book_id);
-		pstmt.setString(2, title);
-		pstmt.setString(3, author);
-		pstmt.setString(4, publisher);
-		pstmt.setInt(5, price_int);
-		pstmt.setInt(6, stock_int);
-		pstmt.setString(7, book_memo);
-		pstmt.setString(8, category_age);
-		pstmt.setString(9, category_overseas);
-		pstmt.setString(10, book_fileName);
-		pstmt.executeUpdate();
+		pstmt.setString(1, title);
+		pstmt.setString(2, author);
+		pstmt.setString(3, publisher);
+		pstmt.setInt(4, price);
+		pstmt.setInt(5, stock);
+		pstmt.setString(6, description);
+		pstmt.setString(7, category);
+		pstmt.setString(8, image_path);
+		pstmt.setInt(9, book_id);
+		// ?? 
+		int result = pstmt.executeUpdate();
 %>
 		<script>
-		alert('재고 등록울 완료했습니다.'); 
-		location.href='insert_form.jsp';
+		alert('재고 수정 업데이트를 완료했습니다.'); 
+		location.href='book_update_form.jsp';
 		</script>
 <%
+		out.println("");
+
 	}catch(ClassNotFoundException e){
 		out.println("Driver class를 찾을 수 없음<br/>");
 	}catch(SQLException e){
@@ -65,4 +62,14 @@
 		if(pstmt != null) pstmt.close();
 		if(conn != null) conn.close();
 	}
-%>
+%>	
+
+
+
+
+
+
+
+
+
+

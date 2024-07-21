@@ -237,6 +237,11 @@
             padding-top: 5px;
             font-size: 0.9rem;
         }
+        .bcategory{
+            padding-left: 15px;
+            padding-top: 5px;
+            font-size: 0.9rem;
+        }
         .bpublisher {
             padding-left: 15px;
             font-size: 0.9rem;
@@ -274,9 +279,9 @@
 <body>
     <div class="wrap">
         <ul class="mlogo">
-            <a href=""><img class="logo" src="../img/31.png" title="31"/></a>
+            <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
             <a href=""><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
-            <a href=""><img class="logo" src="../img/31.png" title="31"/></a>
+            <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
         </ul>
         <header>
             <nav>
@@ -341,14 +346,14 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#">연령별</a>
+                        <a href="#">카테고리</a>
                         <ul>
-                            <li><a href="#">10대</a></li>
-                            <li><a href="#">20대</a></li>
-                            <li><a href="#">30대</a></li>
-                            <li><a href="#">40대</a></li>
-                            <li><a href="#">50대</a></li>
-                            <li><a href="#">60대 이상</a></li>
+                            <li><a href="#">소설</a></li>
+                            <li><a href="#">문학</a></li>
+                            <li><a href="#">교육</a></li>
+                            <li><a href="#">에세이</a></li>
+                            <li><a href="#">판타지</a></li>
+                            <li><a href="#">만화</a></li>
                         </ul>
                     </li>
                     <li>
@@ -392,29 +397,33 @@
                 ResultSet rs = null;
 
                 try {
-                    Class.forName("com.mysql.jdbc.Driver");
+                    Class.forName("com.mysql.cj.jdbc.Driver");
                     conn = DriverManager.getConnection(url, user, password);
                     stmt = conn.createStatement();
                     String sql = "SELECT * FROM Books WHERE status = '신책'";
                     rs = stmt.executeQuery(sql);
 
                     while (rs.next()) {
+                    	int book_id = rs.getInt("book_id");
                         String title = rs.getString("title");
                         String author = rs.getString("author");
                         String publisher = rs.getString("publisher");
+                        String category = rs.getString("category");
                         int price = rs.getInt("price");
                         String imagePath = rs.getString("image_path");
             %>
+            		
                         <div class="book">
-                            <img src="<%= imagePath %>" alt="Book Image" class="bimg">
-                            <div class="btitle"><%= title %></div>
-                            <div class="bauthor"><%= author %></div>
-                            <div class="bpublisher"><%= publisher %></div>
-                            <div class="bprice"><%= price %> 원</div>
-                            <div class="bstarscore"></div>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><img src="<%= imagePath %>" alt="Book Image" class="bimg"></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="btitle"><%= title %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bauthor">저자 : <%= author %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bpublisher">출판사 :<%= publisher %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bcategory">카테고리 : <%= category %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bprice"><%= price %> 원</div>
                         </div>
+                  	
             <%
-                    }
+         	}
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -431,11 +440,3 @@
     </div>
 </body>
 </html>
-
-
-
-
-
-
-
-

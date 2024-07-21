@@ -3,7 +3,7 @@
 <%@ page import="java.sql.*, utils.JDBCUtil" %>
 <%
 	// 전달될 파라미터가있다.
-	String paramBookNo = request.getParameter("book_no");
+	String paramBookNo = request.getParameter("book_id");
 	
 	// 전달된 파라미터 일치확인위해 전달된 데이터베이스의 정보를 가져온다.
 	Connection conn = JDBCUtil.getConnection();
@@ -12,7 +12,7 @@
 	try{
 		int bookId = Integer.parseInt(paramBookNo);
 		// 둘다 일치해야 삭제하는 쿼리문
-		String sql = "DELETE FROM books WHERE book_no = ? ";
+		String sql = "DELETE FROM books WHERE book_id = ? ";
 
 		pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, bookId);
@@ -22,7 +22,7 @@
 		// 페이지 이동
 		out.println("<script>");
 		out.println("alert('삭제 완료 했습니다.');");
-		out.println("location.href='list_update_delete.jsp';");
+		out.println("location.href='book_update_form.jsp';");
 		out.println("</script>");
 	
 	}catch(Exception e){

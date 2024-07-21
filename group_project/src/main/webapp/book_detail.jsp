@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, utils.JDBCUtil" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -344,13 +346,15 @@
             border-top: 1px solid gainsboro;
         }
 </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="wrap">
         <ul class="mlogo">
-            <a href=""><img class="logo" src="../img/31.png" title="31"/></a>
+            <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
             <a href=""><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
-            <a href=""><img class="logo" src="../img/31.png" title="31"/></a>
+            <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
         </ul>
         <header>
             <nav>
@@ -415,14 +419,14 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#">연령별</a>
+                        <a href="#">카테고리</a>
                         <ul>
-                            <li><a href="#">10대</a></li>
-                            <li><a href="#">20대</a></li>
-                            <li><a href="#">30대</a></li>
-                            <li><a href="#">40대</a></li>
-                            <li><a href="#">50대</a></li>
-                            <li><a href="#">60대 이상</a></li>
+                            <li><a href="#">소설</a></li>
+                            <li><a href="#">문학</a></li>
+                            <li><a href="#">교육</a></li>
+                            <li><a href="#">에세이</a></li>
+                            <li><a href="#">판타지</a></li>
+                            <li><a href="#">만화</a></li>
                         </ul>
                     </li>
                     <li>
@@ -454,47 +458,117 @@
                 </ul>
             </nav>
         </aside>        
-        <section id="section">
-            <div class="book">
-                <a href=""><img class="bimg" src="../img/java.png" title="제목"/></a>
-                <a href=""><input class="inform" type="button" value="재고 입고시 알림 신청" /></a>
-                <a href=""><input class="inform" type="button" value="e-Book 출간 알림 신청" /></a>
-            </div> 
-            <div class="book2">
-                <a href=""><div class="btitle">Java의 정석</div></a>
-                <a href=""><div class="bauthor">남궁성 저</div></a>
-                <a href=""><div class="bpublisher">도우출판</div></a>
-                <a href=""><div class="bprice">20,000원</div></a>
-                <a href=""><div class="bstarscore">9.6점(174건)</div></a>
-                <a href=""><img class="star12345" src="../img/star4.png"/></a>
-            </div> 
-            <div class="book3">
-                <div class="stock">판매중</div>
-                <div class="count-wrap_count">
-                    수량 
-                    <button type="button" class="minus">-</button>
-                    <input type="text" class="inp" value="1" />
-                    <button type="button" class="plus">+</button>
-                </div>
-                <a href="구매페이지이동"><input class="salebutton" type="button" value="바로구매" /></a>
-                <a href="장바구니이동"><input class="salebutton2" type="button" value="장바구니" /></a>
-                <div class="saleinfor"> - 해외배송 가능</div>
-                <div class="saleinfor"> - 최저가 보상</div>
-                <div class="saleinfor"> - 동백전 사용가능</div>
-            </div> 
-        </section>
-        <footer>
+	<section id="section">
+        <% 
+            // 데이터베이스 연결 설정 및 책 정보 가져오기
+            Connection conn = JDBCUtil.getConnection();
+            Statement stmt = null;
+            ResultSet rs = null;
+            int book_id = Integer.parseInt(request.getParameter("book_id"));
+            int memberNum = 1; // 예시로 사용자가 로그인되어 있다고 가정, 실제로는 세션이나 쿠키에서 가져옴
+            try {
+                stmt = conn.createStatement();
+                String sql = "SELECT * FROM Books WHERE book_id =" + book_id;
+                rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    String title = rs.getString("title");
+                    String author = rs.getString("author");
+                    String publisher = rs.getString("publisher");
+                    String category = rs.getString("category");
+                    int price = rs.getInt("price");
+                    String imagePath = rs.getString("image_path");
+        %>
+        <div class="book">
+            <img class="bimg" src="<%= imagePath %>" title="제목"/>
+            <input class="inform" type="button" value="재고 입고시 알림 신청" />
+            <input class="inform" type="button" value="e-Book 출간 알림 신청" />
+        </div> 
+        <div class="book2">
+            <div class="btitle"><%= title %></div>
+            <div class="bauthor">저자 <%= author %></div>
+            <div class="bpublisher"><%= publisher %></div>
+            <div class="bprice"><%= price %>원</div>
+            <img class="star12345" src="./img/star4.png"/>
+        </div> 
+        <div class="book3">
+            <div class="stock">판매중</div>
+            <div class="count-wrap_count">
+                수량 
+                <button type="button" class="minus">-</button>
+                <input type="text" class="inp" value="1" />
+                <button type="button" class="plus">+</button>
+            </div>
+            <form action="buy/payment.jsp" method="POST">
+                <input type="hidden" name="memberNum" value="<%= memberNum %>">
+                <input type="hidden" name="book_id" value="<%= book_id %>">
+                <input type="hidden" class="quantity" name="quantity" value="1">
+                <a href="buy/payment.jsp"><input class="salebutton" type="button" value="바로구매" /></a>
+				<button type="button" class="salebutton2" onclick="addToCart('<%= memberNum %>', '<%= book_id %>', $('.quantity').val(), '<%= title %>', '<%= price %>')">장바구니</button>
+            </form>
+            <div class="saleinfor"> - 해외배송 가능</div>
+            <div class="saleinfor"> - 최저가 보상</div>
+            <div class="saleinfor"> - 동백전 사용가능</div>
+        </div>
+ 	</section>
+   		<footer>
             <p>Copyright © 베스킨라빈스31.2 Corp. All Rights Reserved.</p>
             <p>고객센터 0000-0000 (유료) 365일 09:00 ~ 18:00 </p>
         </footer>        
     </div>
+    <script>
+    let memberNum = '<%= memberNum %>';
+    let book_id = '<%= book_id %>';
+    let title = '<%= title %>';
+    let price = '<%= price %>';
+    function addToCart(memberNum, book_id, quantity, title, price) {
+        $.post('buy/add_to_cart.jsp', { memberNum: memberNum, book_id: book_id, quantity: quantity, title: title, price: price }, function(data) {
+            if (data.trim() === "success") {
+                var totalPrice = price * quantity;
+                Swal.fire({
+                    icon: 'success',
+                    title: '장바구니에 추가되었습니다!',
+                    text: title + " " + quantity + "개, 총 " + totalPrice + "원에 장바구니에 추가되었습니다!",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: '장바구니 추가 실패!',
+                    text: '다시 시도해주세요.',
+                    showConfirmButton: true
+                });
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('.plus').click(function() {
+            var input = $(this).siblings('.inp');
+            var currentValue = parseInt(input.val());
+            input.val(currentValue + 1);
+            $('.quantity').val(currentValue + 1);
+        });
+
+        $('.minus').click(function() {
+            var input = $(this).siblings('.inp');
+            var currentValue = parseInt(input.val());
+            if (currentValue > 1) {
+                input.val(currentValue - 1);
+                $('.quantity').val(currentValue - 1);
+            }
+        });
+    });
+    
+    </script>
+         <% 
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            }
+        %>
 </body>
 </html>
-
-
-
-
-
-
-
-
