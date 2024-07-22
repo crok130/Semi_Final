@@ -22,25 +22,34 @@
             </thead>
             <tbody>
 <%	
-	
 	int memberNum = Integer.parseInt(request.getParameter("memberNum"));
 	Connection conn = JDBCUtil.getConnection();
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
+	int totalPrice = 0;
     try {
-        stmt = conn.createStatement();
-        String sql = "SELECT * FROM Cart WHERE memberNum = ?";
+        String sql = "SELECT Cart.*, Books.title FROM Cart JOIN Books ON Cart.book_id = Books.book_id WHERE Cart.memberNum = ?";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, memberNum);
-        rs = pstmt.executeQuery(sql);
+        pstmt.setInt(1, memberNum);
+        rs = pstmt.executeQuery();
         while (rs.next()){
-        	
+        	int price = rs.getInt("price");
+        	String title = rs.getString("title");
+        	int quantity = rs.getInt("quantity");
+        	totalPrice = price * quantity;
 %>
                 <tr>
                     <td><%= title %></td>
                     <td><%= price %> 원</td>
                 </tr>
-
+    	<%
+        	}
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			    } finally {
+			    	JDBCUtil.close(pstmt, conn);
+			    }
+		%>
                 <tr>
                     <td colspan="2" class="text-center">구매할 상품이 없습니다.</td>
                 </tr>
@@ -53,7 +62,6 @@
         </table>
         <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#paymentModal">결제</button>
     </div>
-
     <!-- 결제 모달 -->
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -146,8 +154,6 @@
     });
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<%
-		ca
-	%>
+
 </body>
 </html>

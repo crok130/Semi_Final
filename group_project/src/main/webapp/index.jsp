@@ -419,7 +419,7 @@
                             <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bauthor">저자 : <%= author %></div></a>
                             <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bpublisher">출판사 :<%= publisher %></div></a>
                             <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bcategory">카테고리 : <%= category %></div></a>
-                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bprice"><%= price %> 원</div>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bprice"><%= price %> 원</div></a>
                         </div>
                   	
             <%

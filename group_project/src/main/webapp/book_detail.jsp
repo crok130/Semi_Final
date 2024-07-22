@@ -498,13 +498,9 @@
                 <input type="text" class="inp" value="1" />
                 <button type="button" class="plus">+</button>
             </div>
-            <form action="buy/payment.jsp" method="POST">
-                <input type="hidden" name="memberNum" value="<%= memberNum %>">
-                <input type="hidden" name="book_id" value="<%= book_id %>">
                 <input type="hidden" class="quantity" name="quantity" value="1">
-                <a href="buy/payment.jsp"><input class="salebutton" type="button" value="바로구매" /></a>
+                <button type="button" class="salebutton" onclick="buyNow('<%= memberNum %>')">바로구매</button>
 				<button type="button" class="salebutton2" onclick="addToCart('<%= memberNum %>', '<%= book_id %>', $('.quantity').val(), '<%= title %>', '<%= price %>')">장바구니</button>
-            </form>
             <div class="saleinfor"> - 해외배송 가능</div>
             <div class="saleinfor"> - 최저가 보상</div>
             <div class="saleinfor"> - 동백전 사용가능</div>
@@ -520,6 +516,13 @@
     let book_id = '<%= book_id %>';
     let title = '<%= title %>';
     let price = '<%= price %>';
+    
+    function buyNow(memberNum) {
+        $.post('buy/payment.jsp', { memberNum: memberNum }, function(data) {
+            window.location.href = 'buy/payment.jsp?memberNum=' + memberNum;
+        });
+    }
+    
     function addToCart(memberNum, book_id, quantity, title, price) {
         $.post('buy/add_to_cart.jsp', { memberNum: memberNum, book_id: book_id, quantity: quantity, title: title, price: price }, function(data) {
             if (data.trim() === "success") {
@@ -559,6 +562,7 @@
             }
         });
     });
+    
     
     </script>
          <% 
