@@ -29,7 +29,7 @@ public class MemberDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-        	DBUtil.close(conn, pstmt);
+        	DBUtil.close(conn, pstmt, null);
         }
     }
 	
@@ -118,7 +118,7 @@ public class MemberDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-        	DBUtil.close(conn, pstmt);
+        	DBUtil.close(conn, pstmt, null);
         }
     }
     
@@ -138,14 +138,14 @@ public class MemberDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-        	DBUtil.close(conn, pstmt);
+        	DBUtil.close(conn, pstmt, null);
         }
         return false;
     }
     
     // 전체 회원 수 조회
     public int getTotalMemberCount() {
-    	String sql = "SELECT * FROM member";
+    	String sql = "SELECT (*) FROM member WHERE memberWithdraw = 'n'";
     	
     	Connection conn = null;
         PreparedStatement pstmt = null;

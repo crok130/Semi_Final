@@ -15,7 +15,6 @@ public class ChangePwServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("userId");
-        String userPw = (String) session.getAttribute("userPw");
         
         if(userId == null) {
         	response.sendRedirect("member/login.jsp");

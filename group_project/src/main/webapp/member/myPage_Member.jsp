@@ -138,7 +138,7 @@
                 </tr>
                 <%
 					}
-					DBUtil.close(rs, pstmt, conn);
+					DBUtil.close(conn, pstmt, rs);
                 %>
             </table>
             <br />

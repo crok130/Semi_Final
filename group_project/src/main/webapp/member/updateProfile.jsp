@@ -50,6 +50,6 @@
 	} catch (SQLException e) {
 		e.printStackTrace();
 	} finally {
-		DBUtil.close(pstmt, conn);
+		DBUtil.close(conn, pstmt, null);
 	}
 %>
