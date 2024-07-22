@@ -140,7 +140,7 @@
 			</div>
 		</header>
      <section>
-       <form action="../upload" method="POST" enctype="multipart/form-data">
+       <form action="./upload" method="POST" enctype="multipart/form-data">
             <table border="1" class="inserttable">
                 <tr>
                     <td class="inbox_2">title (책이름)</td>

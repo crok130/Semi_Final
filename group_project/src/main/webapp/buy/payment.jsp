@@ -36,7 +36,7 @@
         	int price = rs.getInt("price");
         	String title = rs.getString("title");
         	int quantity = rs.getInt("quantity");
-        	totalPrice = price * quantity;
+        	totalPrice += price;
 %>
                 <tr>
                     <td><%= title %></td>
@@ -62,7 +62,7 @@
         </table>
         <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#paymentModal">결제</button>
     </div>
-    <!-- 결제 모달 -->
+   <!-- 결제 모달 -->
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
