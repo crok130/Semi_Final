@@ -1,4 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="s" %>
+
+<s:query var="result" dataSource="jdbc/MySQLDB">
+	SELECT * FROM book_requests ORDER BY request_id DESC
+</s:query>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +17,7 @@
 <body>
     <header>
         <h1>도서 신청 목록</h1>
-        <form action="#" method="get" class="search-form">
+        <form action="requestBook/reBookSearch.jsp" method="get" class="search-form">
             <input type="text" name="search" placeholder="도서 검색">
             <button type="submit">검색</button>
         </form>
@@ -38,24 +46,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>도서 제목 1</td>
-                        <td>저자 1</td>
-                        <td>출판사 1</td>
-                        <td>2023</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>도서 제목 2</td>
-                        <td>저자 2</td>
-                        <td>출판사 2</td>
-                        <td>2022</td>
-                    </tr>
-                    <!-- 추가 도서 항목 -->
+                   <c:choose>
+                   	<c:when test="${result.rowCount > 0}">
+                   		<c:forEach var="b" items="${result.rows}">
+                   			<tr>
+                   				<td>${b.request_id}</td>
+                   				<td>${b.title}</td>
+                   				<td>${b.author}</td>
+                   				<td>${b.publisher}</td>
+                   				<td>${b.year}</td>
+                   				<td type="hidden" vaue="${b.status}"></td>
+                   			</tr>
+                   		</c:forEach>
+                   	</c:when>
+                   	<c:otherwise>
+                   		<tr>
+                   			<td colspan="5">등록된 정보가 없습니다.</td>
+                   		</tr>
+                   	</c:otherwise>
+                   </c:choose>
                 </tbody>
             </table>
-            <a href="requestBook/BookRequest.html"><button class="request-button bottom">도서 신청</button></a>
+            <a href="requestBook/BookRequest.jsp"><button class="request-button bottom">도서 신청</button></a>
         </main>
     </div>
     

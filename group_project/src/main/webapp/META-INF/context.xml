@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource 
+		name="jdbc/MySQLDB" 
+		type="javax.sql.DataSource" 
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://10.100.205.92:3306/baskin"
+		username="man"
+		password="1234"
+		initialSize="10"
+		minIdle="10"
+		maxActive="100"
+		maxWait="600000"/>
+	
+</Context>
