@@ -18,6 +18,9 @@
                 <tr>
                     <th>상품명</th>
                     <th>가격</th>
+                    <th>수량</th>
+                    <th>합계</th>
+                    <th>작업</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,33 +39,37 @@
         	int price = rs.getInt("price");
         	String title = rs.getString("title");
         	int quantity = rs.getInt("quantity");
-        	totalPrice += price;
+        	int book_id = rs.getInt("book_id");
+        	int totalItemPrice = price * quantity;
+        	totalPrice += totalItemPrice;
 %>
                 <tr>
                     <td><%= title %></td>
                     <td><%= price %> 원</td>
+                    <td><%= quantity %></td>
+                    <td><%= totalItemPrice %> 원</td>
+                    <td>
+                        <a href="removepay.jsp?book_id=<%= book_id %>&memberNum=<%= memberNum %>" class="btn btn-danger">삭제</a>
+                    </td>
                 </tr>
     	<%
         	}
 			    } catch (Exception e) {
 			        e.printStackTrace();
 			    } finally {
-			    	JDBCUtil.close(pstmt, conn);
+			    	JDBCUtil.close(rs, pstmt, conn);
 			    }
 		%>
                 <tr>
-                    <td colspan="2" class="text-center">구매할 상품이 없습니다.</td>
-                </tr>
-  
-                <tr>
-                    <td><strong>총 가격</strong></td>
-                    <td><%= totalPrice %> 원</td>
+                    <td colspan="3"><strong>총 가격</strong></td>
+                    <td colspan="2"><%= totalPrice %> 원</td>
                 </tr>
             </tbody>
         </table>
         <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#paymentModal">결제</button>
     </div>
-   <!-- 결제 모달 -->
+
+    <!-- 결제 모달 -->
     <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -134,7 +141,8 @@
                     apply_num: rsp.apply_num,
                     buyer_name: buyer_name,
                     buyer_tel: buyer_tel,
-                    buyer_addr: buyer_addr
+                    buyer_addr: buyer_addr,
+                    totalPrice: totalPrice
                 }, function(data) {
                     alert('결제가 완료되었습니다.');
                     window.location.href = 'complete_purchase.jsp';
@@ -154,6 +162,5 @@
     });
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 </html>

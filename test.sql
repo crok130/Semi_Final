@@ -1,6 +1,10 @@
 CREATE SCHEMA baskin;
 USE baskin;
-select * from member;
+
+
+SELECT * FROM books;
+
+
 CREATE TABLE member (
     memberNum INT PRIMARY KEY AUTO_INCREMENT,
     memberId VARCHAR(50) NOT NULL UNIQUE,
@@ -28,15 +32,8 @@ CREATE TABLE Books (
     status ENUM('신책', '중고책') NOT NULL,
 	FOREIGN KEY (seller_id) REFERENCES member(memberNum) ON DELETE SET NULL
 );
+SELECT * FROM cart;
 
-CREATE TABLE CompanyBoard (
-    titleNum INT PRIMARY KEY AUTO_INCREMENT,
-    book_id INT NOT NULL, -- 외래키
-    title VARCHAR(250),
-    available INT NOT NULL,
-    content TEXT,
-    FOREIGN KEY (book_id) REFERENCES Books(book_id)
-);
 
 CREATE TABLE Cart (
     cart_id INT PRIMARY KEY AUTO_INCREMENT, -- 고유 식별자

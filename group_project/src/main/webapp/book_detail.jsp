@@ -459,81 +459,101 @@
             </nav>
         </aside>        
 	<section id="section">
-        <% 
-            // 데이터베이스 연결 설정 및 책 정보 가져오기
-            Connection conn = JDBCUtil.getConnection();
-            Statement stmt = null;
-            ResultSet rs = null;
-            int book_id = Integer.parseInt(request.getParameter("book_id"));
-            int memberNum = 1; // 예시로 사용자가 로그인되어 있다고 가정, 실제로는 세션이나 쿠키에서 가져옴
-            try {
-                stmt = conn.createStatement();
-                String sql = "SELECT * FROM Books WHERE book_id =" + book_id;
-                rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    String title = rs.getString("title");
-                    String author = rs.getString("author");
-                    String publisher = rs.getString("publisher");
-                    String category = rs.getString("category");
-                    int price = rs.getInt("price");
-                    String imagePath = rs.getString("image_path");
-        %>
-        <div class="book">
-            <img class="bimg" src="<%= imagePath %>" title="제목"/>
-            <input class="inform" type="button" value="재고 입고시 알림 신청" />
-            <input class="inform" type="button" value="e-Book 출간 알림 신청" />
-        </div> 
-        <div class="book2">
-            <div class="btitle"><%= title %></div>
-            <div class="bauthor">저자 <%= author %></div>
-            <div class="bpublisher"><%= publisher %></div>
-            <div class="bprice"><%= price %>원</div>
-            <img class="star12345" src="./img/star4.png"/>
-        </div> 
-        <div class="book3">
-            <div class="stock">판매중</div>
-            <div class="count-wrap_count">
-                수량 
-                <button type="button" class="minus">-</button>
-                <input type="text" class="inp" value="1" />
-                <button type="button" class="plus">+</button>
-            </div>
+            <% 
+                // 데이터베이스 연결 설정 및 책 정보 가져오기
+                Connection conn = JDBCUtil.getConnection();
+                Statement stmt = null;
+                ResultSet rs = null;
+                int book_id = Integer.parseInt(request.getParameter("book_id"));
+                int memberNum = 1; // 예시로 사용자가 로그인되어 있다고 가정, 실제로는 세션이나 쿠키에서 가져옴
+                int stock = 0; // 책의 재고량 변수
+                try {
+                    stmt = conn.createStatement();
+                    String sql = "SELECT * FROM Books WHERE book_id =" + book_id;
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
+                        String title = rs.getString("title");
+                        String author = rs.getString("author");
+                        String publisher = rs.getString("publisher");
+                        int price = rs.getInt("price");
+                        String imagePath = rs.getString("image_path");
+                        stock = rs.getInt("stock"); // 책의 재고량 가져오기
+            %>
+            <div class="book">
+                <img class="bimg" src="<%= imagePath %>" title="제목"/>
+                <input class="inform" type="button" value="재고 입고시 알림 신청" />
+                <input class="inform" type="button" value="e-Book 출간 알림 신청" />
+            </div> 
+            <div class="book2">
+                <div class="btitle"><%= title %></div>
+                <div class="bauthor">저자 <%= author %></div>
+                <div class="bpublisher"><%= publisher %></div>
+                <div class="bprice"><%= price %>원</div>
+                <img class="star12345" src="./img/star4.png"/>
+            </div> 
+            <div class="book3">
+                <div class="stock">판매중</div>
+                <div class="count-wrap_count">
+                    수량 
+                    <button type="button" class="minus">-</button>
+                    <input type="text" class="inp" value="1" />
+                    <button type="button" class="plus">+</button>
+                </div>
                 <input type="hidden" class="quantity" name="quantity" value="1">
-                <button type="button" class="salebutton" onclick="buyNow('<%= memberNum %>')">바로구매</button>
-				<button type="button" class="salebutton2" onclick="addToCart('<%= memberNum %>', '<%= book_id %>', $('.quantity').val(), '<%= title %>', '<%= price %>')">장바구니</button>
-            <div class="saleinfor"> - 해외배송 가능</div>
-            <div class="saleinfor"> - 최저가 보상</div>
-            <div class="saleinfor"> - 동백전 사용가능</div>
-        </div>
- 	</section>
-   		<footer>
+                <input type="hidden" id="stock" value="<%= stock %>"> <!-- 재고량을 hidden input으로 설정 -->
+                <button type="button" class="salebutton" onclick="buyNow('<%= memberNum %>', '<%= book_id %>', '<%= title %>', '<%= price %>')">바로구매</button>
+                <button type="button" class="salebutton2" onclick="addToCart('<%= memberNum %>', '<%= book_id %>', $('.quantity').val(), '<%= title %>', '<%= price %>')">장바구니</button>
+                <div class="saleinfor"> - 해외배송 가능</div>
+                <div class="saleinfor"> - 최저가 보상</div>
+                <div class="saleinfor"> - 동백전 사용가능</div>
+            </div>
+            <% 
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (stmt != null) stmt.close();
+                    if (conn != null) conn.close();
+                }
+            %>
+        </section>
+        <footer>
             <p>Copyright © 베스킨라빈스31.2 Corp. All Rights Reserved.</p>
             <p>고객센터 0000-0000 (유료) 365일 09:00 ~ 18:00 </p>
-        </footer>        
+        </footer>
     </div>
     <script>
-    let memberNum = '<%= memberNum %>';
-    let book_id = '<%= book_id %>';
-    let title = '<%= title %>';
-    let price = '<%= price %>';
-    
-    function buyNow(memberNum) {
-        $.post('buy/payment.jsp', { memberNum: memberNum }, function(data) {
-            window.location.href = 'buy/payment.jsp?memberNum=' + memberNum;
-        });
+    function buyNow(memberNum, book_id, title, price) {
+        var quantity = $('.quantity').val();
+        addToCart(memberNum, book_id, quantity, title, price, true);
     }
     
-    function addToCart(memberNum, book_id, quantity, title, price) {
+    function addToCart(memberNum, book_id, quantity, title, price, isBuyNow = false) {
+        var stock = parseInt($('#stock').val());
+        if (quantity > stock) {
+            Swal.fire({
+                icon: 'error',
+                title: '재고 부족!',
+                text: '선택하신 수량이 재고량을 초과하였습니다. 현재 재고: ' + stock,
+                showConfirmButton: true
+            });
+            return;
+        }
+
         $.post('buy/add_to_cart.jsp', { memberNum: memberNum, book_id: book_id, quantity: quantity, title: title, price: price }, function(data) {
             if (data.trim() === "success") {
-                var totalPrice = price * quantity;
-                Swal.fire({
-                    icon: 'success',
-                    title: '장바구니에 추가되었습니다!',
-                    text: title + " " + quantity + "개, 총 " + totalPrice + "원에 장바구니에 추가되었습니다!",
-                    showConfirmButton: false,
-                    timer: 2000
-                });
+                if (isBuyNow) {
+                    window.location.href = 'buy/payment.jsp?memberNum=' + memberNum;
+                } else {
+                    var totalPrice = price * quantity;
+                    Swal.fire({
+                        icon: 'success',
+                        title: '장바구니에 추가되었습니다!',
+                        text: title + " " + quantity + "개, 총 " + totalPrice + "원에 장바구니에 추가되었습니다!",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -562,17 +582,6 @@
             }
         });
     });
-    
-    
     </script>
-         <% 
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            }
-        %>
 </body>
 </html>
