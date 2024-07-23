@@ -19,7 +19,7 @@
     <div class="container">
         <div class="content">
             <h2>신규 도서 신청</h2>
-            <form action="adminBodSubmit.jsp" method="post">
+            <form action="adminUpdateSubmit.jsp" method="post">
                 <input type="hidden" name="request_id" value="${param.request_id}" />
                 <table>
                     <tr>
