@@ -3,14 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="s" %>
 
-<%
-    // 로그인 여부 확인
-    String userId = (String) session.getAttribute("userId");
-%>
-
 <s:query var="result" dataSource="jdbc/MySQLDB">
 	SELECT * FROM book_requests ORDER BY request_id DESC
 </s:query>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,19 +28,12 @@
             <ul>
                 <li><a href="#">홈</a></li>
                 <li><a href="bookApplying.jsp">승인</a></li>
-                <li><a href="#">완료</a></li>
+                <li><a href="bookComplete.jsp">완료</a></li>
             </ul>
         </nav>
         
         <main class="content">
-            <a href="<c:choose>
-                        <c:when test="${sessionScope.userId != null}">
-                            reBook.jsp
-                        </c:when>
-                        <c:otherwise>
-                            login.jsp
-                        </c:otherwise>
-                     </c:choose>"><button class="request-button top">도서 신청</button></a>
+            <a href="reBook.jsp"><button class="request-button top">도서 신청</button></a>
             <table class="board-table">
                 <thead>
                     <tr>
@@ -53,6 +42,7 @@
                         <th>저자</th>
                         <th>출판사</th>
                         <th>출판 연도</th>
+                        <th>비고</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,6 +55,9 @@
                    				<td>${b.author}</td>
                    				<td>${b.publisher}</td>
                    				<td>${b.year}</td>
+                   				<td>
+                   					<a href="adminUpdate.jsp?request_id=${b.request_id}"><button>수정</button></a>
+                   				</td>
                    			</tr>
                    		</c:forEach>
                    	</c:when>
@@ -76,6 +69,7 @@
                    </c:choose>
                 </tbody>
             </table>
+            <a href="reBook.jsp"><button class="request-button top">도서 신청</button></a>
         </main>
     </div>
     

@@ -53,7 +53,7 @@
 %>
 	<script>
 		alert('게시글 등록 실패');
-		histroy.go(-1);
+		histroy.back();
 	</script>
 <%
 	}

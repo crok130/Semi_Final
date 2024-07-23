@@ -3,14 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="s" %>
 
-<%
-    // 로그인 여부 확인
-    String userId = (String) session.getAttribute("userId");
-%>
-
 <s:query var="result" dataSource="jdbc/MySQLDB">
-	SELECT * FROM book_requests ORDER BY request_id DESC
+	SELECT * FROM book_requests WHERE status = '승인' ORDER BY request_id DESC
 </s:query>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,21 +26,14 @@
     <div class="container">
         <nav>
             <ul>
-                <li><a href="#">홈</a></li>
+                <li><a href="bookBod.jsp">홈</a></li>
                 <li><a href="bookApplying.jsp">승인</a></li>
-                <li><a href="#">완료</a></li>
+                <li><a href="bookComplete.jsp">완료</a></li>
             </ul>
         </nav>
         
         <main class="content">
-            <a href="<c:choose>
-                        <c:when test="${sessionScope.userId != null}">
-                            reBook.jsp
-                        </c:when>
-                        <c:otherwise>
-                            login.jsp
-                        </c:otherwise>
-                     </c:choose>"><button class="request-button top">도서 신청</button></a>
+            <a href="reBook.jsp"><button class="request-button top">도서 신청</button></a>
             <table class="board-table">
                 <thead>
                     <tr>
@@ -76,6 +65,7 @@
                    </c:choose>
                 </tbody>
             </table>
+            <a href="reBook.jsp"><button class="request-button top">도서 신청</button></a>
         </main>
     </div>
     
