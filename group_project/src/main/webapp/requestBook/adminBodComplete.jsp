@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="s" %>
 
 <s:query var="result" dataSource="jdbc/MySQLDB">
-	SELECT * FROM book_requests WHERE status = '신청' ORDER BY request_id DESC
+	SELECT * FROM book_requests WHERE status = '완료' ORDER BY request_id DESC
 </s:query>
 
 <!DOCTYPE html>
@@ -57,7 +57,7 @@
                    				<td>${b.year}</td>
                    				<td>
                    					<a href="adminUpdate.jsp?request_id=${b.request_id}"><button>수정</button></a>
-                   					<a href="adminDelete.jsp?request_id=${b.request_id}"></a><button>삭제</button>
+                   					<a href="adminDelete.jsp?request_id=${b.request_id}"></a><button>삭제</button>	
                    				</td>
                    			</tr>
                    		</c:forEach>

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="s" %>
 
 <s:query var="result" dataSource="jdbc/MySQLDB">
-	SELECT * FROM book_requests WHERE status = '신청' ORDER BY request_id DESC
+	SELECT * FROM book_requests WHERE status = '승인' ORDER BY request_id DESC
 </s:query>
 
 <!DOCTYPE html>

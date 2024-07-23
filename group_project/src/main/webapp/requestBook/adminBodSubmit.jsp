@@ -3,15 +3,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="s" %>
 <%@ page import="java.sql.*, javax.naming.*, javax.sql.*" %>
-<s:update dataSource="jdbc/MySQLDB">
-	UPDATE book_requests SET status = ? WHERE requests_id = ${param.requests_id}
-	<s:param>${param.status}</s:param>
+<s:update dataSource="jdbc/MySQLDB" var="result">
+    UPDATE book_requests SET status = ?
+    WHERE request_id = ?
+    <s:param value="${param.status}" />
+    <s:param value="${param.request_id}" />
 </s:update>
 
 	<!-- 게시글 수정 결과 처리 -->
 <c:catch var="e">
 	<c:choose>
-		<c:when test="${result > 0}">
+		<c:when test="${result >= 1}">
 			<script>
 				alert('수정완료');
 				location.href='adminBod.jsp';

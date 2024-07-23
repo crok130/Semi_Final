@@ -9,7 +9,7 @@
 %>
 
 <s:query var="result" dataSource="jdbc/MySQLDB">
-	SELECT * FROM book_requests ORDER BY request_id DESC
+	SELECT * FROM book_requests WHERE status = '신청' ORDER BY request_id DESC
 </s:query>
 <!DOCTYPE html>
 <html>
@@ -32,7 +32,7 @@
             <ul>
                 <li><a href="#">홈</a></li>
                 <li><a href="bookApplying.jsp">승인</a></li>
-                <li><a href="#">완료</a></li>
+                <li><a href="bookComplete.jsp">완료</a></li>
             </ul>
         </nav>
         
