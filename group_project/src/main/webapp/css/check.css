@@ -71,7 +71,7 @@ body {
     font-size: 30px;
 }
 
-#innerbox2 > input[type=button] {
+#innerbox2 > input[type=submit] {
     width: 120px;
     height: 40px;
     font-size: 24px;

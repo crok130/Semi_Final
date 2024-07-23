@@ -8,7 +8,6 @@
 	<link href="../css/find.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-	<form action="">
         <div class="wrapper">
             <div class="sign">
                 <a href="findID.jsp">아이디 찾기</a>
@@ -18,33 +17,37 @@
                 <p>비밀번호 찾기 방법을 선택해 주세요.</p>
                 <p>선택하신 수단으로 비밀번호 재설정이 진행됩니다.</p>
                 <!-- 휴대폰 번호로 찾기 -->
+                <form action="">
                 <div class="phone" onclick="drop()">등록된 휴대폰 번호로 찾기</div>
                 <div class="input_info">
-                    <input type="text" class="name" placeholder="이름" required>
-                    <input type="text" class="phoneNum" placeholder="휴대폰 번호 ('-'없이 입력)" required minlength="10" maxlength="11">
+                    <input type="text" name="mId" class="name" placeholder="아이디" required>
+                    <input type="text" name="phone" class="phoneNum" placeholder="휴대폰 번호 ('-'없이 입력)" required minlength="10" maxlength="11">
                     <input type="button" class="send" value="인증번호 발송" required>
                     <input type="text" class="number" placeholder="인증번호 (6자리)" required>
                     <button type="submit" class="btn">확인</button>
                 </div>
+                </form>
                 
                 <!-- 이메일로 찾기 -->
+                <form action="verification_email.jsp" method="POST">
                 <div class="email" onclick="drop()">등록된 이메일 주소로 찾기</div>
                 <div class="input_info">
-                    <input type="text" class="name" placeholder="이름" required>
-                    <input type="email" class="emailAddr" placeholder="이메일 주소" required>
-                    <input type="button" class="send" value="인증번호 발송" required>
+                    <input type="text" name="mId" class="name" placeholder="아이디" required>
+                    <input type="email" name="email" class="emailAddr" placeholder="이메일 주소" required>
+                    <input type="button" class="send" value="인증번호 발송" onclick=(); required>
                     <input type="text" class="number" placeholder="인증번호 (6자리)" required>
+                    <input type="hidden" name="email_pw">
                     <button type="submit" class="btn">확인</button>
                 </div>
+    			</form>
             </div>
         </div>
-    </form>
     <footer>
         <div>
             <p>Copyright &copy; <span>BASKINROBBINS 31.2</span> All Rights Reserved.</p>
         </div>
     </footer>
     
-    <script src="js/drop.js"></script>
+    <script src="../js/drop.js"></script>
 </body>
 </html>

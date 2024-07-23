@@ -22,7 +22,7 @@
                 <div id="innerbox2">
                     <p>비밀번호 확인</p>
                     <input type="password" name="password" required>
-                    <input type="button" value="확인">
+                    <input type="submit" value="확인">
                 </div>
             </div>
 		</div>

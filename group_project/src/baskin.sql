@@ -22,7 +22,7 @@ memberWithdraw char(1) DEFAULT 'n'				-- 탈퇴 (회원 정보 숨김) n/y
 select * from member;
 
 INSERT INTO member
-VALUES ("서석희", "seohi9301", "seohi9301@naver.com", "q1w2e3r4t5", "01072719301", "부산시 수영구", "남자", 1);
+VALUES ("서석희", "seohi9301", "seohi9301@naver.com", "q1w2e3r4t5", "01072719301", 12412, "부산시 수영구", "adf", "남자", 1, 'n');
 
 ALTER TABLE member
 ADD COLUMN memberAddr1 VARCHAR(250)NOT NULL,

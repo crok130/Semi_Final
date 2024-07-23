@@ -4,11 +4,11 @@ import java.io.*;
 import java.util.Properties;
 import jakarta.mail.*;
 
-public class EmailAuthentic extends Authenticator {
+public class EmailAuthenticator extends Authenticator {
 
 	PasswordAuthentication passwordAuthentication;
 
-	public EmailAuthentic() {
+	public EmailAuthenticator() {
 		
 		try {
 			Properties prop = new Properties();
