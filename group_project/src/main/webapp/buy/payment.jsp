@@ -19,7 +19,6 @@
                     <th>상품명</th>
                     <th>가격</th>
                     <th>수량</th>
-                    <th>합계</th>
                     <th>작업</th>
                 </tr>
             </thead>
@@ -40,14 +39,12 @@
         	String title = rs.getString("title");
         	int quantity = rs.getInt("quantity");
         	int book_id = rs.getInt("book_id");
-        	int totalItemPrice = price * quantity;
-        	totalPrice += totalItemPrice;
+        	totalPrice += price;
 %>
                 <tr>
                     <td><%= title %></td>
                     <td><%= price %> 원</td>
                     <td><%= quantity %></td>
-                    <td><%= totalItemPrice %> 원</td>
                     <td>
                         <a href="removepay.jsp?book_id=<%= book_id %>&memberNum=<%= memberNum %>" class="btn btn-danger">삭제</a>
                     </td>

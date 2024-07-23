@@ -1,9 +1,7 @@
 CREATE SCHEMA baskin;
 USE baskin;
 
-
-SELECT * FROM books;
-
+select * from cart;
 
 CREATE TABLE member (
     memberNum INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,7 +30,7 @@ CREATE TABLE Books (
     status ENUM('신책', '중고책') NOT NULL,
 	FOREIGN KEY (seller_id) REFERENCES member(memberNum) ON DELETE SET NULL
 );
-SELECT * FROM cart;
+
 
 
 CREATE TABLE Cart (
@@ -45,28 +43,23 @@ CREATE TABLE Cart (
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE -- 책 테이블과의 관계
 );
 
-
+SELECT * FROM Cart WHERE memberNum = 1;
 CREATE TABLE Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
-    memberNum INT NOT NULL,
+    memberNum INT,
     buyer_name VARCHAR(50),
     buyer_addr VARCHAR(250),
     buyer_tel varchar(250),
+    book_id INT,
+    quantity INT,
     total_price int,
     order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     status ENUM('결제 완료', '배송 중', '배송 완료') NOT NULL,
-    FOREIGN KEY (memberNum) REFERENCES member(memberNum) ON DELETE CASCADE
-);
-
-CREATE TABLE Order_Details (
-    detail_id INT PRIMARY KEY AUTO_INCREMENT,
-    order_id INT NOT NULL,
-    book_id INT NOT NULL,
-    quantity INT NOT NULL,
-    price INT NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (memberNum) REFERENCES member(memberNum) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
 );
+
+
 
 CREATE TABLE Book_Requests (
     request_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -87,3 +80,4 @@ CREATE TABLE Used_Books (
     FOREIGN KEY (memberNum) REFERENCES member(memberNum) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
 );
+select * from Orders;

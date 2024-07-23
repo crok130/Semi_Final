@@ -14,21 +14,31 @@
         
          // 수정할 회원의 memberNum을 설정합니다.
         int memberNum = 1; // 실제로는 세션이나 쿠키에서 가져옴
-
+        ResultSet rs = null;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = JDBCUtil.getConnection();
-            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, status) VALUES (?, ?, ?, ?, ?, '결제 완료')";
-            pstmt = conn.prepareStatement(sql);
+            String Cartsql = "SELECT * FROM Cart WHERE memberNum = ?";
+            pstmt = conn.prepareStatement(Cartsql);
             pstmt.setInt(1, memberNum);
-            pstmt.setString(2, buyerName);
-            pstmt.setString(3, buyerAddr);
-            pstmt.setString(4, buyerTel);
-            pstmt.setInt(5, totalPrice);
+            rs = pstmt.executeQuery(Cartsql);
             
-            pstmt.executeUpdate();
-            
+            while(rs.next()){
+            	int book_id = rs.getInt("book_id");
+            	int quantity = rs.getInt("quantity");
+            	int price = rs.getInt("price");
+	            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_id, quantity, status) VALUES (?, ?, ?, ?, ?, ?, ?, '결제 완료')";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setInt(1, memberNum);
+	            pstmt.setString(2, buyerName);
+	            pstmt.setString(3, buyerAddr);
+	            pstmt.setString(4, buyerTel);
+	            pstmt.setInt(5, price);
+	            pstmt.setInt(6, book_id);
+	            pstmt.setInt(7, quantity);
+	            pstmt.executeUpdate();
+            }
             // 카트 정보를 삭제하는 코드 추가
             String deleteCartSql = "DELETE FROM Cart WHERE memberNum = ?";
             pstmt = conn.prepareStatement(deleteCartSql);
