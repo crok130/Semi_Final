@@ -12,13 +12,7 @@
         <div class="upperBox">
             <!-- 검색? -->
             <div>
-            
-            
-                <p>전체 회원 수 : <%=  %> </p>
-                
-            </div>
-            <div>
-            	<input type="search">
+                <p>전체 </p>
             </div>
         </div>
 
@@ -27,18 +21,18 @@
                 <!-- 상단 고정 -->
                 <thead>
                 	<tr>
-	                    <td>회원 번호</td>
-	                    <td>이름</td>
-	                    <td>아이디</td>
-	                    <td>이메일</td>
-	                    <td>휴대폰 번호</td>
-	                    <td>생년월일</td>
-	                    <td>주소</td>
-	                    <td>성별</td>
-	                    <td>포인트</td>
-	                    <td>판매자</td>
-	                    <td>최근 접속 시간</td>
-	                    <td>수정</td>
+	                    <th>회원 번호</th>
+	                    <th>이름</th>
+	                    <th>아이디</th>
+	                    <th>이메일</th>
+	                    <th>휴대폰 번호</th>
+	                    <th>생년월일</th>
+	                    <th>주소</th>
+	                    <th>성별</th>
+	                    <th>포인트</th>
+	                    <th>판매자</th>
+	                    <th>최근 접속 시간</th>
+	                    <th>수정</th>
                     </tr>
                 </thead>
 
@@ -104,7 +98,7 @@
                         <!-- 수정 버튼 -->
                         <td><a href="myPage_Admin.jsp?memberNum=<%= num %>">수정</a></td>
                     </tr>
-                 <% } DBUtil.close(conn, pstmt, rs); %>
+                 <% } DBUtil.close(rs, pstmt, conn); %>
                 </tbody>
             </table>
         </div>

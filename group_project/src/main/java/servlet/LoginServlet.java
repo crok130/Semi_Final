@@ -33,6 +33,8 @@ public class LoginServlet extends HttpServlet {
         		session.setAttribute("userPw", userPw);
         		session.setAttribute("memberType", member.getType());
         		
+        		memberDAO.updateLastVisit(userId);
+        		
         		// 로그인 성공 후 메인 페이지로 이동 나중에 메인 페이지로 경로 수정
         		response.sendRedirect("index.jsp");
         	}

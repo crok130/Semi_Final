@@ -29,7 +29,7 @@ public class MemberDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-        	DBUtil.close(conn, pstmt, null);
+        	DBUtil.close(conn, pstmt);
         }
     }
 	
@@ -118,7 +118,28 @@ public class MemberDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-        	DBUtil.close(conn, pstmt, null);
+        	DBUtil.close(conn, pstmt);
+        }
+    }
+    
+    // 비밀번호 재설정
+    public void updateReset(String newPassword, String memberId, String memberEmail) {
+        String sql = "UPDATE member SET memberPassword = ? WHERE memberId = ? AND memberEmail = ?";
+        
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        
+        try {
+        	conn = DBUtil.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, memberId);
+            pstmt.setString(3, memberEmail);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        	DBUtil.close(conn, pstmt);
         }
     }
     
@@ -138,14 +159,32 @@ public class MemberDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-        	DBUtil.close(conn, pstmt, null);
+        	DBUtil.close(conn, pstmt);
         }
         return false;
     }
     
+    // 최종 방문일
+    public void updateLastVisit(String userId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        
+        try {
+            conn = DBUtil.getConnection();
+            String sql = "UPDATE member SET memberVisit = CURRENT_TIMESTAMP WHERE memberId = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, userId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.close(pstmt, conn);
+        }
+    }
+    
     // 전체 회원 수 조회
     public int getTotalMemberCount() {
-    	String sql = "SELECT (*) FROM member WHERE memberWithdraw = 'n'";
+    	String sql = "SELECT * FROM member";
     	
     	Connection conn = null;
         PreparedStatement pstmt = null;

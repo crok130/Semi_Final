@@ -10,6 +10,12 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session != null) {
+        	String userId = (String) session.getAttribute("userId");
+        	if (userId != null) {
+        		MemberDAO memberDAO = new MemberDAO();
+        		memberDAO.updateLastVisit(userId);
+        	}
+        	// 세션 무효화
             session.invalidate();
         }
         // 나중에 메인 페이지로 경로 수정

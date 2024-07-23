@@ -16,18 +16,6 @@
         document.getElementById("pwMessage").style.color = ""; 		// Reset color
         document.getElementById("pwCheckMessage").style.color = ""; // Reset color
 	}
-	
-	// 새 페이지 로드 시 메세지 확인 
-	window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const error = urlParams.get('error');
-
-        if (error === '1') {
-            alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
-        } else if (error === '2') {
-            alert('현재 비밀번호가 잘못되었습니다.');
-        }
-    };
 </script>
 </head>
 <body>

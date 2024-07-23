@@ -12,7 +12,6 @@ public class DBUtil {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/baskin", "root", "1234");
 			
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 			System.out.println("Driver Class를 찾을 수 없음");
 		} catch (SQLException e) {
 			System.out.println("연결 요청 정보 오류 : " + e.getMessage());

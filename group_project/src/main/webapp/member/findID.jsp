@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,8 +16,8 @@
             <div class="innerWrapper">
                 <p>아이디 찾기 방법을 선택해 주세요.</p>
                 <p>선택하신 수단으로 아이디 확인이 가능합니다.</p>
+                
                 <!-- 휴대폰 번호로 찾기 -->
-                <form action="">
                 <div class="phone" onclick="drop()">등록된 휴대폰 번호로 찾기</div>
                 <div class="input_info">
                     <input type="text" class="name" placeholder="이름" required>
@@ -27,16 +26,15 @@
                     <input type="text" class="number" placeholder="인증번호 (6자리)" required>
                     <button type="submit" class="btn">확인</button>
                 </div>
-                </form>
+                
                 <!-- 이메일로 찾기 -->
-                <form action="">
+                <form action="success_findID.jsp" method="post">
                 <div class="email" onclick="drop()">등록된 이메일 주소로 찾기</div>
                 <div class="input_info">
-                    <input type="text" class="name" id="name" placeholder="이름" required>
-                    <input type="email" class="emailAddr" id="emailAddr" placeholder="이메일 주소" required>
+                    <input type="text" class="name" id="name" name="name" placeholder="이름">
+                    <input type="email" class="emailAddr" id="emailAddr" name="email" placeholder="이메일 주소">
                     <input type="button" class="send" id="sendMail" value="인증번호 발송" />
-                    <input type="text" class="number" placeholder="인증번호 (6자리)" required>
-                    <input type="hidden" name="email_id">
+                    <input type="text" class="number" placeholder="인증번호 (6자리)" name="code" required>
                     <button type="submit" class="btn">확인</button>
                 </div>
                 </form>
@@ -52,10 +50,9 @@
     <script>
     	var emailCode = "";
     
-    
     	document.querySelector("#sendMail").onclick = function(){
-			let name = document.querySelect("#name").value;
-			let emailAddr = document.querySelect("#emailAddr").value;
+			let name = document.querySelector("#name").value;
+			let emailAddr = document.querySelector("#emailAddr").value;
 			
 			// AJAX => fetch
 			fetch("verification_email.jsp",{
@@ -64,7 +61,7 @@
 					name : name,
 					email : emailAddr
 				})
-			}).then(response => return response.json())
+			}).then(response => response.json())
 			.then(data => {
 				console.log(data);
 				if(!data){
@@ -79,5 +76,3 @@
     </script>
 </body>
 </html>
-
-

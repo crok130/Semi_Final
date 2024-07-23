@@ -31,7 +31,7 @@
 		pstmt.setString(4, addr1);
 		pstmt.setString(5, addr2);
 		pstmt.setString(6, addr3);
-		pstmt.setInt(7, type);
+		pstmt.setInt(7, type);			// type을 숫자(1, 2, 3)로 설정해야 할 수 있습니다.  [input = radio]임
 		pstmt.setString(8, userId);
 		
 		// 쿼리 실행
@@ -50,6 +50,6 @@
 	} catch (SQLException e) {
 		e.printStackTrace();
 	} finally {
-		DBUtil.close(conn, pstmt, null);
+		DBUtil.close(pstmt, conn);
 	}
 %>

@@ -1,8 +1,7 @@
-<%@ page language="java" contentType="application/json; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, servlet.*"%>
-<%@page import="mail.EmailAuthenticator"%>
-<%@page import="jakarta.mail.*, jakarta.mail.internet.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="servlet.*, java.sql.*" %>
+<%@ page import="jakarta.mail.*, jakarta.mail.internet.*" %>
+<%@ page import="mail.EmailAuthenticator" %>
 
 <%
 	String mId = request.getParameter("mId");
@@ -15,10 +14,10 @@
 	
 	try {
 		conn = DBUtil.getConnection();
-		String sql = "SELECT * FROM member WHERE member_name = ? AND member_email";
+		String sql = "SELECT * FROM member WHERE memberName = ? AND memberEmail = ?";
 		
 		if (name == null) {
-			sql = "SELECT * FROM member WHERE member_id = ? AND member_email";
+			sql = "SELECT * FROM member WHERE memberId = ? AND memberEmail = ?";
 		}
 		
 		pstmt = conn.prepareStatement(sql);
@@ -63,6 +62,8 @@
 			
 			// 발송
 			Transport.send(msg);
+			session.setAttribute("emailAddr", email);
+            session.setAttribute("emailCode", code);
 			// 정상 발신
 			// out.println(code);
 			response.getWriter().write(code);
@@ -77,6 +78,3 @@
 		DBUtil.close(rs,pstmt,conn);
 	}
 %>
-
-
-
