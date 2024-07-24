@@ -36,9 +36,9 @@
 
             <!-- 가입, 계정 찾기 -->
             <div class="find">
-                <a href="member/findID.jsp">아이디 찾기</a> |
-                <a href="member/findPW.jsp">비밀번호 찾기</a> |
-                <a href="member/join.jsp">회원가입</a>
+                <a href="findID.jsp">아이디 찾기</a> |
+                <a href="findPW.jsp">비밀번호 찾기</a> |
+                <a href="join.jsp">회원가입</a>
             </div>
 
             <!-- 소셜 로그인 : API 필요해서 더 이상 못 건듦 -->

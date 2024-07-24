@@ -5,7 +5,50 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보수정 - BASKINROBBINS 31.2</title>
+	<style>
+        .message {
+            margin-top: 10px;
+            display: none;
+            font-size: 12px; /* 기본 폰트 크기 */
+        }
+        .id_chk {
+            color: green;
+        }
+        .id_err {
+            color: red;
+        }
+    </style>
 	<link href="../css/join.css" rel="stylesheet" type="text/css"/>
+	<script>
+	function checkId() {
+        var mId = document.getElementById("input_box_id").value;
+        var idCheckMessage = document.getElementById("idCheckMessage");
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "checkID.jsp", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === "OK") {
+                    idCheckMessage.innerText = response.message;
+                    idCheckMessage.classList.add("id_chk");
+                    idCheckMessage.classList.remove("id_err");
+                } else if (response.status === "EXISTS") {
+                    idCheckMessage.innerText = response.message;
+                    idCheckMessage.classList.add("id_err");
+                    idCheckMessage.classList.remove("id_chk");
+                } else {
+                    idCheckMessage.innerText = response.message;
+                    idCheckMessage.classList.add("id_err");
+                    idCheckMessage.classList.remove("id_chk");
+                }
+                idCheckMessage.style.display = "block"; // 메세지 표시
+            }
+        };
+        xhr.send("mId=" + encodeURIComponent(mId));
+    }
+	</script>
 </head>
 <body>
 	<%
@@ -71,7 +114,7 @@
                         <input type="button" id="idBtn" value="중복 확인" onclick="checkId()">
                         <span>4~12자리의 영문자, 숫자 (/,!@#$ 등 특수문자는 제외) </span>
                     </td>
-                    <td id="idCheckMessage" style="padding-left: 10px"></td>
+                    <td id="idCheckMessage" class="message" style="padding-left: 10px"></td>
                 </tr>
                 
                 <!-- 이메일 -->
