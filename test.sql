@@ -30,8 +30,8 @@ CREATE TABLE Books (
     status ENUM('신책', '중고책') NOT NULL,
 	FOREIGN KEY (seller_id) REFERENCES member(memberNum) ON DELETE SET NULL
 );
-
-
+SELECT IFNULL(MAX(order_group_id), 0) + 1 AS new_order_group_id FROM Orders;
+TRUNCATE TABLE Orders;
 
 CREATE TABLE Cart (
     cart_id INT PRIMARY KEY AUTO_INCREMENT, -- 고유 식별자
@@ -42,7 +42,7 @@ CREATE TABLE Cart (
     FOREIGN KEY (memberNum) REFERENCES member(memberNum) ON DELETE CASCADE, -- 회원 테이블과의 관계
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE -- 책 테이블과의 관계
 );
-SELECT * FROM Cart WHERE memberNum = 1;
+SELECT * FROM Cart;
 CREATE TABLE Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     memberNum INT,
@@ -53,11 +53,11 @@ CREATE TABLE Orders (
     quantity INT,
     total_price int,
     order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    order_group_id INT, 
     status ENUM('배송준비중', '배송 중', '배송 완료') NOT NULL,
     FOREIGN KEY (memberNum) REFERENCES member(memberNum) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE
 );
-
 
 
 CREATE TABLE Book_Requests (
@@ -68,6 +68,6 @@ CREATE TABLE Book_Requests (
     status ENUM('신청', '승인', '거절') DEFAULT '신청',
     FOREIGN KEY (memberNum) REFERENCES member(memberNum) ON DELETE CASCADE
 );
-
-
+SELECT COALESCE(MAX(order_group_id), 0) + 1 AS new_order_group_id FROM Orders WHERE memberNum = 1;
+drop table Orders;
 select * from Orders;

@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.sql.*, java.util.*, util.Criteria, util.PageMaker" %>
 <%@ page language="java" %>
 <jsp:useBean id="criteria" class="util.Criteria" scope="page" />
@@ -9,11 +8,11 @@
 <jsp:useBean id="pageMaker" class="util.PageMaker" scope="page" />
 <jsp:setProperty name="pageMaker" property="cri" value="${criteria}" />
 <jsp:setProperty name="pageMaker" property="displayPageNum" value="10" />
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>주문 내역</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -31,6 +30,7 @@
                     <th>총 가격</th>
                     <th>주문 날짜</th>
                     <th>배송 현황</th>
+                    <th>상태 변경</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,16 +40,17 @@
                     ResultSet rs = null;
                     List<Map<String, Object>> orderList = new ArrayList<>();
                     Map<Integer, Integer> totalPriceMap = new HashMap<>();
-					int memberNum = 1;
-					int orderGroupId = 0;
+                    int memberNum = 1; // 관리자가 조회할 회원 번호
+                    int orderGroupId = 0;
+                    
                     try {
                         Class.forName("com.mysql.cj.jdbc.Driver");
                         String url = "jdbc:mysql://localhost:3306/baskin";
                         String user = "root";
                         String password = "1234";
                         conn = DriverManager.getConnection(url, user, password);
-                  
-                        // Total count query for memberNum 1
+
+                        // Total count query for memberNum
                         String countQuery = "SELECT COUNT(*) FROM Orders WHERE memberNum = ?";
                         pstmt = conn.prepareStatement(countQuery);
                         pstmt.setInt(1, memberNum);
@@ -59,8 +60,8 @@
                         }
                         rs.close();
                         pstmt.close();
-				
-                        // Data query with LIMIT for memberNum 1
+                
+                        // Data query with LIMIT for memberNum
                         String query = "SELECT o.buyer_name, o.buyer_addr, o.buyer_tel, b.book_id, b.title, o.quantity, o.total_price, o.status, o.order_date, o.order_group_id " +
                                        "FROM Orders o " +
                                        "JOIN Books b ON o.book_id = b.book_id " +
@@ -77,7 +78,7 @@
                             order.put("buyer_name", rs.getString("buyer_name"));
                             order.put("buyer_addr", rs.getString("buyer_addr"));
                             order.put("buyer_tel", rs.getString("buyer_tel"));
-                            order.put("book_id", rs.getInt("book_id")); // 책 ID 추가
+                            order.put("book_id", rs.getInt("book_id"));
                             order.put("title", rs.getString("title"));
                             order.put("quantity", rs.getInt("quantity"));
                             order.put("total_price", rs.getInt("total_price"));
@@ -107,7 +108,7 @@
                         if (currentOrderGroupId != previousOrderGroupId) {
                             if (!firstRow) {
                 %>
-                                <tr><td colspan="9" class="bg-light"></td></tr>
+                                <tr><td colspan="10" class="bg-light"></td></tr>
                 <%
                             }
                 %>
@@ -115,12 +116,23 @@
                     <td><%= order.get("buyer_name") %></td>
                     <td><%= order.get("buyer_addr") %></td>
                     <td><%= order.get("buyer_tel") %></td>
-                    <td><a href="../book_detail.jsp?book_id=<%= order.get("book_id") %>"><%= order.get("title") %></a></td> <!-- 책 제목에 링크 추가 -->
+                    <td><a href="../book_detail.jsp?book_id=<%= order.get("book_id") %>"><%= order.get("title") %></a></td>
                     <td><%= order.get("quantity") %></td>
                     <td><%= order.get("total_price") %></td>
-                    <td rowspan="<%= totalPriceMap.size() %>"><%= totalPriceForGroup %></td>
+                    <td rowspan="<%= orderList.size() %>"><%= totalPriceForGroup %></td>
                     <td><%= order.get("order_date") %></td>
                     <td><strong><%= order.get("status") %></strong></td>
+                    <td>
+                        <form action="updateOrderStatus.jsp" method="post">
+                            <input type="hidden" name="order_group_id" value="<%= order.get("order_group_id") %>">
+                            <select name="status" class="form-control">
+                                <option value="배송준비중" <%= "배송준비중".equals(order.get("status")) ? "selected" : "" %>>배송준비중</option>
+                                <option value="배송 중" <%= "배송 중".equals(order.get("status")) ? "selected" : "" %>>배송 중</option>
+                                <option value="배송 완료" <%= "배송 완료".equals(order.get("status")) ? "selected" : "" %>>배송 완료</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm mt-1">변경</button>
+                        </form>
+                    </td>
                 </tr>
                 <%
                             previousOrderGroupId = currentOrderGroupId;
@@ -129,10 +141,10 @@
                 %>
                 <tr>
                     <td colspan="3"></td>
-                    <td><a href="../book_detail.jsp?book_id=<%= order.get("book_id") %>"><%= order.get("title") %></a></td> <!-- 책 제목에 링크 추가 -->
+                    <td><a href="../book_detail.jsp?book_id=<%= order.get("book_id") %>"><%= order.get("title") %></a></td>
                     <td><%= order.get("quantity") %></td>
                     <td><%= order.get("total_price") %></td>
-                    <td colspan="3"></td>
+                    <td colspan="4"></td>
                 </tr>
                 <%
                         }
@@ -172,7 +184,6 @@
             </ul>
         </nav>
     </div>
-    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

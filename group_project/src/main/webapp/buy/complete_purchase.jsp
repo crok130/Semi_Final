@@ -1,6 +1,5 @@
-<%@page import="org.eclipse.tags.shaded.org.apache.xml.utils.SystemIDResolver"%>
+<%@page import="java.sql.*, utils.JDBCUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, utils.JDBCUtil" %>
 
 <%
     if(request.getMethod().equalsIgnoreCase("POST")){
@@ -13,33 +12,50 @@
         String buyerTel = request.getParameter("buyer_tel");
         String buyerAddr = request.getParameter("buyer_addr");
         
-         // 수정할 회원의 memberNum을 설정합니다.
         int memberNum = 1; // 실제로는 세션이나 쿠키에서 가져옴
         ResultSet rs = null;
         Connection conn = null;
         PreparedStatement pstmt = null;
+        int orderGroupId = 0;
+        
         try {
             conn = JDBCUtil.getConnection();
+            
+            // 1. 새로운 주문 그룹 ID 생성
+            String generateOrderGroupIdSql = "SELECT COALESCE(MAX(order_group_id), 0) + 1 AS new_order_group_id FROM Orders WHERE memberNum = ?";
+            pstmt.setInt(1, memberNum);
+            pstmt = conn.prepareStatement(generateOrderGroupIdSql);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                orderGroupId = rs.getInt("new_order_group_id");
+            }
+            
+            // 2. Cart 테이블에서 상품 정보를 조회하여 Orders 테이블에 저장
             String Cartsql = "SELECT * FROM Cart WHERE memberNum = ?";
             pstmt = conn.prepareStatement(Cartsql);
             pstmt.setInt(1, memberNum);
             rs = pstmt.executeQuery();
+            
+            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_id, quantity, order_group_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '배송준비중')";
+            pstmt = conn.prepareStatement(sql);
+            
             while(rs.next()){
-            	int book_id = rs.getInt("book_id");
-            	int quantity = rs.getInt("quantity");
-            	int price = rs.getInt("price");
-	            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_id, quantity, status) VALUES (?, ?, ?, ?, ?, ?, ?,'배송준비중')";
-	            pstmt = conn.prepareStatement(sql);
-	            pstmt.setInt(1, memberNum);
-	            pstmt.setString(2, buyerName);
-	            pstmt.setString(3, buyerAddr);
-	            pstmt.setString(4, buyerTel);
-	            pstmt.setInt(5, price);
-	            pstmt.setInt(6, book_id);
-	            pstmt.setInt(7, quantity);
-	            pstmt.executeUpdate();
+                int book_id = rs.getInt("book_id");
+                int quantity = rs.getInt("quantity");
+                int price = rs.getInt("price");
+                
+                pstmt.setInt(1, memberNum);
+                pstmt.setString(2, buyerName);
+                pstmt.setString(3, buyerAddr);
+                pstmt.setString(4, buyerTel);
+                pstmt.setInt(5, price); // totalPrice는 하나의 주문에 대한 총액
+                pstmt.setInt(6, book_id);
+                pstmt.setInt(7, quantity);
+                pstmt.setInt(8, orderGroupId);
+                pstmt.executeUpdate();
             }
-            // 카트 정보를 삭제하는 코드 추가
+            
+            // 3. 카트 정보를 삭제
             String deleteCartSql = "DELETE FROM Cart WHERE memberNum = ?";
             pstmt = conn.prepareStatement(deleteCartSql);
             pstmt.setInt(1, memberNum);
