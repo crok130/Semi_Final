@@ -1,3 +1,4 @@
+<%@page import="org.eclipse.tags.shaded.org.apache.xml.utils.SystemIDResolver"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, utils.JDBCUtil" %>
 
@@ -22,13 +23,12 @@
             String Cartsql = "SELECT * FROM Cart WHERE memberNum = ?";
             pstmt = conn.prepareStatement(Cartsql);
             pstmt.setInt(1, memberNum);
-            rs = pstmt.executeQuery(Cartsql);
-            
+            rs = pstmt.executeQuery();
             while(rs.next()){
             	int book_id = rs.getInt("book_id");
             	int quantity = rs.getInt("quantity");
             	int price = rs.getInt("price");
-	            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_id, quantity, status) VALUES (?, ?, ?, ?, ?, ?, ?, '결제 완료')";
+	            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_id, quantity, status) VALUES (?, ?, ?, ?, ?, ?, ?,'배송준비중')";
 	            pstmt = conn.prepareStatement(sql);
 	            pstmt.setInt(1, memberNum);
 	            pstmt.setString(2, buyerName);

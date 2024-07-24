@@ -353,7 +353,7 @@
     <div class="wrap">
         <ul class="mlogo">
             <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
-            <a href=""><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
+            <a href="index.jsp"><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
             <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
         </ul>
         <header>

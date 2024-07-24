@@ -6,21 +6,42 @@
     int quantity = Integer.parseInt(request.getParameter("quantity"));
     Connection conn = null;
     PreparedStatement pstmt = null;
+    ResultSet rs = null;
     int price = Integer.parseInt(request.getParameter("price"));
     int totalPrice = price * quantity;
     try {
         // 데이터베이스 연결
         conn = JDBCUtil.getConnection();
-        
-        // SQL 쿼리 준비
-        String sql = "INSERT INTO Cart (memberNum, book_id, quantity, price) VALUES (?, ?, ?, ?)";
-        pstmt = conn.prepareStatement(sql);
+
+        // 같은 상품이 이미 장바구니에 있는지 확인
+        String checkSql = "SELECT quantity FROM Cart WHERE memberNum = ? AND book_id = ?";
+        pstmt = conn.prepareStatement(checkSql);
         pstmt.setInt(1, memberNum);
         pstmt.setInt(2, book_id);
-        pstmt.setInt(3, quantity);
-        pstmt.setInt(4, totalPrice);
-        pstmt.executeUpdate();
-        
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            // 이미 장바구니에 있는 경우 수량을 업데이트
+            int existingQuantity = rs.getInt("quantity");
+            int newQuantity = existingQuantity + quantity;
+            String updateSql = "UPDATE Cart SET quantity = ?, price = ? WHERE memberNum = ? AND book_id = ?";
+            pstmt = conn.prepareStatement(updateSql);
+            pstmt.setInt(1, newQuantity);
+            pstmt.setInt(2, price * newQuantity);
+            pstmt.setInt(3, memberNum);
+            pstmt.setInt(4, book_id);
+            pstmt.executeUpdate();
+        } else {
+            // 장바구니에 없는 경우 새로 추가
+            String insertSql = "INSERT INTO Cart (memberNum, book_id, quantity, price) VALUES (?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(insertSql);
+            pstmt.setInt(1, memberNum);
+            pstmt.setInt(2, book_id);
+            pstmt.setInt(3, quantity);
+            pstmt.setInt(4, totalPrice);
+            pstmt.executeUpdate();
+        }
+
         // 성공 메시지 반환
         response.getWriter().write("success");
     } catch (Exception e) {
@@ -29,6 +50,7 @@
         response.getWriter().write("error");
     } finally {
         // 자원 해제
+        if (rs != null) rs.close();
         if (pstmt != null) pstmt.close();
         if (conn != null) conn.close();
     }
