@@ -11,6 +11,7 @@ body {
 }
 
 #wrapper {
+	margin-left: 50px;
     width: 800px;
 }
 
@@ -103,4 +104,41 @@ body {
     border-radius: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     cursor: pointer;
+}
+
+nav {
+    width: 200px;
+    padding-top: 20px;
+    flex-shrink: 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 20px 0;
+}
+
+nav ul li.title {
+    margin: 20px 0;
+    border-bottom: 1px solid gray;
+}
+
+nav ul li p {
+	font-size: 25px;
+    text-decoration: none;
+    padding: 10px 10px;
+    display: block;
+}
+
+nav ul li a {
+	color: gray;
+	font-size: 20px;
+	font-weight: 600;
+    text-decoration: none;
+    padding: 10px 10px;
+    display: block;
 }

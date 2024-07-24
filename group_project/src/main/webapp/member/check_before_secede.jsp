@@ -7,6 +7,16 @@
 <link rel="stylesheet" href="../css/check.css" type="text/css">
 </head>
 <body>
+	<div>
+        <nav>
+            <ul>
+            	<li class="title"><p>내정보관리</p></li>
+                <li><a href="check_before_myPage.jsp">내 정보 수정</a></li>
+                <li><a href="changePW.jsp">비밀번호 변경</a></li>
+                <li><a href="check_before_secede.jsp">회원탈퇴</a></li>
+            </ul>
+        </nav>
+    </div>
 	<form action="${pageContext.request.contextPath}/CheckPwServlet" method="POST">
 		<div id=wrapper>
 			<div id="upperbox">
