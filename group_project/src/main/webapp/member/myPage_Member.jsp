@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>개인 정보 수정</title>
+<title>개인정보수정 - BASKINROBBINS 31.2</title>
 	<link href="../css/join.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>

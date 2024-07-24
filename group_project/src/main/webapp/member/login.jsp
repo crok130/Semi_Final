@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>BASKINROBBINS 31.2 로그인</title>
+<title>로그인 - BASKINROBBINS 31.2</title>
 	<meta charset="UTF-8">
 	<link href="../css/login.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
@@ -36,9 +36,9 @@
 
             <!-- 가입, 계정 찾기 -->
             <div class="find">
-                <a href="findID.jsp">아이디 찾기</a> |
-                <a href="findPW.jsp">비밀번호 찾기</a> |
-                <a href="join.jsp">회원가입</a>
+                <a href="member/findID.jsp">아이디 찾기</a> |
+                <a href="member/findPW.jsp">비밀번호 찾기</a> |
+                <a href="member/join.jsp">회원가입</a>
             </div>
 
             <!-- 소셜 로그인 : API 필요해서 더 이상 못 건듦 -->

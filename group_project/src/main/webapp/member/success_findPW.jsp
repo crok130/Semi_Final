@@ -24,7 +24,7 @@
 			<html>
 			<head>
 			<meta charset="UTF-8">
-			<title>Insert title here</title>
+			<title>비밀번호찾기 - BASKINROBBINS 31.2</title>
 			</head>
 			<body>
 				<form action="ResetPW.jsp" method="POST">

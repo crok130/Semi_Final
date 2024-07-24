@@ -50,7 +50,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>아이디 찾기 결과</title>
+    <title>아이디찾기 - BASKINROBBINS 31.2</title>
     <link href="../css/find.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>

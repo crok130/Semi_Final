@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>비밀번호 찾기</title>
+<title>비밀번호찾기 - BASKINROBBINS 31.2</title>
 	<link href="../css/find.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>

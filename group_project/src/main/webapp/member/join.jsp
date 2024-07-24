@@ -4,7 +4,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>회원가입 - BASKINROBBINS 31.2</title>
+	<style>
+        .message {
+            margin-top: 10px;
+            display: none;
+            font-size: 12px; /* 기본 폰트 크기 */
+        }
+        .id_chk {
+            color: green;
+        }
+        .id_err {
+            color: red;
+        }
+    </style>
 	<link href="../css/join.css" rel="stylesheet" type="text/css"/>
 	<script>
 	function checkId() {
@@ -81,7 +94,7 @@
                         <input type="button" id="idBtn" value="중복 확인" onclick="checkId()">
                         <span>4~12자리의 영문자, 숫자 (/,!@#$ 등 특수문자는 제외) </span>
                     </td>
-                    <td id="idCheckMessage" style="padding-left: 10px"></td>
+                    <td id="idCheckMessage" class="message" style="padding-left: 10px"></td>
                 </tr>
                 
                 <!-- 이메일 -->

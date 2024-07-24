@@ -44,6 +44,8 @@ public class JoinServlet extends HttpServlet {
         request.setAttribute("member", member);
         
         // 로그인 페이지로 포워딩
+        response.setContentType("text/html; charset=UTF-8");
+        response.getWriter().println("<script>alert('정상적으로 가입 완료했습니다.');</script>");
         RequestDispatcher dispatcher = request.getRequestDispatcher("member/login.jsp");
         dispatcher.forward(request, response);
         

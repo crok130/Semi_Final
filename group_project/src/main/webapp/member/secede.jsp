@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원탈퇴 - BASKINROBBINS 31.2</title>
+<link href="../css/check.css" rel="stylesheet" type="text/css"/>
 <script>
 	function secedeChk() {
 		var input = document.querySelector('input[name="secedeChk"]').value;

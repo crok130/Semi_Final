@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>내 정보 수정 - BASKINROBBINS 31.2</title>
 <link rel="stylesheet" href="../css/check.css" type="text/css">
 </head>
 <body>

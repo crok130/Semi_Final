@@ -71,7 +71,28 @@ body {
     font-size: 30px;
 }
 
+#innerbox2 > input[type=text] {
+    width: 300px;
+    height: 40px;
+    margin-right: 10px;
+    padding-left: 10px;
+    font-size: 30px;
+}
+
 #innerbox2 > input[type=submit] {
+    width: 120px;
+    height: 40px;
+    font-size: 24px;
+    color: #fff;
+    background: #f58;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    cursor: pointer;
+}
+
+#innerbox2 > input[type=button] {
     width: 120px;
     height: 40px;
     font-size: 24px;

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.sql.*, servlet.DBUtil" %>
+<%@ page import="java.sql.*, servlet.*" %>
 
 <%
 	//세션에서 사용자 ID 가져오기

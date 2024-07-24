@@ -4,18 +4,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 정보 수정</title>
+<title>회원정보수정 - BASKINROBBINS 31.2</title>
 	<link href="../css/join.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 	<%
-	String userId = (String) session.getAttribute("userId");
-
+		String Num = request.getParameter("memberNum");
+    	int memberNum = Integer.parseInt(Num);
+	
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "SELECT memberNum, memberName, memberId, memberEmail, memberPassword, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, memberPoint, memberJoin, memberVisit, memberType, memberWithdraw FROM member WHERE memberId = ?";
+		String sql = "SELECT memberNum, memberName, memberId, memberEmail, memberPassword, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, memberPoint, memberJoin, memberVisit, memberType, memberWithdraw FROM member WHERE memberNum = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, userId);
+		pstmt.setInt(1, memberNum);
 		ResultSet rs = pstmt.executeQuery();
 		
 		if (rs.next()) {
@@ -38,7 +39,7 @@
 	%>
 	<div class="wrapper">
 		<!-- 아이디 중복 체크로 action 뻘한 곳으로 빠짐 -->
-        <form id="joinForm" action="업데이트로 바꿀거" method="POST">
+        <form id="joinForm" action="admin_updateProfile.jsp" method="POST">
             <table>
                 <!-- 번호 -->
                 <tr>
@@ -151,7 +152,7 @@
                     	<label>
                         	<input type="radio" name="gender" value="남자" <%= "남자".equals(gender) ? "checked" : "" %>>
                         	<span class="radio_span">남자</span>
-                        </lable>
+                        </label>
                         <label>
                         	<input type="radio" name="gender" value="여자" <%= "여자".equals(gender) ? "checked" : "" %>>
                         	<span class="radio_span">여자</span>
@@ -200,7 +201,7 @@
                     	<label>
                         	<input type="radio" name="type" value="1" <%= type == 1 ? "checked" : "" %>>
                         	<span class="radio_span">예</span>
-                        </lable>
+                        </label>
                         <label>
                         	<input type="radio" name="type" value="2" <%= type == 2 ? "checked" : "" %>>
                         	<span class="radio_span">아니오</span>
@@ -227,7 +228,6 @@
             <hr />
             <div class="tail">
                 <button type="submit" class="btn">회원 수정</button>
-                <button type="submit" class="btn">회원 탈퇴</button>
             </div>
         </form>
     </div>
@@ -235,6 +235,5 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="../js/addr.js"></script>
     
-</body>
 </body>
 </html>
