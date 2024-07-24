@@ -13,6 +13,7 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자 페이지</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/requestBook/adUpdate.css">
 </head>
 <body>
     <h1>관리자 페이지</h1>

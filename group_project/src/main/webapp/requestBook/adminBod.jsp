@@ -3,8 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="s" %>
 
+<jsp:useBean id="cri" class="util.Criteria" scope="page"/>
+<jsp:setProperty property="*" name="cri"/>
+
 <s:query var="result" dataSource="jdbc/MySQLDB">
 	SELECT * FROM book_requests WHERE status = '신청' ORDER BY request_id DESC
+	limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
 </s:query>
 
 <!DOCTYPE html>
@@ -57,7 +61,7 @@
                    				<td>${b.year}</td>
                    				<td>
                    					<a href="adminUpdate.jsp?request_id=${b.request_id}"><button>수정</button></a>
-                   					<a href="adminDelete.jsp?request_id=${b.request_id}"></a><button>삭제</button>
+                   					<a href="adminDelete.jsp?request_id=${b.request_id}"><button>삭제</button></a>
                    				</td>
                    			</tr>
                    		</c:forEach>
@@ -69,8 +73,39 @@
                    	</c:otherwise>
                    </c:choose>
                 </tbody>
+                <tfoot>
+                	<tr>
+                		<td colspan="6">
+                			<!-- 페이징 블록 -->
+                			<s:query var="rs" dataSource="jdbc/MySQLDB">
+                				SELECT count(*) as count FROM book_requests WHERE status = '신청'
+                			</s:query>
+							<jsp:useBean id="pm" class="util.PageMaker"/>
+							<jsp:setProperty property="cri" name="pm" value="${cri}"/>
+							<jsp:setProperty property="displayPageNum" name="pm" value="10"/>
+							
+                            <!-- Assume rs.rows[0].count has the total row count -->
+							<jsp:setProperty property="totalCount" name="pm" value="${rs.rows[0].count}"/>
+							
+						    <c:if test="${cri.page > 1}">
+						    	<a href="adminBod.jsp?page=1"><input type="button" value="처음"/></a>
+						    	<c:if test="${pm.prev}">
+						    		<a href="adminBod.jsp?page=${pm.startPage - 1}"><input type="button" value="이전"/></a>
+						    	</c:if>
+						    </c:if>
+						    <c:forEach var="i" begin="${pm.startPage}" end="${pm.endPage}" step="1">
+						    	<a href="adminBod.jsp?page=${i}"><input type="button" value="${i}"/></a>
+						    </c:forEach>
+						    <c:if test="${cri.page < pm.maxPage}">
+						    	<c:if test="${pm.next}">
+						    		<a href="adminBod.jsp?page=${pm.endPage + 1}"><input type="button" value="다음"/></a>
+						    	</c:if>
+						    	<a href="adminBod.jsp?page=${pm.maxPage}"><input type="button" value="마지막"/></a>
+						    </c:if>
+                		</td>
+                	</tr>
+                </tfoot>
             </table>
-            <a href="reBook.jsp"><button class="request-button top">도서 신청</button></a>
         </main>
     </div>
     

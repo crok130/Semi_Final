@@ -7,8 +7,13 @@
 <jsp:setProperty property="*" name="cri"/>
 
 <s:query var="result" dataSource="jdbc/MySQLDB">
-	SELECT * FROM book_requests WHERE status = '완료' ORDER BY request_id DESC
-	limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
+    SELECT * FROM book_requests 
+    WHERE (title LIKE ? OR author LIKE ? OR publisher LIKE ?) 
+    ORDER BY request_id DESC
+    limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
+    <s:param value="%${param.search}%"/>
+    <s:param value="%${param.search}%"/>
+    <s:param value="%${param.search}%"/>
 </s:query>
 
 <!DOCTYPE html>
@@ -61,7 +66,7 @@
                    				<td>${b.year}</td>
                    				<td>
                    					<a href="adminUpdate.jsp?request_id=${b.request_id}"><button>수정</button></a>
-                   					<a href="adminDelete.jsp?request_id=${b.request_id}"><button>삭제</button></a>	
+                   					<a href="adminDelete.jsp?request_id=${b.request_id}"><button>삭제</button></a>
                    				</td>
                    			</tr>
                    		</c:forEach>
@@ -77,30 +82,35 @@
                 	<tr>
                 		<td colspan="5">
                 			<!-- 페이징 블록 -->
-                			<s:query var="rs" dataSource="jdbc/MySQLDB">
-                				SELECT count(*) as count FROM book_requests WHERE status = '완료'
-                			</s:query>
+							<!-- PageMaker 객체 생성 -->
+							<s:query var="result" dataSource="jdbc/MySQLDB">
+							    SELECT count(*) AS count FROM book_requests 
+							    WHERE (title LIKE ? OR author LIKE ? OR publisher LIKE ?) 
+							    ORDER BY request_id DESC
+							    <s:param value="%${param.search}%"/>
+							    <s:param value="%${param.search}%"/>
+							    <s:param value="%${param.search}%"/>
+							</s:query>
 							<jsp:useBean id="pm" class="util.PageMaker"/>
 							<jsp:setProperty property="cri" name="pm" value="${cri}"/>
 							<jsp:setProperty property="displayPageNum" name="pm" value="10"/>
+							<jsp:setProperty property="totalCount" name="pm" value="${result.rows[0].count}"/>
 							
-                            <!-- Assume rs.rows[0].count has the total row count -->
-							<jsp:setProperty property="totalCount" name="pm" value="${rs.rows[0].count}"/>
-							
+							<%-- ${pm} <br/> --%>
 						    <c:if test="${cri.page > 1}">
-						    	<a href="adminBodComplete.jsp?page=1"><input type="button" value="처음"/></a>
+						    	<a href="adminSearch.jsp?page=1"><input type="button" value="처음"/></a>
 						    	<c:if test="${pm.prev}">
-						    		<a href="adminBodComplete.jsp?page=${pm.startPage - 1}"><input type="button" value="이전"/></a>
+						    		<a href="adminSearch.jsp?page=${pm.startPage - 1}"><input type="button" value="이전"/></a>
 						    	</c:if>
 						    </c:if>
 						    <c:forEach var="i" begin="${pm.startPage}" end="${pm.endPage}" step="1">
-						    	<a href="adminBodComplete.jsp?page=${i}"><input type="button" value="${i}"/></a>
+						    	<a href="adminSearch.jsp?page=${i}"><input type="button" value="${i}"/></a>
 						    </c:forEach>
 						    <c:if test="${cri.page < pm.maxPage}">
 						    	<c:if test="${pm.next}">
-						    		<a href="adminBodComplete.jsp?page=${pm.endPage + 1}"><input type="button" value="다음"/></a>
+						    		<a href="adminSearch.jsp?page=${pm.endPage + 1}"><input type="button" value="다음"/></a>
 						    	</c:if>
-						    	<a href="adminBodComplete.jsp?page=${pm.maxPage}"><input type="button" value="마지막"/></a>
+						    	<a href="adminSearch.jsp?page=${pm.maxPage}"><input type="button" value="마지막"/></a>
 						    </c:if>
                 		</td>
                 	</tr>

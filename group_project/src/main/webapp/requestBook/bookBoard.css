@@ -1,119 +1,166 @@
 @charset "UTF-8";
-	/* styles.css */
-    body {
-    	font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-    }
 
-    .container {
-        display: flex;
-        flex: 1;
-    }
+/* 전체적인 스타일 설정 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
 
-    header, footer {
-        background-color: #2c3e50;
-        color: white;
-        padding: 10px 20px;
-    }
+/* 헤더와 푸터 스타일 설정 */
+header, footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 20px;
+}
 
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    header h1 {
-        margin: 0;
-    }
+header h1 {
+    margin: 0;
+}
 
-    .search-form {
-        display: flex;
-        align-items: center;
-    }
+.search-form {
+    display: flex;
+    align-items: center;
+}
 
-    .search-form input {
-        padding: 5px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        margin-right: 10px;
-    }
+.search-form input {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
 
-    .search-form button {
-        padding: 5px 10px;
-        background-color: #e74c3c;
-        border: none;
-        border-radius: 4px;
-        color: white;
-        cursor: pointer;
-    }
+.search-form button {
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
 
-    nav {
-        background-color: #34495e;
-        width: 200px;
-        padding-top: 20px;
-        flex-shrink: 0;
-    }
+/* 컨테이너 스타일 설정 */
+.container {
+    display: flex;
+    flex: 1;
+}
 
-    nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+/* 네비게이션 스타일 설정 */
+nav {
+    background-color: #34495e;
+    width: 200px;
+    padding-top: 20px;
+    flex-shrink: 0;
+}
 
-    nav ul li {
-        margin: 20px 0;
-    }
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-    nav ul li a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 20px;
-        display: block;
-    }
+nav ul li {
+    margin: 20px 0;
+}
 
-    .content {
-        flex: 1;
-        padding: 20px;
-        position: relative;
-    }
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
 
-    .request-button {
-        position: absolute;
-        right: 20px;
-        padding: 10px 20px;
-        background-color: #3498db;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+/* 메인 콘텐츠 스타일 설정 */
+.content {
+    flex: 1;
+    padding: 20px;
+    position: relative;
+}
 
-    .request-button.top {
-        top: 20px;
-    }
+.request-button {
+    position: absolute;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-    .request-button.bottom {
-        bottom: 20px;
-    }
+.request-button.top {
+    top: 20px;
+}
 
-    .board-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 80px; /* 추가적인 마진을 줘서 버튼과 겹치지 않게 함 */
-    }
+.request-button.bottom {
+    bottom: 20px;
+}
 
-    .board-table th, .board-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
+/* 테이블 스타일 설정 */
+.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 60px; /* 추가적인 마진을 줘서 버튼과 겹치지 않게 함 */
+}
 
-    .board-table th {
-        background-color: #2c3e50;
-        color: white;
-    }
+.board-table th, .board-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.board-table th {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.board-table td {
+    background-color: white;
+}
+
+/* 페이징 스타일 설정 */
+tfoot {
+    text-align: center; /* 가운데 정렬 */
+}
+
+tfoot td {
+    padding: 10px; /* 충분한 패딩을 줘서 버튼이 붙지 않게 함 */
+}
+
+tfoot a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #3498db;
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+tfoot a:hover {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+tfoot a.disabled {
+    color: #bdc3c7;
+    cursor: not-allowed;
+    background-color: #f9f9f9;
+    border-color: #bdc3c7;
+}
+
+tfoot tr {
+    text-align: center;
+}

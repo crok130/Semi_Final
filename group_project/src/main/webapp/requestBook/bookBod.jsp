@@ -8,9 +8,14 @@
     String userId = (String) session.getAttribute("userId");
 %>
 
+<jsp:useBean id="cri" class="util.Criteria" scope="page"/>
+<jsp:setProperty property="*" name="cri"/>
+
 <s:query var="result" dataSource="jdbc/MySQLDB">
 	SELECT * FROM book_requests WHERE status = '신청' ORDER BY request_id DESC
+	limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
 </s:query>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +26,7 @@
 <body>
     <header>
         <h1>도서 신청 목록</h1>
-        <form action="requestBook/reBookSearch.jsp" method="get" class="search-form">
+        <form action="reBookSearch.jsp" method="GET" class="search-form">
             <input type="text" name="search" placeholder="도서 검색">
             <button type="submit">검색</button>
         </form>
@@ -75,6 +80,39 @@
                    	</c:otherwise>
                    </c:choose>
                 </tbody>
+                
+                <tfoot>
+                	<tr>
+                		<td colspan="5">
+                			<!-- 페이징 블록 -->
+                			<s:query var="rs" dataSource="jdbc/MySQLDB">
+                				SELECT count(*) as count FROM book_requests WHERE status = '신청'
+                			</s:query>
+							<jsp:useBean id="pm" class="util.PageMaker"/>
+							<jsp:setProperty property="cri" name="pm" value="${cri}"/>
+							<jsp:setProperty property="displayPageNum" name="pm" value="10"/>
+							
+                            <!-- Assume rs.rows[0].count has the total row count -->
+							<jsp:setProperty property="totalCount" name="pm" value="${rs.rows[0].count}"/>
+							
+						    <c:if test="${cri.page > 1}">
+						    	<a href="bookBod.jsp?page=1"><input type="button" value="처음"/></a>
+						    	<c:if test="${pm.prev}">
+						    		<a href="bookBod.jsp?page=${pm.startPage - 1}"><input type="button" value="이전"/></a>
+						    	</c:if>
+						    </c:if>
+						    <c:forEach var="i" begin="${pm.startPage}" end="${pm.endPage}" step="1">
+						    	<a href="bookBod.jsp?page=${i}"><input type="button" value="${i}"/></a>
+						    </c:forEach>
+						    <c:if test="${cri.page < pm.maxPage}">
+						    	<c:if test="${pm.next}">
+						    		<a href="bookBod.jsp?page=${pm.endPage + 1}"><input type="button" value="다음"/></a>
+						    	</c:if>
+						    	<a href="bookBod.jsp?page=${pm.maxPage}"><input type="button" value="마지막"/></a>
+						    </c:if>
+                		</td>
+                	</tr>
+                </tfoot>
             </table>
         </main>
     </div>
