@@ -26,6 +26,13 @@
 <body>
     <header>
         <h1>도서 신청 목록</h1>
+        <nav>
+        	<ul>
+        		<li><a href="#">홈</a></li>
+        		<li><a href="#">중고 사이트</a></li>
+        		<li><a href="adminBod.jsp">도서 신청</a></li>
+        	</ul>
+        </nav>
         <form action="reBookSearch.jsp" method="get" class="search-form">
             <input type="text" name="search" placeholder="도서 검색">
             <button type="submit">검색</button>

@@ -21,7 +21,19 @@
 <body>
     <header>
         <h1>도서 신청 목록</h1>
-        <form action="requestBook/reBookSearch.jsp" method="get" class="search-form">
+        <nav>
+        	<ul>
+        		<li><a href="#">홈</a></li>
+        		<li><a href="#">중고 사이트</a></li>
+        		<li><a href="adminBod.jsp">도서 신청</a></li>
+        	</ul>
+        </nav>
+        <form action="reBookSearch.jsp" method="get" class="search-form">
+        	<select name="op">
+        		<option value="title">제목</option>
+        		<option value="author">저자</option>
+        		<option value="publisher">출판사</option>
+        	</select>
             <input type="text" name="search" placeholder="도서 검색">
             <button type="submit">검색</button>
         </form>
@@ -30,7 +42,7 @@
     <div class="container">
         <nav>
             <ul>
-                <li><a href="adminBod.jsp">홈</a></li>
+                <li><a href="adminBod.jsp">신청</a></li>
                 <li><a href="adminBodApplying.jsp">승인</a></li>
                 <li><a href="adminBodComplete.jsp">완료</a></li>
             </ul>
@@ -46,6 +58,7 @@
                         <th>저자</th>
                         <th>출판사</th>
                         <th>출판 연도</th>
+                        <th>상태</th>
                         <th>비고</th>
                     </tr>
                 </thead>
@@ -59,6 +72,7 @@
                    				<td>${b.author}</td>
                    				<td>${b.publisher}</td>
                    				<td>${b.year}</td>
+                   				<td>${b.status }</td>
                    				<td>
                    					<a href="adminUpdate.jsp?request_id=${b.request_id}"><button>수정</button></a>
                    					<a href="adminDelete.jsp?request_id=${b.request_id}"><button>삭제</button></a>
@@ -68,14 +82,14 @@
                    	</c:when>
                    	<c:otherwise>
                    		<tr>
-                   			<td colspan="5">등록된 정보가 없습니다.</td>
+                   			<td colspan="7">등록된 정보가 없습니다.</td>
                    		</tr>
                    	</c:otherwise>
                    </c:choose>
                 </tbody>
                 <tfoot>
                 	<tr>
-                		<td colspan="6">
+                		<td colspan="7">
                 			<!-- 페이징 블록 -->
                 			<s:query var="rs" dataSource="jdbc/MySQLDB">
                 				SELECT count(*) as count FROM book_requests WHERE status = '신청'

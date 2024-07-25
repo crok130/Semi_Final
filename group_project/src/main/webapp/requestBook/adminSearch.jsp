@@ -7,13 +7,29 @@
 <jsp:setProperty property="*" name="cri"/>
 
 <s:query var="result" dataSource="jdbc/MySQLDB">
-    SELECT * FROM book_requests 
-    WHERE (title LIKE ? OR author LIKE ? OR publisher LIKE ?) 
-    ORDER BY request_id DESC
-    limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
-    <s:param value="%${param.search}%"/>
-    <s:param value="%${param.search}%"/>
-    <s:param value="%${param.search}%"/>
+    <c:choose>
+        <c:when test="${param.op == 'title'}">
+            SELECT * FROM book_requests 
+            WHERE title LIKE ?
+            ORDER BY request_id DESC
+            limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
+            <s:param value="%${param.search}%"/>
+        </c:when>
+        <c:when test="${param.op == 'author'}">
+            SELECT * FROM book_requests 
+            WHERE author LIKE ?
+            ORDER BY request_id DESC
+            limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
+            <s:param value="%${param.search}%"/>
+        </c:when>
+        <c:when test="${param.op == 'publisher'}">
+            SELECT * FROM book_requests 
+            WHERE publisher LIKE ?
+            ORDER BY request_id DESC
+            limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
+            <s:param value="%${param.search}%"/>
+        </c:when>
+    </c:choose>
 </s:query>
 
 <!DOCTYPE html>
@@ -26,7 +42,19 @@
 <body>
     <header>
         <h1>도서 신청 목록</h1>
-        <form action="requestBook/reBookSearch.jsp" method="get" class="search-form">
+        <nav>
+        	<ul>
+        		<li><a href="#"></a>홈</li>
+        		<li><a href="#"></a>중고 사이트</li>
+        		<li><a href="bookBod.jsp"></a>도서 신청</li>
+        	</ul>
+        </nav>
+        <form action="reBookSearch.jsp" method="get" class="search-form">
+			<select name="op">
+        		<option value="title">제목</option>
+        		<option value="author">저자</option>
+        		<option value="publisher">출판사</option>
+        	</select>
             <input type="text" name="search" placeholder="도서 검색">
             <button type="submit">검색</button>
         </form>
@@ -84,12 +112,26 @@
                 			<!-- 페이징 블록 -->
 							<!-- PageMaker 객체 생성 -->
 							<s:query var="result" dataSource="jdbc/MySQLDB">
-							    SELECT count(*) AS count FROM book_requests 
-							    WHERE (title LIKE ? OR author LIKE ? OR publisher LIKE ?) 
-							    ORDER BY request_id DESC
-							    <s:param value="%${param.search}%"/>
-							    <s:param value="%${param.search}%"/>
-							    <s:param value="%${param.search}%"/>
+							    <c:choose>
+							        <c:when test="${param.op == 'title'}">
+							            SELECT * FROM book_requests 
+							            WHERE title LIKE ?
+							            ORDER BY request_id DESC
+							            <s:param value="%${param.search}%"/>
+							        </c:when>
+							        <c:when test="${param.op == 'author'}">
+							            SELECT * FROM book_requests 
+							            WHERE author LIKE ?
+							            ORDER BY request_id DESC
+							            <s:param value="%${param.search}%"/>
+							        </c:when>
+							        <c:when test="${param.op == 'publisher'}">
+							            SELECT * FROM book_requests 
+							            WHERE publisher LIKE ?
+							            ORDER BY request_id DESC
+							            <s:param value="%${param.search}%"/>
+							        </c:when>
+							    </c:choose>
 							</s:query>
 							<jsp:useBean id="pm" class="util.PageMaker"/>
 							<jsp:setProperty property="cri" name="pm" value="${cri}"/>

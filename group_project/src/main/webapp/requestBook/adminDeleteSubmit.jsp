@@ -6,7 +6,7 @@
 <!-- 게시글 삭제 요청 처리 -->
 <s:update var="result" dataSource="jdbc/MySQLDB">
 	DELETE FROM book_requests
-	WHERE request_id = ?
+	WHERE request_id = ? AND status = '완료'
 	<s:param value="${param.request_id}" />
 </s:update>
 
