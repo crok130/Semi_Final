@@ -1,12 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, java.io.*" %>
-<jsp:useBean id="criteria" class="util.Criteria" scope="page" />
-<jsp:setProperty name="criteria" property="page" value="${param.page}" />
-<jsp:setProperty name="criteria" property="perPageNum" value="${param.perPageNum}" />
-
-<jsp:useBean id="pageMaker" class="util.PageMaker" scope="page" />
-<jsp:setProperty name="pageMaker" property="cri" value="${criteria}" />
-<jsp:setProperty name="pageMaker" property="displayPageNum" value="10" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -393,37 +386,28 @@
             </nav>
         </aside>        
         <section id="section">
-          <%
+            <%
+                // 데이터베이스 연결 설정
                 String url = "jdbc:mysql://localhost:3306/baskin";
                 String user = "root";
                 String password = "1234";
+                
+                String title_serch = request.getParameter("search_txt");
 
                 Connection conn = null;
-                PreparedStatement pstmt = null;
+                PreparedStatement pstmt = null;;
                 ResultSet rs = null;
-                int totalCount = 0;
-
+                boolean resultsFound = false;
+                	
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     conn = DriverManager.getConnection(url, user, password);
-
-                    // 전체 레코드 수 조회
-                    String countSql = "SELECT COUNT(*) FROM Books WHERE status = '신책'";
-                    pstmt = conn.prepareStatement(countSql);
-                    rs = pstmt.executeQuery();
-                    if (rs.next()) {
-                        totalCount = rs.getInt(1);
-                    }
-                    pageMaker.setTotalCount(totalCount);
-
-                    // 페이징된 레코드 조회
-                    String sql = "SELECT * FROM Books WHERE status = '신책' LIMIT ?, ?";
+                    String sql = "SELECT * FROM Books WHERE title LIKE ?";
                     pstmt = conn.prepareStatement(sql);
-                    pstmt.setInt(1, criteria.getStartRow());
-                    pstmt.setInt(2, criteria.getPerPageNum());
+                    pstmt.setString(1, "%" + title_serch + "%");
                     rs = pstmt.executeQuery();
-
                     while (rs.next()) {
+                        resultsFound = true;
                         int book_id = rs.getInt("book_id");
                         String title = rs.getString("title");
                         String author = rs.getString("author");
@@ -433,54 +417,33 @@
                         String imagePath = rs.getString("image_path");
             %>
                         <div class="book">
-                            <a href="book_detail.jsp?book_id=<%= book_id %>"><img src="<%= imagePath %>" alt="Book Image" class="bimg"></a>
-                            <a href="book_detail.jsp?book_id=<%= book_id %>"><div class="btitle"><%= title %></div></a>
-                            <a href="book_detail.jsp?book_id=<%= book_id %>"><div class="bauthor">저자 : <%= author %></div></a>
-                            <a href="book_detail.jsp?book_id=<%= book_id %>"><div class="bpublisher">출판사 : <%= publisher %></div></a>
-                            <a href="book_detail.jsp?book_id=<%= book_id %>"><div class="bcategory">카테고리 : <%= category %></div></a>
-                            <a href="book_detail.jsp?book_id=<%= book_id %>"><div class="bprice"><%= price %> 원</div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><img src="<%= imagePath %>" alt="Book Image" class="bimg"></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="btitle"><%= title %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bauthor">저자 : <%= author %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bpublisher">출판사 :<%= publisher %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bcategory">카테고리 : <%= category %></div></a>
+                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bprice"><%= price %> 원</div></a>
                         </div>
+            <%
+                    }
+                    if (!resultsFound) {
+            %>
+                        <script>
+                            alert("검색결과가 없습니다.");
+                            location.href = "index.jsp";
+                        </script>
             <%
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
-                    if (pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
-                    if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    try { if (rs != null) rs.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    try { if (pstmt != null) pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
+                    try { if (conn != null) conn.close(); } catch (SQLException e) { e.printStackTrace(); }
                 }
             %>
         </section>
         <footer>
-        	<nav>
-            <ul class="pagination justify-content-center">
-                <%
-                    if (pageMaker.isPrev()) {
-                %>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<%= pageMaker.getStartPage() - 1 %>&perPageNum=<%= criteria.getPerPageNum() %>">Previous</a>
-                    </li>
-                <%
-                    }
-
-                    for (int i = pageMaker.getStartPage(); i <= pageMaker.getEndPage(); i++) {
-                %>
-                    <li class="page-item <%= (i == criteria.getPage()) ? "active" : "" %>">
-                        <a class="page-link" href="?page=<%= i %>&perPageNum=<%= criteria.getPerPageNum() %>"><%= i %></a>
-                    </li>
-                <%
-                    }
-
-                    if (pageMaker.isNext()) {
-                %>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<%= pageMaker.getEndPage() + 1 %>&perPageNum=<%= criteria.getPerPageNum() %>">Next</a>
-                    </li>
-                <%
-                    }
-                %>
-            </ul>
-        </nav>
             <p>Copyright © 베스킨라빈스31.2 Corp. All Rights Reserved.</p>
             <p>고객센터 0000-0000 (유료) 365일 09:00 ~ 18:00 </p>
         </footer>        

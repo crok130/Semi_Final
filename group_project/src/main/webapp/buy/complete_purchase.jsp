@@ -23,8 +23,8 @@
             
             // 1. 새로운 주문 그룹 ID 생성
             String generateOrderGroupIdSql = "SELECT COALESCE(MAX(order_group_id), 0) + 1 AS new_order_group_id FROM Orders WHERE memberNum = ?";
-            pstmt.setInt(1, memberNum);
             pstmt = conn.prepareStatement(generateOrderGroupIdSql);
+            pstmt.setInt(1, memberNum);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 orderGroupId = rs.getInt("new_order_group_id");
@@ -48,7 +48,7 @@
                 pstmt.setString(2, buyerName);
                 pstmt.setString(3, buyerAddr);
                 pstmt.setString(4, buyerTel);
-                pstmt.setInt(5, price); // totalPrice는 하나의 주문에 대한 총액
+                pstmt.setInt(5, price);
                 pstmt.setInt(6, book_id);
                 pstmt.setInt(7, quantity);
                 pstmt.setInt(8, orderGroupId);
