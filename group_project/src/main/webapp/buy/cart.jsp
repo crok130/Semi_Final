@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.HashMap" %>
+<%@ page import="java.sql.*, utils.JDBCUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,39 +16,53 @@
                 <tr>
                     <th>상품명</th>
                     <th>가격</th>
+                    <th>수량</th>
+                    <th>합계</th>
                     <th>작업</th>
                 </tr>
             </thead>
             <tbody>
                 <%
-                    ArrayList<HashMap<String, String>> cart = (ArrayList<HashMap<String, String>>) session.getAttribute("cart");
-                    if (cart != null && !cart.isEmpty()) {
-                        for (HashMap<String, String> item : cart) {
+                    Connection conn = null;
+                    PreparedStatement pstmt = null;
+                    ResultSet rs = null;
+                    try {
+                        conn = JDBCUtil.getConnection();
+                        String sql = "SELECT B.title, C.price, C.quantity, (C.price * C.quantity) as total_price, C.book_id " +
+                                     "FROM Cart C JOIN Books B ON C.book_id = B.book_id " +
+                                     "WHERE C.memberNum = ?";
+                        pstmt = conn.prepareStatement(sql);
+                        pstmt.setInt(1, 1/* 여기에 로그인된 사용자 ID를 입력하세요 */);
+                        rs = pstmt.executeQuery();
+
+                        while (rs.next()) {
+                            String title = rs.getString("title");
+                            int price = rs.getInt("price");
+                            int quantity = rs.getInt("quantity");
+                            int total_price = rs.getInt("total_price");
+                            int book_id = rs.getInt("book_id");
                 %>
                 <tr>
-                    <td><%= item.get("product") %></td>
-                    <td><%= item.get("price") %> 원</td>
+                    <td><%= title %></td>
+                    <td><%= price %></td>
+                    <td><%= quantity %></td>
+                    <td><%= total_price %></td>
                     <td>
-                        <form action="remove_from_cart.jsp" method="post">
-                            <input type="hidden" name="product" value="<%= item.get("product") %>">
-                            <button type="submit" class="btn btn-danger btn-sm">삭제</button>
-                        </form>
+                        <a href="removeFromCart.jsp?book_id=<%= book_id %>" class="btn btn-danger">삭제</a>
                     </td>
                 </tr>
                 <%
                         }
-                    } else {
-                %>
-                <tr>
-                    <td colspan="3" class="text-center">장바구니가 비어 있습니다.</td>
-                </tr>
-                <%
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } finally {
+                        JDBCUtil.close(rs, pstmt, conn);
                     }
                 %>
             </tbody>
         </table>
-        <a href="products.jsp" class="btn btn-secondary btn-block">계속 쇼핑하기</a>
-        <form action="checkout.jsp" method="post">
+        <a href="../index.jsp" class="btn btn-secondary btn-block">계속 쇼핑하기</a>
+        <form action="payment.jsp" method="post">
             <button type="submit" class="btn btn-primary btn-block">결제하기</button>
         </form>
     </div>

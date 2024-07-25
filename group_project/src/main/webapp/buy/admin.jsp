@@ -20,29 +20,11 @@
                     <th>전화번호</th>
                     <th>결제상품</th>
                     <th>가격</th>
+                    <th>신책&중고책</th>
                 </tr>
             </thead>
             <tbody>
-                <%
-                    String filePath = application.getRealPath("/") + "WEB-INF/purchase_data.txt";
-                    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            if (line.startsWith("이름")) {
-                                out.println("<tr>");
-                                out.println("<td>" + line.split(": ")[1] + "</td>");
-                                out.println("<td>" + br.readLine().split(": ")[1] + "</td>");
-                                out.println("<td>" + br.readLine().split(": ")[1] + "</td>");
-                                out.println("<td>" + br.readLine().split(": ")[1] + "</td>");
-                                out.println("<td>" + br.readLine().split(": ")[1] + "</td>");
-                                out.println("</tr>");
-                                br.readLine(); // Skip the "----------" line
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                %>
+         
             </tbody>
         </table>
     </div>

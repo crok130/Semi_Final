@@ -1,22 +1,57 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.HashMap" %>
+<%@ page import="java.sql.*, utils.JDBCUtil" %>
 <%
-    String product = request.getParameter("product");
-    String price = request.getParameter("price");
+    int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+    int book_id = Integer.parseInt(request.getParameter("book_id"));
+    int quantity = Integer.parseInt(request.getParameter("quantity"));
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+    int price = Integer.parseInt(request.getParameter("price"));
+    int totalPrice = price * quantity;
+    try {
+        // 데이터베이스 연결
+        conn = JDBCUtil.getConnection();
 
-    ArrayList<HashMap<String, String>> cart = (ArrayList<HashMap<String, String>>) session.getAttribute("cart");
-    if (cart == null) {
-        cart = new ArrayList<>();
+        // 같은 상품이 이미 장바구니에 있는지 확인
+        String checkSql = "SELECT quantity FROM Cart WHERE memberNum = ? AND book_id = ?";
+        pstmt = conn.prepareStatement(checkSql);
+        pstmt.setInt(1, memberNum);
+        pstmt.setInt(2, book_id);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            // 이미 장바구니에 있는 경우 수량을 업데이트
+            int existingQuantity = rs.getInt("quantity");
+            int newQuantity = existingQuantity + quantity;
+            String updateSql = "UPDATE Cart SET quantity = ?, price = ? WHERE memberNum = ? AND book_id = ?";
+            pstmt = conn.prepareStatement(updateSql);
+            pstmt.setInt(1, newQuantity);
+            pstmt.setInt(2, price * newQuantity);
+            pstmt.setInt(3, memberNum);
+            pstmt.setInt(4, book_id);
+            pstmt.executeUpdate();
+        } else {
+            // 장바구니에 없는 경우 새로 추가
+            String insertSql = "INSERT INTO Cart (memberNum, book_id, quantity, price) VALUES (?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(insertSql);
+            pstmt.setInt(1, memberNum);
+            pstmt.setInt(2, book_id);
+            pstmt.setInt(3, quantity);
+            pstmt.setInt(4, totalPrice);
+            pstmt.executeUpdate();
+        }
+
+        // 성공 메시지 반환
+        response.getWriter().write("success");
+    } catch (Exception e) {
+        // 예외 처리 및 오류 메시지 반환
+        e.printStackTrace();
+        response.getWriter().write("error");
+    } finally {
+        // 자원 해제
+        if (rs != null) rs.close();
+        if (pstmt != null) pstmt.close();
+        if (conn != null) conn.close();
     }
-
-    HashMap<String, String> item = new HashMap<>();
-    item.put("product", product);
-    item.put("price", price);
-
-    cart.add(item);
-    session.setAttribute("cart", cart);
-
-    // 추가된 상품 이름과 가격을 클라이언트로 전송합니다.
-    out.println(product + "이(가) " + price + "원에 장바구니에 추가되었습니다!");
 %>
