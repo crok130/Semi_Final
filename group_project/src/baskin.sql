@@ -15,7 +15,7 @@ memberGender VARCHAR(5)NOT NULL,				-- 성별
 memberPoint INT DEFAULT 0,						-- 포인트
 memberJoin TIMESTAMP NOT NULL DEFAULT now(),	-- 가입일
 memberVisit TIMESTAMP NOT NULL DEFAULT now(),	-- 최종 방문일
-memberType INT,									-- 관리자 판매 일반 계정 구분 (1: 일반 / 2: 판매자 / 3: 관리자)
+memberType INT,									-- 관리자 판매 일반 계정 구분 (0: 일반 / 1: 판매자 / 2: 관리자)
 memberWithdraw char(1) DEFAULT 'n'				-- 탈퇴 (회원 정보 숨김) n/y
 );
 
@@ -34,7 +34,7 @@ DROP COLUMN memberAddr;
 
 UPDATE member
 SET memberWithdraw = 'n'
-WHERE memberName = "서석희";
+WHERE memberName = "징징이";
 
 DROP TABLE member;
 

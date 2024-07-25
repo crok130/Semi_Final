@@ -31,7 +31,7 @@
 		pstmt.setString(4, addr1);
 		pstmt.setString(5, addr2);
 		pstmt.setString(6, addr3);
-		pstmt.setInt(7, type);			// type을 숫자(1, 2, 3)로 설정해야 할 수 있습니다.  [input = radio]임
+		pstmt.setInt(7, type);			// type을 숫자(0, 1, 2)로 설정해야 할 수 있습니다.  [input = radio]임
 		pstmt.setString(8, userId);
 		
 		// 쿼리 실행
@@ -40,8 +40,8 @@
 		if (rowUpdate > 0) {
 %>
 			<script>
-			alert('성공적으로 수정했습니다.');
-			window.location.href = '../index.jsp';
+				alert('성공적으로 수정했습니다.');
+				window.location.href = 'mainPage.jsp';
 			</script>
 <%
 		} else {

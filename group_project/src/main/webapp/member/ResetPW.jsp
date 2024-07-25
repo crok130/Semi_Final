@@ -14,12 +14,14 @@
         		// 비밀번호 변경
         		memberDAO.updateReset(newPwChk, mId, email);
         		// 비밀번호 변경 완료 후 메인 페이지로 리다이렉트
-        		response.sendRedirect("index.jsp");
+        		response.sendRedirect("mainPage.jsp");
         } else {
-%>
         	// 새 비밀번호와 확인 비밀번호 불일치
-			alert('비밀번호를 다시 확인해 주세요.')
-			history.back(-1);
+%>
+        	<script>
+				alert('비밀번호를 다시 확인해 주세요.')
+				history.back();
+        	</script>
 <%
         }
 

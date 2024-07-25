@@ -7,8 +7,8 @@
 	Integer userType = (Integer) session.getAttribute("memberType");
 	
 	// 관리자 권한 체크
-	if (userType == null || userType != 3) {
-     response.sendRedirect("error.jsp"); // 관리자 권한이 없으면 오류 페이지로 리다이렉트
+	if (userType == null || userType != 2) {
+     	response.sendRedirect("mainPage.jsp"); // 관리자 권한이 없으면 메인 페이지로 리다이렉트
      return;
  	}
 

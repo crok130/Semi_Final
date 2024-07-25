@@ -52,10 +52,10 @@
 			InternetAddress to = new InternetAddress(email);
 			msg.setRecipient(MimeMessage.RecipientType.TO, to);
 			// 발신자 지정
-			InternetAddress from = new InternetAddress("master@gamil.com","MASTER");
+			InternetAddress from = new InternetAddress("master@baskinrobbins.com","MASTER");
 			msg.setFrom(from);
 			// 제목 지정
-			msg.setSubject("SSH 인증코드", "UTF-8");
+			msg.setSubject("BASKINROBBINS 31.2 인증코드", "UTF-8");
 			String message = "<h3>인증코드 : ["+code+"]</h3>";
 			message += "인증코드를 입력해주세요."; 
 			msg.setContent(message,"text/html;charset=utf-8");

@@ -62,9 +62,9 @@
                 		String type = rs.getString("memberType");
                 		Timestamp visit = rs.getTimestamp("memberVisit");
                 		
-                		if (type.equals("1")) {
+                		if (type.equals("0")) {
                 			type = "일반";
-                		} else if (type.equals("2")) {
+                		} else if (type.equals("1")) {
                 			type = "판매자";                			
                 		} else {
                 			type = "관리자";
@@ -147,7 +147,7 @@
 					
 					int startPage = 0;		// 현재 요청 페이지에서 보여줄 시작 페이지 번호
 					int endPage = 0;		// 현재 요청 페이지에서 보여줄 마지막 페이지 번호
-					int displayPageNum = 5;	// 한 번에 보여줄 페이지 번호 개수
+					int displayPageNum = 10;	// 한 번에 보여줄 페이지 번호 개수
 					
 					startPage = (currentPage - 1) / displayPageNum * displayPageNum + 1; // 시작 페이지 
 					endPage = startPage + (displayPageNum - 1); // 출력할 마지막 페이지 번호

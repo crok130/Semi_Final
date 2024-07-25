@@ -28,7 +28,7 @@
             <!-- 아이디 저장 -->
             <div class="remember">
                 <!-- 쿠키 사용 -->
-                <label><input type="checkbox"> 아이디 저장</label>
+                <label><input type="checkbox" name="autoLogin"> 자동 로그인</label>
             </div>
 
             <!-- 로그인 버튼 -->

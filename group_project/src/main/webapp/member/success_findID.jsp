@@ -28,7 +28,7 @@
 %>
                 <script>
                 	alert('아이디를 찾을 수 없습니다.');
-                	history.bakc(-1);
+                	history.back();
                 </script>
 <%
             }
@@ -41,7 +41,7 @@
 %>
 		<script>
 			alert('인증코드가 일치하지 않습니다.');
-			history.back(-1);
+			history.back();
 		</script>
 <%
     }

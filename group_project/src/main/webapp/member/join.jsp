@@ -188,7 +188,7 @@
                     	<label>
                         	<input type="radio" name="gender" value="남자" checked="checked">
                         	<span class="radio_span">남자</span>
-                        </lable>
+                        </label>
                         <label>
                         	<input type="radio" name="gender" value="여자">
                         	<span class="radio_span">여자</span>
@@ -202,14 +202,14 @@
                     <td>판매자<span class="star"> *</span></td>
                     <td class="seller_table">
                     	<label>
-                        	<input type="radio" name="type" value="1">
+                        	<input type="radio" name="type" value="0">
                         	<span class="radio_span">예</span>
-                        </lable>
+                        </label>
                         <label>
-                        	<input type="radio" name="type" value="2" checked="checked">
+                        	<input type="radio" name="type" value="1" checked="checked">
                         	<span class="radio_span">아니오</span>
-                        	<!-- 관리자 식별 번호 : 3 -->
-                        	<input type="hidden" name="type" value="3">
+                        	<!-- 관리자 식별 번호 : 2 -->
+                        	<input type="hidden" name="type" value="2">
                         </label>
                         <span class="seller_chk">중고샵 판매자 이용 여부 확인</span>
                     </td>
