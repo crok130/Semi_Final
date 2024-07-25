@@ -30,7 +30,7 @@
 	ResultSet rs = null;
 	int totalPrice = 0;
     try {
-        String sql = "SELECT Cart.*, Books.title FROM Cart JOIN Books ON Cart.book_id = Books.book_id WHERE Cart.memberNum = ?";
+        String sql = "SELECT Cart.*, Books.title FROM Cart JOIN Books ON Cart.book_no = Books.book_no WHERE Cart.memberNum = ?";
         pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, memberNum);
         rs = pstmt.executeQuery();
@@ -38,7 +38,7 @@
         	int price = rs.getInt("price");
         	String title = rs.getString("title");
         	int quantity = rs.getInt("quantity");
-        	int book_id = rs.getInt("book_id");
+        	int book_no = rs.getInt("book_no");
         	totalPrice += price;
 %>
                 <tr>
@@ -46,7 +46,7 @@
                     <td><%= price %> 원</td>
                     <td><%= quantity %></td>
                     <td>
-                        <a href="removepay.jsp?book_id=<%= book_id %>&memberNum=<%= memberNum %>" class="btn btn-danger">삭제</a>
+                        <a href="removepay.jsp?book_id=<%= book_no %>&memberNum=<%= memberNum %>" class="btn btn-danger">삭제</a>
                     </td>
                 </tr>
     	<%

@@ -1,11 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, java.io.*" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*, utils.JDBCUtil" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>판매 main page </title>
     <style>
         aside, section {
             float:left;
@@ -223,7 +224,7 @@
             display: block;
             margin: auto;
             padding-top: 10px;
-            border-radius:10%;
+            border-radius:5%;
         }
         .btitle {
             padding-left: 15px;
@@ -233,11 +234,6 @@
             text-decoration-line: none;
         }
         .bauthor {
-            padding-left: 15px;
-            padding-top: 5px;
-            font-size: 0.9rem;
-        }
-        .bcategory{
             padding-left: 15px;
             padding-top: 5px;
             font-size: 0.9rem;
@@ -279,9 +275,9 @@
 <body>
     <div class="wrap">
         <ul class="mlogo">
-            <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
+            <a href=""><img class="logo" src="img/31.png" title="31"/></a>
             <a href=""><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
-            <a href=""><img class="logo" src="./img/31.png" title="31"/></a>
+            <a href=""><img class="logo" src="img/31.png" title="31"/></a>
         </ul>
         <header>
             <nav>
@@ -346,14 +342,14 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#">카테고리</a>
+                        <a href="#">연령별</a>
                         <ul>
-                            <li><a href="#">소설</a></li>
-                            <li><a href="#">문학</a></li>
-                            <li><a href="#">교육</a></li>
-                            <li><a href="#">에세이</a></li>
-                            <li><a href="#">판타지</a></li>
-                            <li><a href="#">만화</a></li>
+                            <li><a href="#">10대</a></li>
+                            <li><a href="#">20대</a></li>
+                            <li><a href="#">30대</a></li>
+                            <li><a href="#">40대</a></li>
+                            <li><a href="#">50대</a></li>
+                            <li><a href="#">60대 이상</a></li>
                         </ul>
                     </li>
                     <li>
@@ -386,6 +382,7 @@
             </nav>
         </aside>        
         <section id="section">
+        <!-- SQL 사용해 DB에서 상품 정보 가져오기 -->
             <%
                 // 데이터베이스 연결 설정
                 String url = "jdbc:mysql://localhost:3306/baskin";
@@ -408,22 +405,37 @@
                     rs = pstmt.executeQuery();
                     while (rs.next()) {
                         resultsFound = true;
-                        int book_id = rs.getInt("book_id");
+                        int book_no = rs.getInt("book_no");
                         String title = rs.getString("title");
                         String author = rs.getString("author");
-                        String publisher = rs.getString("publisher");
-                        String category = rs.getString("category");
                         int price = rs.getInt("price");
-                        String imagePath = rs.getString("image_path");
-            %>
-                        <div class="book">
-                            <a href="book_detail.jsp?book_id=<%=book_id%>"><img src="<%= imagePath %>" alt="Book Image" class="bimg"></a>
-                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="btitle"><%= title %></div></a>
-                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bauthor">저자 : <%= author %></div></a>
-                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bpublisher">출판사 :<%= publisher %></div></a>
-                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bcategory">카테고리 : <%= category %></div></a>
-                            <a href="book_detail.jsp?book_id=<%=book_id%>"><div class="bprice"><%= price %> 원</div></a>
-                        </div>
+                        String publisher = rs.getString("publisher");
+            %>			
+            <div class="book">
+                <a href="new_book_shop_in_from.jsp?book_no=<%=book_no%>">
+                	<img name="12" class="bimg" src="img/<%=rs.getString("book_fileName")%>" 
+                	title="<%=rs.getString("title")%>"
+                	onerror="this.onerror=null; this.src='img/noimages.png';"/>
+                </a>
+                <a href="new_book_shop_in_from.jsp?book_no=<%=book_no%>">
+                	<div class="btitle"><%=rs.getString("title")%></div>
+                </a>
+                <a href="new_book_shop_in_from.jsp?book_no=<%=book_no%>">
+                	<div class="bauthor"><%=author%></div>
+                </a>
+                <a href="new_book_shop_in_from.jsp?book_no=<%=book_no%>">
+                	<div class="bpublisher"><%=publisher%></div>
+                </a>
+                <a href="new_book_shop_in_from.jsp?book_no=<%=book_no%>">
+                	<div class="bprice"><%=price%> 원</div>
+                </a>
+                <a href="new_book_shop_in_from.jsp?book_no=<%=book_no%>">
+                	<div class="bstarscore">9.6점(174건)</div>
+                </a>
+                <a href="new_book_shop_in_from.jsp?book_no=<%=book_no%>">
+                	<img class="star12345" src="img/star4.png"/>
+                </a>
+            </div>
             <%
                     }
                     if (!resultsFound) {
@@ -450,3 +462,11 @@
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+

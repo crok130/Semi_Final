@@ -1,6 +1,6 @@
 CREATE SCHEMA baskin;
 USE baskin;
-SELECT * FROM member;
+SELECT * FROM books;
 
 
 
@@ -26,19 +26,23 @@ memberWithdraw char(1) DEFAULT 'n'				-- 탈퇴 (회원 정보 숨김) n/y
 
 
 
-CREATE TABLE Books (
-    book_id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255),
-    author VARCHAR(100),
-    publisher VARCHAR(100),
-    price INT NOT NULL,
-    description TEXT,
-    category VARCHAR(50),
-    stock INT NOT NULL,
-    seller_id INT,
-    image_path varchar(250) not null,
-    status ENUM('신책', '중고책') NOT NULL,
-	FOREIGN KEY (seller_id) REFERENCES member(memberNum) ON DELETE SET NULL
+CREATE TABLE books (
+book_no INT PRIMARY KEY AUTO_INCREMENT,				-- 제품 등록 번호
+book_id VARCHAR(200) NOT NULL UNIQUE,				-- 제품 등록 ID 
+title VARCHAR(255) NOT NULL,						-- 책 이름
+author VARCHAR(100) NOT NULL,						-- 저자  
+publisher VARCHAR(100) NOT NULL, 					-- 출판사 
+book_memo TEXT,										-- 한줄 소개
+new_old_ebook VARCHAR(50) NOT NULL,					-- 신품,중고,ebook
+price INT NOT NULL,									-- 제품 가격 
+stock INT NOT NULL,
+seller_id INT,									-- 입고 수량
+category_overseas VARCHAR(50) NOT NULL, 			-- 국내/외 구분
+category_age VARCHAR(50),							-- 연령대 구분
+category_all 	VARCHAR(50) NOT NULL,		        -- 대분류
+insert_day TIMESTAMP NOT NULL DEFAULT now(),		-- 최초 등록한 날짜
+book_fileName  VARCHAR(300)	NULL,				-- 책이미지파일이름
+FOREIGN KEY (seller_id) REFERENCES member(memberNum) ON DELETE SET NULL
 );
 
 CREATE TABLE Cart (
@@ -50,7 +54,7 @@ CREATE TABLE Cart (
     FOREIGN KEY (memberNum) REFERENCES member(memberNum) ON DELETE CASCADE, -- 회원 테이블과의 관계
     FOREIGN KEY (book_id) REFERENCES Books(book_id) ON DELETE CASCADE -- 책 테이블과의 관계
 );
-
+SELECT * FROM books WHERE book_no =1;
 CREATE TABLE Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     memberNum INT,

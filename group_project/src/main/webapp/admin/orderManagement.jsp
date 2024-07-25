@@ -62,9 +62,9 @@
                         pstmt.close();
                 
                         // Data query with LIMIT for memberNum
-                        String query = "SELECT o.buyer_name, o.buyer_addr, o.buyer_tel, b.book_id, b.title, o.quantity, o.total_price, o.status, o.order_date, o.order_group_id " +
+                        String query = "SELECT o.buyer_name, o.buyer_addr, o.buyer_tel, b.book_no, b.title, o.quantity, o.total_price, o.status, o.order_date, o.order_group_id " +
                                        "FROM Orders o " +
-                                       "JOIN Books b ON o.book_id = b.book_id " +
+                                       "JOIN Books b ON o.book_no = b.book_no " +
                                        "WHERE o.memberNum = ? " +
                                        "ORDER BY o.order_group_id LIMIT ?, ?";
                         pstmt = conn.prepareStatement(query);
@@ -78,7 +78,7 @@
                             order.put("buyer_name", rs.getString("buyer_name"));
                             order.put("buyer_addr", rs.getString("buyer_addr"));
                             order.put("buyer_tel", rs.getString("buyer_tel"));
-                            order.put("book_id", rs.getInt("book_id"));
+                            order.put("book_no", rs.getInt("book_no"));
                             order.put("title", rs.getString("title"));
                             order.put("quantity", rs.getInt("quantity"));
                             order.put("total_price", rs.getInt("total_price"));
@@ -116,7 +116,7 @@
                     <td><%= order.get("buyer_name") %></td>
                     <td><%= order.get("buyer_addr") %></td>
                     <td><%= order.get("buyer_tel") %></td>
-                    <td><a href="../book_detail.jsp?book_id=<%= order.get("book_id") %>"><%= order.get("title") %></a></td>
+                    <td><a href="../new_book_shop_in_from.jsp?book_no=<%= order.get("book_no") %>"><%= order.get("title") %></a></td>
                     <td><%= order.get("quantity") %></td>
                     <td><%= order.get("total_price") %></td>
                     <td rowspan="<%= orderList.size() %>"><%= totalPriceForGroup %></td>
@@ -141,7 +141,7 @@
                 %>
                 <tr>
                     <td colspan="3"></td>
-                    <td><a href="../book_detail.jsp?book_id=<%= order.get("book_id") %>"><%= order.get("title") %></a></td>
+                    <td><a href="../new_book_shop_in_from.jsp?book_id=<%= order.get("book_no") %>"><%= order.get("title") %></a></td>
                     <td><%= order.get("quantity") %></td>
                     <td><%= order.get("total_price") %></td>
                     <td colspan="4"></td>

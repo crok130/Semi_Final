@@ -36,11 +36,11 @@
             pstmt.setInt(1, memberNum);
             rs = pstmt.executeQuery();
             
-            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_id, quantity, order_group_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '배송준비중')";
+            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_no, quantity, order_group_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '배송준비중')";
             pstmt = conn.prepareStatement(sql);
             
             while(rs.next()){
-                int book_id = rs.getInt("book_id");
+                int book_no = rs.getInt("book_no");
                 int quantity = rs.getInt("quantity");
                 int price = rs.getInt("price");
                 
@@ -49,7 +49,7 @@
                 pstmt.setString(3, buyerAddr);
                 pstmt.setString(4, buyerTel);
                 pstmt.setInt(5, price);
-                pstmt.setInt(6, book_id);
+                pstmt.setInt(6, book_no);
                 pstmt.setInt(7, quantity);
                 pstmt.setInt(8, orderGroupId);
                 pstmt.executeUpdate();

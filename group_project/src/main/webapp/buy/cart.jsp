@@ -28,8 +28,8 @@
                     ResultSet rs = null;
                     try {
                         conn = JDBCUtil.getConnection();
-                        String sql = "SELECT B.title, C.price, C.quantity, (C.price * C.quantity) as total_price, C.book_id " +
-                                     "FROM Cart C JOIN Books B ON C.book_id = B.book_id " +
+                        String sql = "SELECT B.title, C.price, C.quantity, (C.price * C.quantity) as total_price, C.book_no " +
+                                     "FROM Cart C JOIN Books B ON C.book_no = B.book_no " +
                                      "WHERE C.memberNum = ?";
                         pstmt = conn.prepareStatement(sql);
                         pstmt.setInt(1, 1/* 여기에 로그인된 사용자 ID를 입력하세요 */);
@@ -40,7 +40,7 @@
                             int price = rs.getInt("price");
                             int quantity = rs.getInt("quantity");
                             int total_price = rs.getInt("total_price");
-                            int book_id = rs.getInt("book_id");
+                            int book_no = rs.getInt("book_no");
                 %>
                 <tr>
                     <td><%= title %></td>
@@ -48,7 +48,7 @@
                     <td><%= quantity %></td>
                     <td><%= total_price %></td>
                     <td>
-                        <a href="removeFromCart.jsp?book_id=<%= book_id %>" class="btn btn-danger">삭제</a>
+                        <a href="removeFromCart.jsp?book_no=<%= book_no %>" class="btn btn-danger">삭제</a>
                     </td>
                 </tr>
                 <%

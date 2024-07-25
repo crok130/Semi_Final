@@ -2,7 +2,7 @@
 <%@ page import="java.sql.*, utils.JDBCUtil" %>
 <%
     int memberNum = Integer.parseInt(request.getParameter("memberNum"));
-    int book_id = Integer.parseInt(request.getParameter("book_id"));
+    int book_no = Integer.parseInt(request.getParameter("book_no"));
     int quantity = Integer.parseInt(request.getParameter("quantity"));
     Connection conn = null;
     PreparedStatement pstmt = null;
@@ -14,29 +14,29 @@
         conn = JDBCUtil.getConnection();
 
         // 같은 상품이 이미 장바구니에 있는지 확인
-        String checkSql = "SELECT quantity FROM Cart WHERE memberNum = ? AND book_id = ?";
+        String checkSql = "SELECT quantity FROM Cart WHERE memberNum = ? AND book_no = ?";
         pstmt = conn.prepareStatement(checkSql);
         pstmt.setInt(1, memberNum);
-        pstmt.setInt(2, book_id);
+        pstmt.setInt(2, book_no);
         rs = pstmt.executeQuery();
 
         if (rs.next()) {
             // 이미 장바구니에 있는 경우 수량을 업데이트
             int existingQuantity = rs.getInt("quantity");
             int newQuantity = existingQuantity + quantity;
-            String updateSql = "UPDATE Cart SET quantity = ?, price = ? WHERE memberNum = ? AND book_id = ?";
+            String updateSql = "UPDATE Cart SET quantity = ?, price = ? WHERE memberNum = ? AND book_no = ?";
             pstmt = conn.prepareStatement(updateSql);
             pstmt.setInt(1, newQuantity);
             pstmt.setInt(2, price * newQuantity);
             pstmt.setInt(3, memberNum);
-            pstmt.setInt(4, book_id);
+            pstmt.setInt(4, book_no);
             pstmt.executeUpdate();
         } else {
             // 장바구니에 없는 경우 새로 추가
-            String insertSql = "INSERT INTO Cart (memberNum, book_id, quantity, price) VALUES (?, ?, ?, ?)";
+            String insertSql = "INSERT INTO Cart (memberNum, book_no, quantity, price) VALUES (?, ?, ?, ?)";
             pstmt = conn.prepareStatement(insertSql);
             pstmt.setInt(1, memberNum);
-            pstmt.setInt(2, book_id);
+            pstmt.setInt(2, book_no);
             pstmt.setInt(3, quantity);
             pstmt.setInt(4, totalPrice);
             pstmt.executeUpdate();
