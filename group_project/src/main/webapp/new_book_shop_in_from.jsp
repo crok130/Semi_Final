@@ -353,9 +353,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="wrap">
         <ul class="mlogo">
-            <a href=""><img class="logo" src="img/31.png" title="31"/></a>
-            <a href=""><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
-            <a href=""><img class="logo" src="img/31.png" title="31"/></a>
+            <a href="index.jsp"><img class="logo" src="img/31.png" title="31"/></a>
+            <a href="index.jsp"><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
+            <a href="indrx.jsp"><img class="logo" src="img/31.png" title="31"/></a>
         </ul>
         <header>
             <nav>
@@ -468,7 +468,6 @@
 	ResultSet rs = null;
 	// JDBCUtil 정보 연결
 	Connection conn = JDBCUtil.getConnection();
-	int memberNum = 1;
 	int book_no = Integer.parseInt(request.getParameter("book_no"));
 	int stock = 0;
 	try {
@@ -512,9 +511,19 @@
                     <button type="button" class="plus">+</button>
                 </div>
                 <input type="hidden" class="quantity" name="quantity" value="1">
-                <input type="hidden" id="stock" value="<%= rs.getInt("stock") %>"> <!-- 재고량을 hidden input으로 설정 -->
+                <input type="hidden" id="stock" value="<%= rs.getInt("stock") %>">
+                <% 
+                	String userId = (String) session.getAttribute("userId");
+                	int memberNum;
+                	memberNum = (Integer) session.getAttribute("memberNum");
+	                if(userId != null){
+	                	
+				%>
                 <button type="button" class="salebutton" onclick="buyNow('<%= memberNum %>', '<%= book_no %>', '<%=title%>', '<%= price %>')">바로구매</button>
                 <button type="button" class="salebutton2" onclick="addToCart('<%= memberNum %>', '<%= book_no %>', $('.quantity').val(), '<%= title %>', '<%= price %>')">장바구니</button>
+                <%
+	                }
+               	%>
                 <div class="saleinfor"> - 해외배송 가능</div>
                 <div class="saleinfor"> - 최저가 보상</div>
                 <div class="saleinfor"> - 동백전 사용가능</div>
@@ -530,10 +539,7 @@
 		JDBCUtil.close(pstmt, conn, rs);
 	}
 %>	
-        <footer>
-            <p>Copyright © 베스킨라빈스31.2 Corp. All Rights Reserved.</p>
-            <p>고객센터 0000-0000 (유료) 365일 09:00 ~ 18:00 </p>
-        </footer>        
+     
     </div>
         <script>
     function buyNow(memberNum, book_id, title, price) {
@@ -596,6 +602,10 @@
         });
     });
     </script>
+           <footer>
+            <p>Copyright © 베스킨라빈스31.2 Corp. All Rights Reserved.</p>
+            <p>고객센터 0000-0000 (유료) 365일 09:00 ~ 18:00 </p>
+        </footer>   
 </body>
 </html>
 

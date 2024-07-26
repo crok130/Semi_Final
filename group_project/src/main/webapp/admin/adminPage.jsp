@@ -9,6 +9,16 @@
 	<link href="../css/adminPage.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+			    <% 
+			    	int memberType = (Integer) session.getAttribute("memberType");
+			    	if(memberType != 2){
+			    %>
+				    <script >
+		    			location.href="../member/login.jsp"
+				    </script>
+				<%
+			    	}
+				%>
 	<div class="wrapper">
         <div class="upperBox">
                 <p>BASKINROBBINS 31.2 회원 관리</p>
@@ -42,7 +52,7 @@
                 	ResultSet rs = null;
                 	
                     conn = DBUtil.getConnection();
-                	String sql = "SELECT memberNum, memberName, memberId, memberEmail, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, memberPoint, memberType, memberVisit FROM member";
+                	String sql = "SELECT memberNum, memberName, memberId, memberEmail, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, money, memberType, memberVisit FROM member";
                 	pstmt = conn.prepareStatement(sql);
                 	rs = pstmt.executeQuery(sql);
                 	
@@ -58,7 +68,7 @@
                 		String addr3 = rs.getString("memberAddr3");
                 		String addr = addr1 + " " + addr2 + " " + addr3;
                 		String gender = rs.getString("memberGender");
-                		int point = rs.getInt("memberPoint");
+                		int money = rs.getInt("money");
                 		String type = rs.getString("memberType");
                 		Timestamp visit = rs.getTimestamp("memberVisit");
                 		
@@ -96,7 +106,7 @@
                         <td class="ellipsis gender"><%= gender %></td>
 
                         <!-- 포인트 -->
-                        <td class="ellipsis point"><%= point %></td>
+                        <td class="ellipsis point"><%= money %></td>
 
                         <!-- 판매자 여부 -->
                         <td class="ellipsis type"><%= type %></td>

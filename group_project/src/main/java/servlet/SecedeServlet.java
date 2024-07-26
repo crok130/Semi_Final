@@ -21,7 +21,7 @@ public class SecedeServlet extends HttpServlet {
 				session.invalidate(); // 세션 무효화
 				response.setContentType("text/html; charset=UTF-8");
 				response.getWriter().println("<script>alert('성공적으로 회원 탈퇴하였습니다.');</script>");
-				response.sendRedirect("mainPage.jsp"); // 메인 페이지로 리다이렉트 일단 로그아웃 서블릿으로 던져봄
+				response.sendRedirect("index.jsp"); // 메인 페이지로 리다이렉트 일단 로그아웃 서블릿으로 던져봄
 			} else {
 				response.setContentType("text/html; charset=UTF-8");
 				response.getWriter().println("<script>alert('회원 탈퇴에 실패했습니다. 다시 시도해 주세요.'); history.back();</script>");

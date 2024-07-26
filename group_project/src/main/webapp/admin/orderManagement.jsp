@@ -16,6 +16,16 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+			    <% 
+			    	int memberType = (Integer) session.getAttribute("memberType");
+			    	if(memberType != 2){
+			    %>
+				    <script >
+		    			location.href="../member/login.jsp"
+				    </script>
+				<%
+			    	}
+				%>
     <div class="container mt-5">
         <h2 class="mb-4">주문 내역</h2>
         <table class="table table-striped table-bordered">

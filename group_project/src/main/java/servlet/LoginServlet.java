@@ -14,7 +14,6 @@ public class LoginServlet extends HttpServlet {
 		String userId = request.getParameter("uId");
 		String userPw = request.getParameter("uPw");
 		String autoLogin = request.getParameter("autoLogin");
-
 		// DAO 객체 생성
 		MemberDAO memberDAO = new MemberDAO();
 		MemberVO member = memberDAO.getMember(userId);
@@ -32,6 +31,12 @@ public class LoginServlet extends HttpServlet {
 
 		// 비밀번호 확인 및 로그인 처리
 		if (member != null && member.getPassword().equals(userPw)) {
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("userId", userId);
+			session.setAttribute("userPw", userPw);
+			session.setAttribute("memberType", member.getType());
+			
 			// 자동 로그인 체크 O
 			if (autoLogin != null) {
 				// 세션에 사용자 정보 저장
@@ -40,28 +45,11 @@ public class LoginServlet extends HttpServlet {
 		 		cookie.setMaxAge(60*60*24*7);		// second
 		 		response.addCookie(cookie);
 				
-				HttpSession session = request.getSession();
-				session.setAttribute("userId", userId);
-				session.setAttribute("userPw", userPw);
-				session.setAttribute("memberType", member.getType());
-
-				memberDAO.updateLastVisit(userId);
-
-				// 로그인 성공 후 메인 페이지로 이동 나중에 메인 페이지로 경로 수정
-				response.sendRedirect("mainPage.jsp");
-				// 자동 로그인 체크 X
-			} else {
-				// 세션에 사용자 정보 저장
-				HttpSession session = request.getSession();
-				session.setAttribute("userId", userId);
-				session.setAttribute("userPw", userPw);
-				session.setAttribute("memberType", member.getType());
-
-				memberDAO.updateLastVisit(userId);
-
-				// 로그인 성공 후 메인 페이지로 이동 나중에 메인 페이지로 경로 수정
-				response.sendRedirect("mainPage.jsp");
 			}
+			
+			memberDAO.updateLastVisit(userId);
+			// 로그인 성공 후 메인 페이지로 이동 나중에 메인 페이지로 경로 수정
+			response.sendRedirect("index.jsp");
 		} else {
 			// 로그인 실패 시 다시 로그인 페이지로 이동 및 알림 메시지 표시
 			out.println("<script>alert('아이디 또는 비밀번호가 일치하지 않습니다.'); window.location='member/login.jsp';</script>");

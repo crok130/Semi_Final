@@ -5,7 +5,7 @@ import java.sql.*;
 public class MemberDAO {
 	// MemberVO 객체를 DB에 저장함
 	public void insertMember(MemberVO member) {
-		String sql = "INSERT INTO member (memberName, memberId, memberEmail, memberPassword, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, memberType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO member (memberName, memberId, memberEmail, memberPassword, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, memberType,memberNum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -24,7 +24,7 @@ public class MemberDAO {
 			pstmt.setString(9, member.getAddr3());
 			pstmt.setString(10, member.getGender());
 			pstmt.setInt(11, member.getType());
-
+			pstmt.setInt(12, member.getMemberNum());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -50,7 +50,7 @@ public class MemberDAO {
 
 			if (rs.next()) {
 				member = new MemberVO();
-				member.setNum(rs.getInt("memberNum"));
+				member.setMemberNum(rs.getInt("memberNum"));
 				member.setName(rs.getString("memberName"));
 				member.setId(rs.getString("memberId"));
 				member.setEmail(rs.getString("memberEmail"));
@@ -61,7 +61,7 @@ public class MemberDAO {
 				member.setAddr2(rs.getString("memberAddr2"));
 				member.setAddr3(rs.getString("memberAddr3"));
 				member.setGender(rs.getString("memberGender"));
-				member.setPoint(rs.getInt("memberPoint"));
+				member.setMoney(rs.getInt("Money"));
 				member.setJoinDate(rs.getTimestamp("memberJoin"));
 				member.setVisitDate(rs.getTimestamp("memberVisit"));
 				member.setType(rs.getInt("memberType"));

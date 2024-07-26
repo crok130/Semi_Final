@@ -14,7 +14,7 @@
         		// 비밀번호 변경
         		memberDAO.updateReset(newPwChk, mId, email);
         		// 비밀번호 변경 완료 후 메인 페이지로 리다이렉트
-        		response.sendRedirect("mainPage.jsp");
+        		response.sendRedirect("index.jsp");
         } else {
         	// 새 비밀번호와 확인 비밀번호 불일치
 %>

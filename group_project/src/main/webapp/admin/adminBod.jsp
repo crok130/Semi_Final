@@ -5,9 +5,18 @@
 
 <jsp:useBean id="cri" class="util.Criteria" scope="page"/>
 <jsp:setProperty property="*" name="cri"/>
-
+			    <% 
+			    	int memberType = (Integer) session.getAttribute("memberType");
+			    	if(memberType != 2){
+			    %>
+				    <script >
+		    			location.href="../member/login.jsp"
+				    </script>
+				<%
+			    	}
+				%>
 <s:query var="result" dataSource="jdbc/MySQLDB">
-	SELECT * FROM book_requests WHERE status = '완료' ORDER BY request_id DESC
+	SELECT * FROM book_requests WHERE status = '신청' ORDER BY request_id DESC
 	limit ${cri.getStartRow()}, ${cri.getPerPageNum()}
 </s:query>
 
@@ -23,9 +32,9 @@
         <h1>도서 신청 목록</h1>
         <nav>
         	<ul>
-        		<li><a href="#"></a>홈</li>
-        		<li><a href="#"></a>중고 사이트</li>
-        		<li><a href="adminBod.jsp"></a>도서 신청</li>
+        		<li><a href="#">홈</a></li>
+        		<li><a href="#">중고 사이트</a></li>
+        		<li><a href="adminBod.jsp">도서 신청</a></li>
         	</ul>
         </nav>
         <form action="reBookSearch.jsp" method="get" class="search-form">
@@ -42,7 +51,7 @@
     <div class="container">
         <nav>
             <ul>
-                <li><a href="adminBod.jsp">홈</a></li>
+                <li><a href="adminBod.jsp">신청</a></li>
                 <li><a href="adminBodApplying.jsp">승인</a></li>
                 <li><a href="adminBodComplete.jsp">완료</a></li>
             </ul>
@@ -75,7 +84,7 @@
                    				<td>${b.status }</td>
                    				<td>
                    					<a href="adminUpdate.jsp?request_id=${b.request_id}"><button>수정</button></a>
-                   					<a href="adminDelete.jsp?request_id=${b.request_id}"><button>삭제</button></a>	
+                   					<a href="adminDelete.jsp?request_id=${b.request_id}"><button>삭제</button></a>
                    				</td>
                    			</tr>
                    		</c:forEach>
@@ -92,7 +101,7 @@
                 		<td colspan="7">
                 			<!-- 페이징 블록 -->
                 			<s:query var="rs" dataSource="jdbc/MySQLDB">
-                				SELECT count(*) as count FROM book_requests WHERE status = '완료'
+                				SELECT count(*) as count FROM book_requests WHERE status = '신청'
                 			</s:query>
 							<jsp:useBean id="pm" class="util.PageMaker"/>
 							<jsp:setProperty property="cri" name="pm" value="${cri}"/>
@@ -102,19 +111,19 @@
 							<jsp:setProperty property="totalCount" name="pm" value="${rs.rows[0].count}"/>
 							
 						    <c:if test="${cri.page > 1}">
-						    	<a href="adminBodComplete.jsp?page=1"><input type="button" value="처음"/></a>
+						    	<a href="adminBod.jsp?page=1"><input type="button" value="처음"/></a>
 						    	<c:if test="${pm.prev}">
-						    		<a href="adminBodComplete.jsp?page=${pm.startPage - 1}"><input type="button" value="이전"/></a>
+						    		<a href="adminBod.jsp?page=${pm.startPage - 1}"><input type="button" value="이전"/></a>
 						    	</c:if>
 						    </c:if>
 						    <c:forEach var="i" begin="${pm.startPage}" end="${pm.endPage}" step="1">
-						    	<a href="adminBodComplete.jsp?page=${i}"><input type="button" value="${i}"/></a>
+						    	<a href="adminBod.jsp?page=${i}"><input type="button" value="${i}"/></a>
 						    </c:forEach>
 						    <c:if test="${cri.page < pm.maxPage}">
 						    	<c:if test="${pm.next}">
-						    		<a href="adminBodComplete.jsp?page=${pm.endPage + 1}"><input type="button" value="다음"/></a>
+						    		<a href="adminBod.jsp?page=${pm.endPage + 1}"><input type="button" value="다음"/></a>
 						    	</c:if>
-						    	<a href="adminBodComplete.jsp?page=${pm.maxPage}"><input type="button" value="마지막"/></a>
+						    	<a href="adminBod.jsp?page=${pm.maxPage}"><input type="button" value="마지막"/></a>
 						    </c:if>
                 		</td>
                 	</tr>

@@ -1,8 +1,48 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, utils.JDBCUtil" %>
+<%@ page import="java.sql.*, utils.JDBCUtil, servlet.*, javax.sql.*, javax.naming.*"%>
 <!DOCTYPE html>
 <html lang="en">
+<%
+	Cookie[] cookies = request.getCookies();
+		if(cookies != null){
+			for(Cookie c : cookies){
+				if(c.getName().equals("memberId")){
+					String memberId = c.getValue();
+					
+					InitialContext init = new InitialContext();
+					DataSource ds = (DataSource)init.lookup("java:comp/env/jdbc/MySQLDB");
+					Connection conn = ds.getConnection();
+					PreparedStatement pstmt = conn.prepareStatement(
+						"SELECT * FROM member WHERE memberId = ?"
+					);
+					pstmt.setString(1, memberId);
+					
+					ResultSet rs = pstmt.executeQuery();
+					if(rs.next()){
+						MemberVO member = new MemberVO();
+						member.setMemberNum(rs.getInt("memberNum"));
+						member.setId(rs.getString("memberId"));
+						member.setEmail(rs.getString("memberEmail"));
+						member.setPassword(rs.getString("memberPassword"));
+						member.setPhone(rs.getString("memberPhone"));
+						member.setBirth(rs.getString("memberBirth"));
+						member.setAddr1(rs.getString("memberAddr1"));
+						member.setAddr2(rs.getString("memberAddr2"));
+						member.setAddr3(rs.getString("memberAddr3"));
+						member.setGender(rs.getString("memberGender"));
+						member.setMoney(rs.getInt("Money"));
+						member.setJoinDate(rs.getTimestamp("memberJoin"));
+						member.setVisitDate(rs.getTimestamp("memberVisit"));
+						member.setType(rs.getInt("memberType"));
+						member.setWithdraw(rs.getString("memberWithdraw"));
+						// session 에 추가
+						session.setAttribute("member", member);
+					}
+				} // check u_id cookie
+			} // end for cookies
+		}
+%>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -270,14 +310,73 @@
             padding-top: 40px;
             border-top: 1px solid gainsboro;
         }
+        #login{
+        	text-align: right;
+        	padding-right: 50px;
+        }
 </style>
 </head>
 <body>
+<div id="login">
+	
+	<%
+		String userID = (String) session.getAttribute("userId");
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conn = JDBCUtil.getConnection();
+		try{
+			String sql = "select * from member WHERE memberId = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userID);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				int memberNum = rs.getInt("memberNum");
+				session.setAttribute("memberNum", memberNum);
+			}
+
+		} catch (Exception e) {
+        e.printStackTrace();
+    	} finally {
+        	if (rs != null) try { rs.close(); } catch (SQLException ignore) {}
+        	if (pstmt != null) try { pstmt.close(); } catch (SQLException ignore) {}
+        	if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+    	}
+	
+	%>
+	<!-- 위애는 수빈  -->
+	
+    <% 
+	    String userId = (String) session.getAttribute("userId");
+	    if (userId != null) { 
+	        MemberDAO memberDAO = new MemberDAO();
+	        MemberVO member = memberDAO.getMember(userId); // 회원 정보를 가져옵니다.
+	        int type = member.getType(); // 회원 유형을 가져옵니다.
+    %>
+	        <p>환영합니다, <%= userId %> 님</p>
+	        <% 
+			System.out.println(member); 
+			%>
+	        <a href="${pageContext.request.contextPath}/LogoutServlet">로그아웃</a>
+	        <% if (2 == type) { %>
+	        	<!-- 관리자일 경우 -->
+	            	<a href="member/adminPage.jsp">관리자 대시보드</a>
+		    <% } else { %> 
+		            <a href="member/check_before_myPage.jsp?user=<%= userId %>">MY PAGE</a>
+		            <a href="member/changePW.jsp?user=<%= userId %>">비밀번호 변경</a>
+		            <a href="member/check_before_secede.jsp?user=<%= userId %>">회원 탈퇴</a>
+		            
+		    <% } %>
+    <% } else { %>
+        <a href="member/join.jsp">회원가입</a> <br />
+        <a href="member/login.jsp">로그인</a>
+    <% } %>
+</div>
     <div class="wrap">
         <ul class="mlogo">
-            <a href=""><img class="logo" src="img/31.png" title="31"/></a>
-            <a href=""><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
-            <a href=""><img class="logo" src="img/31.png" title="31"/></a>
+            <a href="index.jsp"><img class="logo" src="img/31.png" title="31"/></a>
+            <a href="index.jsp"><div class="logotext">BASKIN ROBBINS 31.2 bookshop</div></a>
+            <a href="index.jsp"><img class="logo" src="img/31.png" title="31"/></a>
         </ul>
         <header>
             <nav>
@@ -391,9 +490,9 @@
                 
                 String title_serch = request.getParameter("search_txt");
 
-                Connection conn = null;
-                PreparedStatement pstmt = null;;
-                ResultSet rs = null;
+                conn = null;
+                pstmt = null;;
+                rs = null;
                 boolean resultsFound = false;
                 	
                 try {

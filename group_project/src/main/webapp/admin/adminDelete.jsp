@@ -6,7 +6,16 @@
     SELECT * FROM book_requests WHERE request_id = ?
     <s:param value="${param.request_id}" />
 </s:query>
-
+			    <% 
+			    	int memberType = (Integer) session.getAttribute("memberType");
+			    	if(memberType != 2){
+			    %>
+				    <script >
+		    			location.href="../member/login.jsp"
+				    </script>
+				<%
+			    	}
+				%>
 <!DOCTYPE html>
 <html>
 <head>

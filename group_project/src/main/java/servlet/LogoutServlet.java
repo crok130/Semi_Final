@@ -26,6 +26,6 @@ public class LogoutServlet extends HttpServlet {
 			session.invalidate();
 		}
 		// 나중에 메인 페이지로 경로 수정
-		response.sendRedirect("mainPage.jsp");
+		response.sendRedirect("index.jsp");
 	}
 }

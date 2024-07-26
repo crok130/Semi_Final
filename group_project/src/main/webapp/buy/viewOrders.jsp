@@ -17,6 +17,17 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	<%
+		String userId = (String) session.getAttribute("userId");
+		if(userId == null){
+	%>
+		<script>
+			alert("로그인을하고사용해주세요");
+			history.back();
+		</script>
+	<%
+		}
+	%>
     <div class="container mt-5">
         <h2 class="mb-4">주문 내역</h2>
         <table class="table table-striped table-bordered">

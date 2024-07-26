@@ -51,13 +51,23 @@
 	</script>
 </head>
 <body>
+			    <% 
+			    	int memberType = (Integer) session.getAttribute("memberType");
+			    	if(memberType != 2){
+			    %>
+				    <script >
+		    			location.href="../member/login.jsp"
+				    </script>
+				<%
+			    	}
+				%>
 	<%
 		String Num = request.getParameter("memberNum");
     	int memberNum = Integer.parseInt(Num);
 	
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "SELECT memberNum, memberName, memberId, memberEmail, memberPassword, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, memberPoint, memberJoin, memberVisit, memberType, memberWithdraw FROM member WHERE memberNum = ?";
+		String sql = "SELECT memberNum, memberName, memberId, memberEmail, memberPassword, memberPhone, memberBirth, memberAddr1, memberAddr2, memberAddr3, memberGender, money, memberJoin, memberVisit, memberType, memberWithdraw FROM member WHERE memberNum = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, memberNum);
 		ResultSet rs = pstmt.executeQuery();
@@ -74,7 +84,7 @@
 			String addr2 = rs.getString("memberAddr2");
 			String addr3 = rs.getString("memberAddr3");
 			String gender = rs.getString("memberGender");
-			int point = rs.getInt("memberPoint");
+			int money = rs.getInt("money");
 			Timestamp join = rs.getTimestamp("memberJoin");
 			Timestamp visit = rs.getTimestamp("memberVisit");
 			int type = rs.getInt("memberType");
@@ -209,8 +219,8 @@
                     <td style="width: 150px;">포인트</td>
                     <td style="width: 200px;">
                     	<!-- 입력값 제한 (숫자만) -->
-                        <input type="text" class="input_box" name="point" 
-                        pattern="[0-9]+" required value="<%= point %>">
+                        <input type="text" class="input_box" name="money" 
+                        pattern="[0-9]+" required value="<%= money %>">
                     </td>
                     <td></td>
                 </tr>

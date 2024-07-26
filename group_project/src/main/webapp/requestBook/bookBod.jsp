@@ -5,7 +5,7 @@
 
 <%
     // 로그인 여부 확인
-    String userId = (String) session.getAttribute("userId");
+    String userId = (String) session.getAttribute("uId");
 %>
 
 <jsp:useBean id="cri" class="util.Criteria" scope="page"/>
@@ -47,21 +47,14 @@
     <div class="container">
         <nav>
             <ul>
-                <li><a href="#">홈</a></li>
+                <li><a href="bookBod.jsp">홈</a></li>
                 <li><a href="bookApplying.jsp">승인</a></li>
                 <li><a href="bookComplete.jsp">완료</a></li>
             </ul>
         </nav>
         
         <main class="content">
-            <a href="<c:choose>
-                        <c:when test="${sessionScope.userId != null}">
-                            reBook.jsp
-                        </c:when>
-                        <c:otherwise>
-                            login.jsp
-                        </c:otherwise>
-                     </c:choose>"><button class="request-button top">도서 신청</button></a>
+			    <a href="reBook.jsp"><button class="request-button top">도서 신청</button></a>
             <table class="board-table">
                 <thead>
                     <tr>

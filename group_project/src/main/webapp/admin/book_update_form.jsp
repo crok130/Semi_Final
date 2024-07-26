@@ -297,6 +297,16 @@
 	}
 </style>
 <body>
+			    <% 
+			    	int memberType = (Integer) session.getAttribute("memberType");
+			    	if(memberType != 2){
+			    %>
+				    <script >
+		    			location.href="../member/login.jsp"
+				    </script>
+				<%
+			    	}
+				%>
     <div class="wrap">
 		<div class="container">
 			<h1 class="first"><span>관리자 재고 (수정/삭제) 상세 page</span></h1>
@@ -522,14 +532,3 @@
     </div>    
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-

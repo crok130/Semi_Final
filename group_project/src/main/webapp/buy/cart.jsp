@@ -9,6 +9,17 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+	<%
+		String userId = (String) session.getAttribute("userId");
+		if(userId == null){
+	%>
+		<script>
+			alert("로그인을하고사용해주세요");
+			history.back();
+		</script>
+	<%
+		}
+	%>
     <div class="container">
         <h1 class="text-center">장바구니</h1>
         <table class="table table-bordered">

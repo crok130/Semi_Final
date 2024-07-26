@@ -41,7 +41,7 @@
 %>
 			<script>
 				alert('성공적으로 수정했습니다.');
-				window.location.href = 'mainPage.jsp';
+				window.location.href = '../index.jsp';
 			</script>
 <%
 		} else {

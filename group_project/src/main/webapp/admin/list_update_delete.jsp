@@ -222,6 +222,16 @@
 	}
 </style>
 <body>
+			    <% 
+			    	int memberType = (Integer) session.getAttribute("memberType");
+			    	if(memberType != 2){
+			    %>
+				    <script >
+		    			location.href="../member/login.jsp"
+				    </script>
+				<%
+			    	}
+				%>
     <div class="wrap">
 		<div class="container">
 			<h1 class="first"><span>관리자 재고 (수정/삭제) list page</span></h1>
@@ -231,7 +241,7 @@
 				<ul>
 					<li><a href="insert_form.jsp">☛ 관리자 재고 insert page </a></li>
 					<li><a href="회원관리.jsp">☛ 회원관리 page </a></li>
-					<li><a href="new_book_shop_from.jsp">☛ 판매 main page </a></li>
+					<li><a href="../index.jsp">☛ 판매 main page </a></li>
 				</ul>
 			</div>
 		</header>

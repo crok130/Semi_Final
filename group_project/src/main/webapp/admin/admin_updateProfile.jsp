@@ -8,7 +8,7 @@
 	
 	// 관리자 권한 체크
 	if (userType == null || userType != 2) {
-     	response.sendRedirect("mainPage.jsp"); // 관리자 권한이 없으면 메인 페이지로 리다이렉트
+     	response.sendRedirect("../index.jsp"); // 관리자 권한이 없으면 메인 페이지로 리다이렉트
      return;
  	}
 
@@ -24,7 +24,7 @@
 	String addr2 = request.getParameter("addr2");
 	String addr3 = request.getParameter("addr3");
 	String gender = request.getParameter("gender");
-	int point = Integer.parseInt(request.getParameter("point"));
+	int money = Integer.parseInt(request.getParameter("money"));
 	int type = Integer.parseInt(request.getParameter("type"));
 	String withdraw = request.getParameter("withdraw");
 	
@@ -37,7 +37,7 @@
 		// SQL UPDATE 문
 		String sql = "UPDATE member SET memberName = ?, memberEmail = ?, memberPassword = ?, memberPhone = ?, " +
                 	 "memberBirth = ?, memberAddr1 = ?, memberAddr2 = ?, memberAddr3 = ?, memberGender = ?, " +
-                	 "memberPoint = ?, memberType = ?, memberWithdraw = ? WHERE memberNum = ?";
+                	 "money = ?, memberType = ?, memberWithdraw = ? WHERE memberNum = ?";
 		pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, name);
 	    pstmt.setString(2, email);
@@ -48,7 +48,7 @@
 	    pstmt.setString(7, addr2);
 	    pstmt.setString(8, addr3);
 	    pstmt.setString(9, gender);
-	    pstmt.setInt(10, point);
+	    pstmt.setInt(10, money);
 	    pstmt.setInt(11, type);
 	    pstmt.setString(12, withdraw);
 	    pstmt.setInt(13, num);
