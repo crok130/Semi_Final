@@ -1,56 +1,106 @@
-// script.js
-
-// Toggle dropdown for subcategories
-function toggleDropdown(dropdownId) {
-  var dropdown = document.getElementById(dropdownId);
-  dropdown.classList.toggle('active');
-}
-
-// Form submission handling
-document.getElementById('used-book-form').addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  // Gather form data
-  var bookTitle = document.getElementById('book-title').value;
-  var bookAuthor = document.getElementById('book-author').value;
-  var bookISBN = document.getElementById('book-isbn').value;
-  var bookPrice = document.getElementById('book-price').value;
-  var bookCondition = document.getElementById('book-condition').value;
-  var bookDescription = document.getElementById('book-description').value;
-  // Here you would handle file uploads, but it's not implemented in this example
-
-  // Perform validation (example: simple check for book title presence)
-  if (bookTitle.trim() === '') {
-      alert('도서명을 입력해주세요.');
-      return;
-  }
-
-  // Construct object with book data (you can send this data to a server, for example)
-  var bookData = {
-      title: bookTitle,
-      author: bookAuthor,
-      isbn: bookISBN,
-      price: bookPrice,
-      condition: bookCondition,
-      description: bookDescription
-      // Add file upload handling here if needed
-  };
-
-  // Example: log book data to console (replace with actual implementation)
-  console.log('Book Data:', bookData);
-
-  // Reset form fields (optional)
-  document.getElementById('used-book-form').reset();
-});
-const categoryItems = document.querySelectorAll('.category li');
-
-window.addEventListener('scroll', () => {
-  categoryItems.forEach(item => {
-    const itemTop = item.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
-
-    if (itemTop < windowHeight * 0.8) { // 80% 지점에 도달하면 나타남
-      item.classList.add('show');
+document.addEventListener("DOMContentLoaded", function() {
+    // 카테고리 드롭다운 토글 기능
+    document.querySelectorAll(".category-title").forEach(function(categoryTitle) {
+        categoryTitle.addEventListener("click", function() {
+            const categoryId = categoryTitle.getAttribute("data-category");
+            const subcategoryList = document.getElementById(categoryId);
+            if (subcategoryList) {
+                subcategoryList.classList.toggle("show");
+            } else {
+                console.error(`ID가 "${categoryId}"인 요소를 찾을 수 없습니다.`);
+            }
+        });
+    });
+    // 도서 정보 가져오기
+    function fetchBookInfo(query) {
+        fetch(`/group_project/api/books?query=${encodeURIComponent(query)}`, {
+            method: "GET",
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("서버 응답이 좋지 않습니다.");
+            }
+            return response.json();
+        })
+        .then(data => {
+			console.log(data);
+            if (data && data.books) {
+                displayBookInfo(data.books);
+            } else {
+                alert("도서 정보를 찾을 수 없습니다.");
+            }
+        })
+        .catch(error => {
+            console.error("도서 정보 가져오기 오류:", error);
+            alert("도서 정보를 가져오는 중 오류가 발생하였습니다.");
+        });
     }
-  });
+
+    // 도서 정보 표시
+    function displayBookInfo(book) {
+		console.log(book);
+        const titleElement = document.getElementById("book-title");
+        const authorElement = document.getElementById("book-author");
+        const priceElement = document.getElementById("book-price");
+        const conditionElement = document.getElementById("book-condition");
+        const descriptionElement = document.getElementById("book-description");
+        const coverImageElement = document.getElementById("book-cover");
+
+        // 요소 존재 여부 확인
+        if (titleElement && authorElement && priceElement && conditionElement && descriptionElement && coverImageElement) {
+            titleElement.value = book.title || "";
+            authorElement.value = book.author || "";
+            priceElement.value = book.price || "";
+            conditionElement.value = book.condition || "good"; // 기본값 설정
+            descriptionElement.value = book.description || "";
+            coverImageElement.src = book.image || "https://via.placeholder.com/150"; // 기본 이미지
+            document.getElementById("book-info").style.display = "block";
+        } else {
+            console.error("필수 DOM 요소가 존재하지 않습니다.");
+        }
+    }
+
+    // 판매 등록 폼 제출 이벤트
+    const usedBookForm = document.getElementById("used-book-form");
+    if (usedBookForm) {
+        usedBookForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(usedBookForm);
+
+            fetch("/UploadBookServlet", {  // 서버의 서블릿 URL로 수정
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("도서 판매 등록이 완료되었습니다.");
+                    usedBookForm.reset();
+                    document.getElementById("book-info").style.display = "none";
+                } else {
+                    alert("도서 판매 등록에 실패하였습니다. 다시 시도해주세요.");
+                }
+            })
+            .catch(error => {
+                console.error("도서 판매 등록 중 오류가 발생하였습니다:", error);
+                alert("도서 판매 등록 중 오류가 발생하였습니다. 다시 시도해주세요.");
+            });
+        });
+    }
+
+    // 판매 등록 버튼 클릭 이벤트
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.addEventListener('click', function(event) {
+            if (confirm('중고책을 등록하시겠습니까?')) {
+                const usedBookForm = document.getElementById("used-book-form");
+                if (usedBookForm) {
+                    usedBookForm.submit();
+                } else {
+                    console.error("등록 폼을 찾을 수 없습니다.");
+                }
+            }
+        });
+    }
 });

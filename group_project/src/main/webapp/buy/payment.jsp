@@ -24,10 +24,11 @@
             </thead>
             <tbody>
 <%	
-	int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+	
 	Connection conn = JDBCUtil.getConnection();
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
+	int memberNum = (Integer)session.getAttribute("memberNum");
 	int totalPrice = 0;
     try {
         String sql = "SELECT Cart.*, Books.title FROM Cart JOIN Books ON Cart.book_no = Books.book_no WHERE Cart.memberNum = ?";
@@ -46,7 +47,7 @@
                     <td><%= price %> 원</td>
                     <td><%= quantity %></td>
                     <td>
-                        <a href="removepay.jsp?book_id=<%= book_no %>&memberNum=<%= memberNum %>" class="btn btn-danger">삭제</a>
+                        <a href="removepay.jsp?book_no=<%= book_no %>" class="btn btn-danger">삭제</a>
                     </td>
                 </tr>
     	<%

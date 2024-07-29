@@ -16,16 +16,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-			    <% 
-			    	int memberType = (Integer) session.getAttribute("memberType");
-			    	if(memberType != 2){
-			    %>
-				    <script >
-		    			location.href="../member/login.jsp"
-				    </script>
-				<%
-			    	}
-				%>
+
     <div class="container mt-5">
         <h2 class="mb-4">주문 내역</h2>
         <table class="table table-striped table-bordered">
@@ -50,7 +41,6 @@
                     ResultSet rs = null;
                     List<Map<String, Object>> orderList = new ArrayList<>();
                     Map<Integer, Integer> totalPriceMap = new HashMap<>();
-                    int memberNum = 1; // 관리자가 조회할 회원 번호
                     int orderGroupId = 0;
                     
                     try {
@@ -61,9 +51,8 @@
                         conn = DriverManager.getConnection(url, user, password);
 
                         // Total count query for memberNum
-                        String countQuery = "SELECT COUNT(*) FROM Orders WHERE memberNum = ?";
+                        String countQuery = "SELECT COUNT(*) FROM Orders";
                         pstmt = conn.prepareStatement(countQuery);
-                        pstmt.setInt(1, memberNum);
                         rs = pstmt.executeQuery();
                         if (rs.next()) {
                             pageMaker.setTotalCount(rs.getInt(1));
@@ -75,12 +64,10 @@
                         String query = "SELECT o.buyer_name, o.buyer_addr, o.buyer_tel, b.book_no, b.title, o.quantity, o.total_price, o.status, o.order_date, o.order_group_id " +
                                        "FROM Orders o " +
                                        "JOIN Books b ON o.book_no = b.book_no " +
-                                       "WHERE o.memberNum = ? " +
                                        "ORDER BY o.order_group_id LIMIT ?, ?";
                         pstmt = conn.prepareStatement(query);
-                        pstmt.setInt(1, memberNum);
-                        pstmt.setInt(2, criteria.getStartRow());
-                        pstmt.setInt(3, criteria.getPerPageNum());
+                        pstmt.setInt(1, criteria.getStartRow());
+                        pstmt.setInt(2, criteria.getPerPageNum());
                         rs = pstmt.executeQuery();
 
                         while (rs.next()) {

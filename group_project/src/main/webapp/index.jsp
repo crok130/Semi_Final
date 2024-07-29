@@ -386,14 +386,9 @@
         <header>
             <nav>
                 <ul>
-                    <li>
-                        <a href="">신상품</a>
-                        <ul class="inner_menu">
-                            <li><a href="">월별 판매순</a></li>
-                            <li><a href="">누적 판매순</a></li>
-                            <li><a href="">평점순</a></li>
-                        </ul>
-                    </li>
+                   	<li>
+                   		<a href="used/used_books.jsp">중고샵</a>
+                   	</li>
                     <li>
                         <a href="">종합</a>
                         <ul class="inner_menu">
@@ -489,10 +484,12 @@
 	    			pstmt = null;
 	                // 데이터베이스로부터 결과값을 전달받는 ResultSet 객체 
 	    			rs = null;
+	                String newbook = "new";
 	                // SQL문 작성하고 실행하기
-	    			String sql = "select * from books";
+	    			String sql = "select * from books WHERE new_old_ebook = ?";
 	    			conn = JDBCUtil.getConnection();
 	    			pstmt = conn.prepareStatement(sql);
+	    			pstmt.setString(1, newbook);
 	    			rs = pstmt.executeQuery();
 	    			
 	                // 실행한 결과값 rs(product 테이블의 모든 레코드) 하나씩 출력

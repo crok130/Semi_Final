@@ -8,7 +8,7 @@
 
 <% 
 	// name == profileImage file upload
-	String path = "D:\\JsBackUp\\workspace\\public\\jsp_workspace\\yjs\\src\\main\\webapp\\img";
+	String path = application.getRealPath("img");// "C:\\Users\\admin\\Desktop\\workspace\\jsp_workspace\\semi\\group_project\\src\\main\\webapp\\img";
 	File file = new File(path);
 	if(!file.exists()){
 		file.mkdirs();

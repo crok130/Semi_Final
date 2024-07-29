@@ -1,6 +1,6 @@
 CREATE SCHEMA baskin;
 USE baskin;
-ALTER TABLE member DROP COLUMN memberaddr;
+
 CREATE TABLE IF NOT EXISTS member(
 memberNum INT PRIMARY KEY AUTO_INCREMENT,		-- 회원 번호
 memberName VARCHAR(50)NOT NULL,					-- 회원 이름
@@ -21,7 +21,7 @@ memberType INT,									-- 관리자 판매 일반 계정 구분 (0: 일반 / 1:
 memberWithdraw char(1) DEFAULT 'n'				-- 탈퇴 (회원 정보 숨김) n/y
 );
 
-
+SELECT * from books;
 
 CREATE TABLE books (
 book_no INT PRIMARY KEY AUTO_INCREMENT,				-- 제품 등록 번호

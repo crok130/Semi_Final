@@ -61,7 +61,7 @@
   
     <servlet>
   	<servlet-name>booksUpload</servlet-name>
-  	<jsp-file>/insert_check.jsp</jsp-file>
+  	<jsp-file>/admin/insert_check.jsp</jsp-file>
   	<multipart-config>
   		<location>c:\\Temp</location>
   		<max-file-size>10485760</max-file-size>
@@ -71,12 +71,12 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>booksUpload</servlet-name>
-  	<url-pattern>/insert_check.jsp</url-pattern>
+  	<url-pattern>/admin/insert_check.jsp</url-pattern>
   </servlet-mapping>
 
   <servlet>
   	<servlet-name>booksUpdate</servlet-name>
-  	<jsp-file>/book_update_check.jsp</jsp-file>
+  	<jsp-file>/admin/book_update_check.jsp</jsp-file>
   	<multipart-config>
   		<location>c:\\Temp</location>
   		<max-file-size>10485760</max-file-size>
@@ -86,6 +86,6 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>booksUpdate</servlet-name>
-  	<url-pattern>/book_update_check.jsp</url-pattern>
+  	<url-pattern>/admin/book_update_check.jsp</url-pattern>
   </servlet-mapping>
 </web-app>

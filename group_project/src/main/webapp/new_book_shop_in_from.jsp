@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*, utils.JDBCUtil" %>
+<%@ page import="java.sql.*, utils.JDBCUtil, servlet.*, javax.sql.*, javax.naming.*"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -346,9 +346,45 @@
 	    padding-top: 40px;
 	    border-top: 1px solid gainsboro;
   	}
+  	#login{
+        text-align: right;
+        padding-right: 50px;
+  	}
+    #h{
+       	display: inline;
+    }
+  	
 </style>
 </head>
 <body>
+<div id="login">
+   <% 
+	    String userId = (String) session.getAttribute("userId");
+	    if (userId != null) { 
+	        MemberDAO memberDAO = new MemberDAO();
+	        MemberVO member = memberDAO.getMember(userId); // 회원 정보를 가져옵니다.
+	        int type = member.getType(); // 회원 유형을 가져옵니다.
+    %>
+	        <p id ="h">환영합니다, <%= userId %> 님</p>
+	        <% 
+			System.out.println(member); 
+			%>
+	        <a href="${pageContext.request.contextPath}/LogoutServlet" id="l">로그아웃</a>
+	        <% if (2 == type) { %>
+	        	<!-- 관리자일 경우 -->
+	            	<a href="admin/admin.jsp">관리자 대시보드</a>
+		    <% } else { %> 
+		            <br/>
+		            <a href="member/check_before_myPage.jsp?user=<%= userId %>">MY PAGE </a> <a href="buy/cart.jsp">장바구니</a>
+		            <a href="member/changePW.jsp?user=<%= userId %>">비밀번호 변경</a>
+		            <a href="member/check_before_secede.jsp?user=<%= userId %>">회원 탈퇴</a>
+		            
+		    <% } %>
+    <% } else { %>
+        <a href="member/login.jsp">로그인</a> <a href="member/join.jsp">회원가입</a> <br />
+    
+    <% } %>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="wrap">
@@ -392,13 +428,8 @@
                             <li><a href="">평점순</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="">e-Book</a>
-                        <ul class="inner_menu">
-                            <li><a href="">월별 판매순</a></li>
-                            <li><a href="">누적 판매순</a></li>
-                            <li><a href="">평점순</a></li>
-                        </ul>
+                 	<li>
+                    	<a href="requestBook/bookBod.jsp">도서신청</a>
                     </li>
                 </ul>
             </nav>
@@ -454,8 +485,7 @@
                 <ul>
                     <li class="bestseller"><a href="">베스트셀러</a></li>
                     <li class="bestseller"><a href="">국내 베스트셀러</a></li>
-                    <li class="bestseller"><a href="">해외 베스트셀러</a></li>
-                    <li class="bestseller"><a href="">e-Book 배스트셀러</a></li>
+                    <li class="bestseller"><a href="">해외 베스트셀러</a></li>>
                 </ul>
             </nav>
         </aside>        
@@ -512,18 +542,14 @@
                 </div>
                 <input type="hidden" class="quantity" name="quantity" value="1">
                 <input type="hidden" id="stock" value="<%= rs.getInt("stock") %>">
+                
                 <% 
-                	String userId = (String) session.getAttribute("userId");
-                	int memberNum;
-                	memberNum = (Integer) session.getAttribute("memberNum");
-	                if(userId != null){
-	                	
+                	int memberNum = (Integer) session.getAttribute("memberNum");
 				%>
-                <button type="button" class="salebutton" onclick="buyNow('<%= memberNum %>', '<%= book_no %>', '<%=title%>', '<%= price %>')">바로구매</button>
-                <button type="button" class="salebutton2" onclick="addToCart('<%= memberNum %>', '<%= book_no %>', $('.quantity').val(), '<%= title %>', '<%= price %>')">장바구니</button>
-                <%
-	                }
-               	%>
+				
+               	<button type="button" class="salebutton" onclick="buyNow('<%= book_no %>', '<%=title%>', '<%= price %>')">바로구매</button>
+				<button type="button" class="salebutton2" onclick="addToCart('<%= book_no %>', $('.quantity').val(), '<%= title %>', '<%= price %>')">장바구니</button>
+   
                 <div class="saleinfor"> - 해외배송 가능</div>
                 <div class="saleinfor"> - 최저가 보상</div>
                 <div class="saleinfor"> - 동백전 사용가능</div>
@@ -542,47 +568,48 @@
      
     </div>
         <script>
-    function buyNow(memberNum, book_id, title, price) {
-        var quantity = $('.quantity').val();
-        addToCart(memberNum, book_id, quantity, title, price, true);
-    }
-    
-    function addToCart(memberNum, book_no, quantity, title, price, isBuyNow = false) {
-        var stock = parseInt($('#stock').val());
-        if (quantity > stock) {
-            Swal.fire({
-                icon: 'error',
-                title: '재고 부족!',
-                text: '선택하신 수량이 재고량을 초과하였습니다. 현재 재고: ' + stock,
-                showConfirmButton: true
-            });
-            return;
+        function buyNow(book_id, title, price) {
+            var quantity = $('.quantity').val();
+            addToCart(book_id, quantity, title, price, true);
         }
 
-        $.post('buy/add_to_cart.jsp', { memberNum: memberNum, book_no: book_no, quantity: quantity, title: title, price: price }, function(data) {
-            if (data.trim() === "success") {
-                if (isBuyNow) {
-                    window.location.href = 'buy/payment.jsp?memberNum=' + memberNum;
-                } else {
-                    var totalPrice = price * quantity;
-                    Swal.fire({
-                        icon: 'success',
-                        title: '장바구니에 추가되었습니다!',
-                        text: title + " " + quantity + "개, 총 " + totalPrice + "원에 장바구니에 추가되었습니다!",
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            } else {
+        /* 로그인된 회원 번호가 세션에 없을때 add_to_cart.jsp 에서 오류  */
+        function addToCart(book_no, quantity, title, price, isBuyNow = false) {
+            var stock = parseInt($('#stock').val());
+            if (quantity > stock) {
                 Swal.fire({
                     icon: 'error',
-                    title: '장바구니 추가 실패!',
-                    text: '다시 시도해주세요.',
+                    title: '재고 부족!',
+                    text: '선택하신 수량이 재고량을 초과하였습니다. 현재 재고: ' + stock,
                     showConfirmButton: true
                 });
+                return;
             }
-        });
-    }
+
+            $.post('buy/add_to_cart.jsp', { book_no: book_no, quantity: quantity, title: title, price: price }, function(data) {
+                if (data.trim() === "success") {
+                    if (isBuyNow) {
+                        window.location.href = 'buy/payment.jsp';
+                    } else {
+                        var totalPrice = price * quantity;
+                        Swal.fire({
+                            icon: 'success',
+                            title: '장바구니에 추가되었습니다!',
+                            text: title + " " + quantity + "개, 총 " + totalPrice + "원에 장바구니에 추가되었습니다!",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '장바구니 추가 실패!',
+                        text: '다시 시도해주세요.',
+                        showConfirmButton: true
+                    });
+                }
+            });
+        }
 
     $(document).ready(function() {
         $('.plus').click(function() {

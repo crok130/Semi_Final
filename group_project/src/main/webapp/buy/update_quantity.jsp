@@ -2,7 +2,7 @@
 <%@ page import="java.sql.*, utils.JDBCUtil" %>
 <%
     int book_id = Integer.parseInt(request.getParameter("book_id"));
-    int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+	int memberNum = (Integer)session.getAttribute("memberNum");
     int quantity = Integer.parseInt(request.getParameter("quantity"));
 
     Connection conn = null;

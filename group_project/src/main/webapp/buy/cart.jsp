@@ -34,6 +34,7 @@
             </thead>
             <tbody>
                 <%
+                	int memberNum = (Integer)session.getAttribute("memberNum");
                     Connection conn = null;
                     PreparedStatement pstmt = null;
                     ResultSet rs = null;
@@ -43,7 +44,7 @@
                                      "FROM Cart C JOIN Books B ON C.book_no = B.book_no " +
                                      "WHERE C.memberNum = ?";
                         pstmt = conn.prepareStatement(sql);
-                        pstmt.setInt(1, 1/* 여기에 로그인된 사용자 ID를 입력하세요 */);
+                        pstmt.setInt(1, memberNum/* 여기에 로그인된 사용자 ID를 입력하세요 */);
                         rs = pstmt.executeQuery();
 
                         while (rs.next()) {

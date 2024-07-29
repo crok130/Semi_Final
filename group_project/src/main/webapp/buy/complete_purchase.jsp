@@ -1,6 +1,5 @@
-<%@page import="java.sql.*, utils.JDBCUtil" %>
+<%@ page import="java.sql.*, utils.JDBCUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%
     if(request.getMethod().equalsIgnoreCase("POST")){
         
@@ -12,7 +11,7 @@
         String buyerTel = request.getParameter("buyer_tel");
         String buyerAddr = request.getParameter("buyer_addr");
         
-        int memberNum = 1; // 실제로는 세션이나 쿠키에서 가져옴
+        int memberNum = (Integer)session.getAttribute("memberNum"); // 실제로는 세션이나 쿠키에서 가져옴
         ResultSet rs = null;
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -31,13 +30,13 @@
             }
             
             // 2. Cart 테이블에서 상품 정보를 조회하여 Orders 테이블에 저장
-            String Cartsql = "SELECT * FROM Cart WHERE memberNum = ?";
-            pstmt = conn.prepareStatement(Cartsql);
+            String cartSql = "SELECT * FROM Cart WHERE memberNum = ?";
+            pstmt = conn.prepareStatement(cartSql);
             pstmt.setInt(1, memberNum);
             rs = pstmt.executeQuery();
             
-            String sql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_no, quantity, order_group_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '배송준비중')";
-            pstmt = conn.prepareStatement(sql);
+            String orderSql = "INSERT INTO Orders (memberNum, buyer_name, buyer_addr, buyer_tel, total_price, book_no, quantity, order_group_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '배송준비중')";
+            pstmt = conn.prepareStatement(orderSql);
             
             while(rs.next()){
                 int book_no = rs.getInt("book_no");
@@ -53,9 +52,16 @@
                 pstmt.setInt(7, quantity);
                 pstmt.setInt(8, orderGroupId);
                 pstmt.executeUpdate();
+                
+/*                 // 3. Books 테이블의 재고 수량 업데이트
+                String updateStockSql = "UPDATE Books SET stock = stock - ? WHERE book_no = ?";
+                pstmt = conn.prepareStatement(updateStockSql);
+                pstmt.setInt(1, quantity);
+                pstmt.setInt(2, book_no);
+                pstmt.executeUpdate(); */
             }
             
-            // 3. 카트 정보를 삭제
+            // 4. 카트 정보를 삭제
             String deleteCartSql = "DELETE FROM Cart WHERE memberNum = ?";
             pstmt = conn.prepareStatement(deleteCartSql);
             pstmt.setInt(1, memberNum);
@@ -65,7 +71,7 @@
             e.printStackTrace();
             out.print("결제 처리 중 오류가 발생했습니다.");
         } finally {
-            JDBCUtil.close(pstmt, conn);
+            JDBCUtil.close(rs, pstmt, conn);
         }
     }
 %>

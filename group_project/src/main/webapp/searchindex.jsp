@@ -413,13 +413,8 @@
                             <li><a href="">평점순</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="">e-Book</a>
-                        <ul class="inner_menu">
-                            <li><a href="">월별 판매순</a></li>
-                            <li><a href="">누적 판매순</a></li>
-                            <li><a href="">평점순</a></li>
-                        </ul>
+                 	<li>
+                    	<a href="requestBook/bookBod.jsp">도서신청</a>
                     </li>
                 </ul>
             </nav>

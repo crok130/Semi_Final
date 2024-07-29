@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ page import="java.sql.*, utils.JDBCUtil" %>
+
 <%
-    int memberNum = Integer.parseInt(request.getParameter("memberNum"));
+	int memberNum = (Integer)session.getAttribute("memberNum");
     int book_no = Integer.parseInt(request.getParameter("book_no"));
     int quantity = Integer.parseInt(request.getParameter("quantity"));
     Connection conn = null;

@@ -20,6 +20,7 @@
 	<h3>jsp index information..</h3>
 	<hr />
 	<h2><a href="../index.jsp">1. 상품 판매 main form page - [ index.jsp ]</a></h2>
+	<hr />
 	<h2><a href="insert_form.jsp">2. 상품 등록 form page - [ insert_form.jsp ] - 완료</a></h2>
 	<hr />
 	<h2><a href="list_update_delete.jsp">3. 상품 등록 후 재고 list form page - [ list_update_delete.jsp ] - 완료 </a></h2>
@@ -27,6 +28,9 @@
 	<h2><a href="adminBod.jsp">4. 도서 신청 관리 페이지 adminBod - [adminBod.jsp]</a></h2>
 	<hr />
 	<h2><a href="adminPage.jsp">5. 회원 정보 관리 페이지 adminPage - [adminPage.jsp]</a></h2>
+	<hr/>
+	<h2><a href="orderManagement.jsp">6. 구매 회원 정보 관리 페이지 orderManagement - [orderManagement.jsp]</a></h2>
+	
 <!-- 	<h2><p>8. 재고 삭제 code page - [ book_delete.jsp ] - 완료</p></h2>s
 	<h2><p>9. 등록 id 중복 체크 code page - [ check_book_id.jsp ] - 완료</p></h2>
 	<h2><p></p></h2>	
